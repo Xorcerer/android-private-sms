@@ -18,7 +18,6 @@ public class SMSReceiver extends BroadcastReceiver {
 	
 	@Override
     public void onReceive(Context context, Intent intent) {
-        // TODO Auto-generated method stub
         System.out.println("SMSReceiver, isOrderedBroadcast()="
                 + isOrderedBroadcast());
         

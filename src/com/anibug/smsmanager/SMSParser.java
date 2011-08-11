@@ -13,9 +13,9 @@ import android.telephony.SmsMessage;
  */
 public class SMSParser {
 	
-	ArrayList<String>blacklist;
+	ArrayList<String> blacklist;
 	
-	private SMSParser(){
+	private SMSParser() {
 		blacklist = new ArrayList<String>();
 		blacklist.add("123");
 		blacklist.add("456");
@@ -25,11 +25,6 @@ public class SMSParser {
 		return instance;
 	}
 	public boolean shouldAbortBoardCast(SmsMessage sms){
-		if(blacklist.contains(sms.getDisplayOriginatingAddress())){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return blacklist.contains(sms.getDisplayOriginatingAddress());
 	}
 }
