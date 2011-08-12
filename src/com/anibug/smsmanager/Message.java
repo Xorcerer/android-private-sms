@@ -2,10 +2,29 @@ package com.anibug.smsmanager;
 
 import java.util.Date;
 
+import android.telephony.SmsMessage;
+
 public class Message {
 
-	private Date dateCreated = new Date();
+	public Message() {
+	}
+	
+	public Message(SmsMessage message) {
+		setBody(message.getMessageBody());
+		setSender(message.getOriginatingAddress());
+	}
+	
+	private String sender = "";
 	private String body = "";
+	private Date dateCreated = new Date();
+	
+	public final String getSender() {
+		return sender;
+	}
+
+	public final void setSender(String sender) {
+		this.sender = sender;
+	}
 
 	public final Date getDateCreated() {
 		return dateCreated;
