@@ -29,10 +29,10 @@ public class MessageArrayAdapter extends ArrayAdapter<Message> {
 		// ImageView image = (ImageView) view.findViewById(R.id.post_image);
 
 		TextView dateCreated = (TextView) view
-				.findViewById(R.id.post_date_created);
+				.findViewById(R.id.message_date_created);
 		dateCreated.setText(post.getDateCreated().toLocaleString());
 
-		TextView body = (TextView) view.findViewById(R.id.post_body);
+		TextView body = (TextView) view.findViewById(R.id.message_body);
 		body.setText(post.getBody());
 
 		return view;
