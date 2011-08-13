@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.widget.AdapterView;
+import android.widget.Toast;
+import android.view.View;
 
 public class SMSManagerActivity extends  ListActivity {
 	ArrayList<Message> messages = new ArrayList<Message>();
@@ -15,7 +18,16 @@ public class SMSManagerActivity extends  ListActivity {
 		
 		addTestData(10);
 
+		getListView().setItemsCanFocus(false);
+
+		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		    public void onItemClick(AdapterView parent, View v, int position, long id) {
+		        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT);
+		    }
+		});
+
 		setListAdapter(new MessageArrayAdapter(getApplicationContext(), messages));
+
 	}
 	
 	public void addTestData(int count) {
