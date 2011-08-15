@@ -21,8 +21,8 @@ public class SMSManagerActivity extends  ListActivity {
 		getListView().setItemsCanFocus(false);
 
 		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		    public void onItemClick(AdapterView parent, View v, int position, long id) {
-		        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT);
+		    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		        Toast.makeText(getApplicationContext(), "Clicked NO." + position + " item", Toast.LENGTH_SHORT).show();
 		    }
 		});
 
