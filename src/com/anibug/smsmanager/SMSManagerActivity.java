@@ -2,19 +2,19 @@ package com.anibug.smsmanager;
 
 import java.util.ArrayList;
 
-import com.anibug.smsmanager.database.DatabaseAdapter;
-import com.anibug.smsmanager.model.MessageInfo;
-
-import android.R.integer;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-public class SMSManagerActivity extends  ListActivity {
+import com.anibug.smsmanager.database.DatabaseAdapter;
+import com.anibug.smsmanager.model.MessageInfo;
+
+public class SmsManagerActivity extends  ListActivity {
 	ArrayList<Message> messages = new ArrayList<Message>();
 
 	DatabaseAdapter mDatabaseAdapter;
@@ -75,7 +75,7 @@ public class SMSManagerActivity extends  ListActivity {
 		if(count >= 0){
 			if(mCursor.moveToFirst()){
 				do{
-			        System.out.println("result at index "+i +"is phoneNumber: " + mCursor.getString(mCursor.getColumnIndex(MessageInfo.DataBase.PHONENUMBER)) + "\n"
+			        Log.d("Test", "result at index "+i +"is phoneNumber: " + mCursor.getString(mCursor.getColumnIndex(MessageInfo.DataBase.PHONENUMBER)) + "\n"
 			        		+ "time: " + mCursor.getString(mCursor.getColumnIndex(MessageInfo.DataBase.TIME)) + "\n"
 			        		+ "content: " + mCursor.getString(mCursor.getColumnIndex(MessageInfo.DataBase.CONTENT)) + "\n"
 			        		+ "status: " + mCursor.getString(mCursor.getColumnIndex(MessageInfo.DataBase.STATUS)));

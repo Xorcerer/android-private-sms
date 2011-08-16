@@ -1,5 +1,5 @@
 package com.anibug.smsmanager;
 
-public class SMSParser {
+public class SmsParser {
 
 }

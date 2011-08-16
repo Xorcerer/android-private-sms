@@ -1,24 +1,24 @@
 package com.anibug.smsmanager;
 
-import com.anibug.smsmanager.database.DatabaseAdapter;
-import com.anibug.smsmanager.model.MessageInfo;
-
-import android.R.bool;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
-public class SMSReceiver extends BroadcastReceiver {
+import com.anibug.smsmanager.database.DatabaseAdapter;
+import com.anibug.smsmanager.model.MessageInfo;
+
+public class SmsReceiver extends BroadcastReceiver {
 	
 	private String _phoneNumber;
 	private String _content;
 
 	private DatabaseAdapter mDatabaseAdapter;
 	
-	public SMSReceiver() {
+	public SmsReceiver() {
 		
 		_phoneNumber = new String();
 		_content = new String();
@@ -26,7 +26,7 @@ public class SMSReceiver extends BroadcastReceiver {
 	
 	@Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println("SMSReceiver, isOrderedBroadcast()="
+        Log.d("Reciever", "SMSReceiver, isOrderedBroadcast()="
                 + isOrderedBroadcast());
         
         Bundle bundle = intent.getExtras();
@@ -54,12 +54,12 @@ public class SMSReceiver extends BroadcastReceiver {
         mDatabaseAdapter = new DatabaseAdapter(context);
         mDatabaseAdapter.open();
         
-        System.out.println("receive message with phoneNumber: "+ _phoneNumber + "content: " + _content);
+        Log.d("Reciever", "receive message with phoneNumber: "+ _phoneNumber + "content: " + _content);
         
         Cursor mCursor = mDatabaseAdapter.getPhoneNumber(_phoneNumber);
         if(mCursor.moveToFirst()){
         	abortBroadcast();
-            System.out.println("--abortBroadcast message with phoneNumber: "+ _phoneNumber + "content: " + _content);
+            Log.d("Reciever", "--abortBroadcast message with phoneNumber: "+ _phoneNumber + "content: " + _content);
         	
         	MessageInfo mInfo = new MessageInfo();
         	mInfo.setPhoneNumber(_phoneNumber);
