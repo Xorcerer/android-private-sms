@@ -3,10 +3,11 @@ package com.anibug.smsmanager;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.AdapterView;
-import android.widget.Toast;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
 public class SMSManagerActivity extends  ListActivity {
 	ArrayList<Message> messages = new ArrayList<Message>();
@@ -18,11 +19,17 @@ public class SMSManagerActivity extends  ListActivity {
 		
 		addTestData(10);
 
-		getListView().setItemsCanFocus(false);
-
 		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		        Toast.makeText(getApplicationContext(), "Clicked NO." + position + " item", Toast.LENGTH_SHORT).show();
+		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		    	Intent intent = new Intent(view.getContext(), ConversationActivity.class);
+
+		    	// FIXME: We should assign the contact id somewhere else, 
+		    	// instead of using the text of view.
+		    	TextView contact = (TextView) view
+						.findViewById(R.id.message_contact);
+		    	intent.putExtra("contact", contact.getText().toString());
+
+		    	startActivityForResult(intent, -1);
 		    }
 		});
 

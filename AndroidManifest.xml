@@ -19,6 +19,7 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</receiver>
+		<activity android:launchMode="standard" android:name=".ConversationActivity"></activity>
 
 	</application>
 

@@ -32,6 +32,10 @@ public class MessageArrayAdapter extends ArrayAdapter<Message> {
 				.findViewById(R.id.message_date_created);
 		dateCreated.setText(post.getDateCreated().toLocaleString());
 
+		TextView contact = (TextView) view
+				.findViewById(R.id.message_contact);
+		contact.setText(post.getSender());
+
 		TextView body = (TextView) view.findViewById(R.id.message_body);
 		body.setText(post.getBody());
 

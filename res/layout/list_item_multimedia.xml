@@ -11,6 +11,15 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:text="Date received" />
+    <TextView  
+        android:id="@+id/message_contact"
+        android:layout_width="50px"
+        android:layout_height="26dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"        
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:text="Contact" />
     <TextView
         android:id="@+id/message_body"
         android:layout_width="fill_parent"
@@ -21,7 +30,7 @@
         android:gravity="center_vertical"
         android:text="Body" />
     <ImageView
-        android:id="@+id/message_image"        
+        android:id="@+id/message_image" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/message_body"
