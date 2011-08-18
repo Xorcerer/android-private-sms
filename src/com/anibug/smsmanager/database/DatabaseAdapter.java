@@ -1,13 +1,18 @@
 package com.anibug.smsmanager.database;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.anibug.smsmanager.model.MessageInfo;
+
 
 public class DatabaseAdapter {
 
@@ -19,6 +24,7 @@ public class DatabaseAdapter {
 	
 	public static final String PHONENUMBERS_TABLE = "PhoneNumbers";
 	public static final String MESSAGES_TABLE = "Messages";
+	public static final String[] ALL_COLUMNS = null;
 
 	public static final String TABLE_ID = "_id";
 	
@@ -39,9 +45,22 @@ public class DatabaseAdapter {
 		return this;
 	}
 	
-	public Cursor getAllPhoneNumbers(){
+	public Set<String> getAllPhoneNumbers() {
+		final String[] columns = new String[] { MessageInfo.DataBase.PHONENUMBER };
+		Set<String> result = new HashSet<String>();
 		
-		return mSQLiteDatabase.rawQuery("select * from " + PHONENUMBERS_TABLE, null);
+		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, columns, null,
+				null, null, null, MessageInfo.DataBase.PHONENUMBER);
+
+		if (cursor.moveToFirst()) {
+			do {
+				result.add(cursor.getString(0));
+			} while (cursor.moveToNext());
+		}
+		if (!cursor.isClosed()) {
+			cursor.close();
+		}
+		return result;
 	}
 	
 	public Cursor getAllMessages(){
@@ -49,16 +68,23 @@ public class DatabaseAdapter {
 		return mSQLiteDatabase.rawQuery("select * from " + MESSAGES_TABLE, null);
 	}
 	
-	public Cursor getMessageByPhoneNumber(String number) {
+	public List<MessageInfo> getMessageByPhoneNumber(String number) {
+		final String selection = MessageInfo.DataBase.PHONENUMBER + "=?" ;  
+		final String[] selectionArgs = new String[] { number }; 
 		
-		return mSQLiteDatabase.rawQuery("select * from " + MESSAGES_TABLE + 
-				" where " + MessageInfo.DataBase.PHONENUMBER + " = " + "\'" + number + "\'", null);
-	}
-	
-	public Cursor getPhoneNumber(String number) {
+		ArrayList<MessageInfo> result = new ArrayList<MessageInfo>();
 		
-		return mSQLiteDatabase.rawQuery("select * from " + PHONENUMBERS_TABLE + 
-				" where " + MessageInfo.DataBase.PHONENUMBER + " = " + "\'" + number + "\'", null);
+		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, ALL_COLUMNS,
+				selection, selectionArgs, null, null, MessageInfo.DataBase.PHONENUMBER);
+		if (cursor.moveToFirst()) {
+			do {
+				// TODO: queryset => List<message>
+			} while (cursor.moveToNext());
+		}
+		if (!cursor.isClosed()) {
+			cursor.close();
+		}
+		return result;
 	}
 	
 	//operate messages
