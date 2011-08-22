@@ -1,8 +1,6 @@
 package com.anibug.smsmanager.database;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import android.content.ContentValues;
@@ -24,7 +22,10 @@ public class DatabaseAdapter {
 	
 	public static final String PHONENUMBERS_TABLE = "PhoneNumbers";
 	public static final String MESSAGES_TABLE = "Messages";
-	public static final String[] ALL_COLUMNS = null;
+	
+	private static final String[] ALL_COLUMNS = null;
+	private static final String[] COLUMN_PHONENUMBER = new String[] { Message.DataBase.PHONENUMBER };
+	
 
 	public static final String TABLE_ID = "id";
 	
@@ -46,10 +47,9 @@ public class DatabaseAdapter {
 	}
 	
 	public Set<String> getAllPhoneNumbers() {
-		final String[] columns = new String[] { Message.DataBase.PHONENUMBER };
 		Set<String> result = new HashSet<String>();
 		
-		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, columns, null,
+		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, COLUMN_PHONENUMBER, null,
 				null, null, null, Message.DataBase.PHONENUMBER);
 
 		if (cursor.moveToFirst()) {
@@ -63,40 +63,20 @@ public class DatabaseAdapter {
 		return result;
 	}
 	
-	public Cursor getAllMessages(){
-		
-		return mSQLiteDatabase.rawQuery("select * from " + MESSAGES_TABLE, null);
-	}
-	
-	public List<Message> getMessageByPhoneNumber(String number) {
+	public Cursor getMessageByPhoneNumber(String number) {
 		final String selection = Message.DataBase.PHONENUMBER + "=?" ;  
 		final String[] selectionArgs = new String[] { number }; 
 		
-		ArrayList<Message> result = new ArrayList<Message>();
-		
-		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, ALL_COLUMNS,
+		return mSQLiteDatabase.query(MESSAGES_TABLE, ALL_COLUMNS,
 				selection, selectionArgs, null, null, Message.DataBase.PHONENUMBER);
-		if (cursor.moveToFirst()) {
-			do {
-				// TODO: queryset => List<message>
-			} while (cursor.moveToNext());
-		}
-		if (!cursor.isClosed()) {
-			cursor.close();
-		}
-		return result;
 	}
 	
-	//operate messages
-	public Long addMessage(Message info){
-		
-		ContentValues values = new ContentValues();
-		values.put(Message.DataBase.PHONENUMBER, info.getPhoneNumber());
-		values.put(Message.DataBase.TIME, info.getTime());
-		values.put(Message.DataBase.CONTENT, info.getContent());
-		values.put(Message.DataBase.STATUS, info.getStatus());
-		long rowID = mSQLiteDatabase.insert(MESSAGES_TABLE, null, values);
-		return rowID;	
+	public boolean hasPhoneNumber(String number) {
+		final String selection = Message.DataBase.PHONENUMBER + "=?" ;  
+		final String[] selectionArgs = new String[] { number }; 
+
+		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, COLUMN_PHONENUMBER, selection, selectionArgs, null, null, null);
+		return cursor.moveToFirst();
 	}
 	
 	public boolean deleteMessage(long rowID){

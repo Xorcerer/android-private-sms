@@ -1,6 +1,7 @@
 package com.anibug.smsmanager;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -46,8 +47,8 @@ public class SmsManagerActivity extends  ListActivity {
 
 	public void addTestData(int count) {
 		for (int i = 0; i < count; ++i) {
-			Message m = new Message();
-			m.setContent("Test message " + String.valueOf(i));
+			String content = "Test message " + String.valueOf(i);
+			Message m = new Message("", new Date(), content, Message.STATUS_RECEIVED);
 			messages.add(m);
 		}
 	}
