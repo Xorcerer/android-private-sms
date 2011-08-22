@@ -2,6 +2,8 @@ package com.anibug.smsmanager;
 
 import java.util.List;
 
+import com.anibug.smsmanager.model.Message;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +23,7 @@ public class MessageArrayAdapter extends ArrayAdapter<Message> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Message post = getItem(position);
+		Message message = getItem(position);
 
 		RelativeLayout view = (RelativeLayout) inflater.inflate(VIEW_ID, null,
 				false);
@@ -30,14 +32,14 @@ public class MessageArrayAdapter extends ArrayAdapter<Message> {
 
 		TextView dateCreated = (TextView) view
 				.findViewById(R.id.message_date_created);
-		dateCreated.setText(post.getDateCreated().toLocaleString());
+		dateCreated.setText(message.getDateCreated().toLocaleString());
 
 		TextView contact = (TextView) view
 				.findViewById(R.id.message_contact);
-		contact.setText(post.getSender());
+		contact.setText(message.getPhoneNumber());
 
 		TextView body = (TextView) view.findViewById(R.id.message_body);
-		body.setText(post.getBody());
+		body.setText(message.getContent());
 
 		return view;
 	}

@@ -2,6 +2,8 @@ package com.anibug.smsmanager;
 
 import java.util.ArrayList;
 
+import com.anibug.smsmanager.model.Message;
+
 import android.app.ListActivity;
 import android.os.Bundle;
 

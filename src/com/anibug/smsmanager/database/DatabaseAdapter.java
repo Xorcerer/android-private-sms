@@ -11,7 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.anibug.smsmanager.model.MessageInfo;
+import com.anibug.smsmanager.model.Message;
 
 
 public class DatabaseAdapter {
@@ -26,7 +26,7 @@ public class DatabaseAdapter {
 	public static final String MESSAGES_TABLE = "Messages";
 	public static final String[] ALL_COLUMNS = null;
 
-	public static final String TABLE_ID = "_id";
+	public static final String TABLE_ID = "id";
 	
 	public DatabaseAdapter(Context context){
 		
@@ -46,11 +46,11 @@ public class DatabaseAdapter {
 	}
 	
 	public Set<String> getAllPhoneNumbers() {
-		final String[] columns = new String[] { MessageInfo.DataBase.PHONENUMBER };
+		final String[] columns = new String[] { Message.DataBase.PHONENUMBER };
 		Set<String> result = new HashSet<String>();
 		
 		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, columns, null,
-				null, null, null, MessageInfo.DataBase.PHONENUMBER);
+				null, null, null, Message.DataBase.PHONENUMBER);
 
 		if (cursor.moveToFirst()) {
 			do {
@@ -68,14 +68,14 @@ public class DatabaseAdapter {
 		return mSQLiteDatabase.rawQuery("select * from " + MESSAGES_TABLE, null);
 	}
 	
-	public List<MessageInfo> getMessageByPhoneNumber(String number) {
-		final String selection = MessageInfo.DataBase.PHONENUMBER + "=?" ;  
+	public List<Message> getMessageByPhoneNumber(String number) {
+		final String selection = Message.DataBase.PHONENUMBER + "=?" ;  
 		final String[] selectionArgs = new String[] { number }; 
 		
-		ArrayList<MessageInfo> result = new ArrayList<MessageInfo>();
+		ArrayList<Message> result = new ArrayList<Message>();
 		
 		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, ALL_COLUMNS,
-				selection, selectionArgs, null, null, MessageInfo.DataBase.PHONENUMBER);
+				selection, selectionArgs, null, null, Message.DataBase.PHONENUMBER);
 		if (cursor.moveToFirst()) {
 			do {
 				// TODO: queryset => List<message>
@@ -88,13 +88,13 @@ public class DatabaseAdapter {
 	}
 	
 	//operate messages
-	public Long addMessage(MessageInfo info){
+	public Long addMessage(Message info){
 		
 		ContentValues values = new ContentValues();
-		values.put(MessageInfo.DataBase.PHONENUMBER, info.getPhoneNumber());
-		values.put(MessageInfo.DataBase.TIME, info.getTime());
-		values.put(MessageInfo.DataBase.CONTENT, info.getContent());
-		values.put(MessageInfo.DataBase.STATUS, info.getStatus());
+		values.put(Message.DataBase.PHONENUMBER, info.getPhoneNumber());
+		values.put(Message.DataBase.TIME, info.getTime());
+		values.put(Message.DataBase.CONTENT, info.getContent());
+		values.put(Message.DataBase.STATUS, info.getStatus());
 		long rowID = mSQLiteDatabase.insert(MESSAGES_TABLE, null, values);
 		return rowID;	
 	}
@@ -118,7 +118,7 @@ public class DatabaseAdapter {
 	public Long addPhoneNumber(String number){
 		
 		ContentValues values = new ContentValues();
-		values.put(MessageInfo.DataBase.PHONENUMBER, number);
+		values.put(Message.DataBase.PHONENUMBER, number);
 		long rowID = mSQLiteDatabase.insert(PHONENUMBERS_TABLE, null, values);
 		return rowID;
 	}
@@ -152,7 +152,7 @@ public class DatabaseAdapter {
 			mStringBuilderPhoneNumbers.append("(");
 			mStringBuilderPhoneNumbers.append(TABLE_ID );
 			mStringBuilderPhoneNumbers.append(" integer primary key AUTOINCREMENT,");
-			mStringBuilderPhoneNumbers.append(MessageInfo.DataBase.PHONENUMBER);
+			mStringBuilderPhoneNumbers.append(Message.DataBase.PHONENUMBER);
 			mStringBuilderPhoneNumbers.append(" text ");
 			mStringBuilderPhoneNumbers.append(" );");
 			
@@ -163,13 +163,13 @@ public class DatabaseAdapter {
 			mStringBuilderMessages.append("(");
 			mStringBuilderMessages.append(TABLE_ID );
 			mStringBuilderMessages.append(" integer primary key AUTOINCREMENT,");
-			mStringBuilderMessages.append(MessageInfo.DataBase.PHONENUMBER);
+			mStringBuilderMessages.append(Message.DataBase.PHONENUMBER);
 			mStringBuilderMessages.append(" text ,");
-			mStringBuilderMessages.append(MessageInfo.DataBase.TIME);
+			mStringBuilderMessages.append(Message.DataBase.TIME);
+			mStringBuilderMessages.append(" datatime,");
+			mStringBuilderMessages.append(Message.DataBase.CONTENT);
 			mStringBuilderMessages.append(" text ,");
-			mStringBuilderMessages.append(MessageInfo.DataBase.CONTENT);
-			mStringBuilderMessages.append(" text ,");
-			mStringBuilderMessages.append(MessageInfo.DataBase.STATUS);
+			mStringBuilderMessages.append(Message.DataBase.STATUS);
 			mStringBuilderMessages.append(" text ");
 			mStringBuilderMessages.append(" );");
 		}

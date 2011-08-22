@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.anibug.smsmanager.database.DatabaseAdapter;
+import com.anibug.smsmanager.model.Message;
 
 public class SmsManagerActivity extends  ListActivity {
 	ArrayList<Message> messages = new ArrayList<Message>();
@@ -46,7 +47,7 @@ public class SmsManagerActivity extends  ListActivity {
 	public void addTestData(int count) {
 		for (int i = 0; i < count; ++i) {
 			Message m = new Message();
-			m.setBody("Test message " + String.valueOf(i));
+			m.setContent("Test message " + String.valueOf(i));
 			messages.add(m);
 		}
 	}

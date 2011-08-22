@@ -3,13 +3,11 @@ package com.anibug.smsmanager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
 import com.anibug.smsmanager.database.DatabaseAdapter;
-import com.anibug.smsmanager.model.MessageInfo;
 
 public class SmsReceiver extends BroadcastReceiver {
 	
@@ -19,9 +17,8 @@ public class SmsReceiver extends BroadcastReceiver {
 	private DatabaseAdapter mDatabaseAdapter;
 	
 	public SmsReceiver() {
-		
-		_phoneNumber = new String();
-		_content = new String();
+		_phoneNumber = "";
+		_content = "";
 	}
 	
 	@Override
@@ -56,19 +53,7 @@ public class SmsReceiver extends BroadcastReceiver {
         
         Log.d("Reciever", "receive message with phoneNumber: "+ _phoneNumber + "content: " + _content);
         
-        Cursor mCursor = mDatabaseAdapter.getPhoneNumber(_phoneNumber);
-        if(mCursor.moveToFirst()){
-        	abortBroadcast();
-            Log.d("Reciever", "--abortBroadcast message with phoneNumber: "+ _phoneNumber + "content: " + _content);
-        	
-        	MessageInfo mInfo = new MessageInfo();
-        	mInfo.setPhoneNumber(_phoneNumber);
-        	mInfo.setContent(_content);
-        	mInfo.setTime(GetCurrentTime.getFormateDate());
-        	mInfo.setStatus("1");
-        	
-        	mDatabaseAdapter.addMessage(mInfo);
-        }
+        // TODO: Save message here.
         
         mDatabaseAdapter.close();
     }
