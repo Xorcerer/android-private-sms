@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.anibug.smsmanager.model.Message;
+import com.anibug.smsmanager.model.filter.PhoneNumberFilter;
 
 
 public class DatabaseAdapter {
@@ -19,9 +20,6 @@ public class DatabaseAdapter {
 	private Context mContext;
 	private static final String DB = "db.db";
 	private static final int DB_VERSION = 1;
-	
-	public static final String PHONENUMBERS_TABLE = "PhoneNumbers";
-	public static final String MESSAGES_TABLE = "Messages";
 	
 	private static final String[] ALL_COLUMNS = null;
 	private static final String[] COLUMN_PHONENUMBER = new String[] { Message.DataBase.PHONENUMBER };
@@ -46,10 +44,33 @@ public class DatabaseAdapter {
 		return this;
 	}
 	
+	public Cursor getMessageByPhoneNumber(String number) {
+		final String selection = Message.DataBase.PHONENUMBER + "=?" ;  
+		final String[] selectionArgs = new String[] { number }; 
+		
+		return mSQLiteDatabase.query(Message.DataBase.TABLE_NAME, ALL_COLUMNS,
+				selection, selectionArgs, null, null, Message.DataBase.PHONENUMBER);
+	}
+	
+	public boolean deleteMessage(long id){
+		final String where = TABLE_ID + "=?";
+		final String[] whereArgs = new String[] { String.valueOf(id) }; 
+
+		return mSQLiteDatabase.delete(Message.DataBase.TABLE_NAME, where, whereArgs) > 0;
+	}
+	
+	public boolean hasPhoneNumber(String number) {
+		final String selection = Message.DataBase.PHONENUMBER + "=?" ;  
+		final String[] selectionArgs = new String[] { number }; 
+
+		Cursor cursor = mSQLiteDatabase.query(Message.DataBase.TABLE_NAME, COLUMN_PHONENUMBER, selection, selectionArgs, null, null, null);
+		return cursor.moveToFirst();
+	}
+	
 	public Set<String> getAllPhoneNumbers() {
 		Set<String> result = new HashSet<String>();
 		
-		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, COLUMN_PHONENUMBER, null,
+		Cursor cursor = mSQLiteDatabase.query(Message.DataBase.TABLE_NAME, COLUMN_PHONENUMBER, null,
 				null, null, null, Message.DataBase.PHONENUMBER);
 
 		if (cursor.moveToFirst()) {
@@ -63,55 +84,18 @@ public class DatabaseAdapter {
 		return result;
 	}
 	
-	public Cursor getMessageByPhoneNumber(String number) {
-		final String selection = Message.DataBase.PHONENUMBER + "=?" ;  
-		final String[] selectionArgs = new String[] { number }; 
-		
-		return mSQLiteDatabase.query(MESSAGES_TABLE, ALL_COLUMNS,
-				selection, selectionArgs, null, null, Message.DataBase.PHONENUMBER);
-	}
-	
-	public boolean hasPhoneNumber(String number) {
-		final String selection = Message.DataBase.PHONENUMBER + "=?" ;  
-		final String[] selectionArgs = new String[] { number }; 
-
-		Cursor cursor = mSQLiteDatabase.query(MESSAGES_TABLE, COLUMN_PHONENUMBER, selection, selectionArgs, null, null, null);
-		return cursor.moveToFirst();
-	}
-	
-	public boolean deleteMessage(long rowID){
-		
-		return mSQLiteDatabase.delete(MESSAGES_TABLE, TABLE_ID+"="+rowID, null) > 0;
-	}
-	
-	public boolean deleteMessage(long rowID, String column, String number){
-		
-		return mSQLiteDatabase.delete(MESSAGES_TABLE, TABLE_ID+"=?"+rowID, new String[]{number}) > 0;
-	}
-	
-	public void deleteMessageTable(){
-		
-		mSQLiteDatabase.execSQL("delete from "+ MESSAGES_TABLE);
-	}
-	
-	//operate numbers
-	public Long addPhoneNumber(String number){
-		
+	public long insertPhoneNumber(String number) {
 		ContentValues values = new ContentValues();
 		values.put(Message.DataBase.PHONENUMBER, number);
-		long rowID = mSQLiteDatabase.insert(PHONENUMBERS_TABLE, null, values);
-		return rowID;
+		return mSQLiteDatabase.insert(PhoneNumberFilter.DataBase.TABLE_NAME, null, values);
 	}
 	
-	public boolean deletePhoneNumber(long rowID){
+	public boolean deletePhoneNumber(long id){
+		final String where = TABLE_ID + "=?";
+		final String[] whereArgs = new String[] { String.valueOf(id) }; 
 		
-		return mSQLiteDatabase.delete(PHONENUMBERS_TABLE, TABLE_ID+"="+rowID, null) > 0;
+		return mSQLiteDatabase.delete(PhoneNumberFilter.DataBase.TABLE_NAME, where, whereArgs) > 0;
 	};
-	
-	public void deletePhoneNumberTable(){
-		
-		mSQLiteDatabase.execSQL("delete from "+ PHONENUMBERS_TABLE);
-	}
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper{
 		
@@ -126,9 +110,9 @@ public class DatabaseAdapter {
 		public void initSQL() {
 			
 			mStringBuilderPhoneNumbers = new StringBuilder();
-			//mStringBuilderPhoneNumbers.delete(0, mStringBuilderPhoneNumbers.length());
+
 			mStringBuilderPhoneNumbers.append("create table ");
-			mStringBuilderPhoneNumbers.append(PHONENUMBERS_TABLE);
+			mStringBuilderPhoneNumbers.append(PhoneNumberFilter.DataBase.TABLE_NAME);
 			mStringBuilderPhoneNumbers.append("(");
 			mStringBuilderPhoneNumbers.append(TABLE_ID );
 			mStringBuilderPhoneNumbers.append(" integer primary key AUTOINCREMENT,");
@@ -139,13 +123,13 @@ public class DatabaseAdapter {
 			mStringBuilderMessages = new StringBuilder();
 			//mStringBuilderMessages.delete(0, mStringBuilderMessages.length());
 			mStringBuilderMessages.append("create table ");
-			mStringBuilderMessages.append(MESSAGES_TABLE);
+			mStringBuilderMessages.append(Message.DataBase.TABLE_NAME);
 			mStringBuilderMessages.append("(");
 			mStringBuilderMessages.append(TABLE_ID );
 			mStringBuilderMessages.append(" integer primary key AUTOINCREMENT,");
 			mStringBuilderMessages.append(Message.DataBase.PHONENUMBER);
 			mStringBuilderMessages.append(" text ,");
-			mStringBuilderMessages.append(Message.DataBase.TIME);
+			mStringBuilderMessages.append(Message.DataBase.DATE_CREATED);
 			mStringBuilderMessages.append(" datatime,");
 			mStringBuilderMessages.append(Message.DataBase.CONTENT);
 			mStringBuilderMessages.append(" text ,");
@@ -165,8 +149,8 @@ public class DatabaseAdapter {
 		@Override
 		public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
 
-			arg0.execSQL("drop table if exists" + PHONENUMBERS_TABLE, null);
-			arg0.execSQL("drop table if exists" + MESSAGES_TABLE, null);
+			arg0.execSQL("drop table if exists" + PhoneNumberFilter.DataBase.TABLE_NAME, null);
+			arg0.execSQL("drop table if exists" + Message.DataBase.TABLE_NAME, null);
 		}
 	}
 }

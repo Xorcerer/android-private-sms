@@ -1,49 +1,58 @@
 package com.anibug.smsmanager.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.anibug.smsmanager.database.DatabaseAdapter;
-
-public class MessageManager extends Managerbase {
-	DatabaseAdapter dbAdapter = new DatabaseAdapter(null);
+public class MessageManager extends ManagerBase<Message> {
 
 	private MessageManager() {
 	}
 	
-	public List<Message> getMessages(Contact contact) {
-		ArrayList<Message> result = new ArrayList<Message>();
-		
-		// TODO: Support multi-phonenumber.
-		Cursor cursor = dbAdapter.getMessageByPhoneNumber(contact.getPhoneNumber());
-
-		// TODO: Any better way?
-		final int indexPhoneNumber = cursor.getColumnIndex(Message.DataBase.PHONENUMBER);
-		final int indexContent = cursor.getColumnIndex(Message.DataBase.CONTENT);
-		final int indexStatus = cursor.getColumnIndex(Message.DataBase.STATUS);
-		final int indexDateCreated = cursor.getColumnIndex(Message.DataBase.TIME);
-
-		if (cursor.moveToFirst()) {
-			do {
-				result.add(new Message(
-						cursor.getString(indexPhoneNumber), 
-						new Date(cursor.getLong(indexDateCreated)), 
-						cursor.getString(indexContent),
-						cursor.getInt(indexStatus)));
-			} while (cursor.moveToNext());
-		}
-		if (!cursor.isClosed()) {
-			cursor.close();
-		}
-
-		return result;
+	public List<Message> getMessagesBy(String number) {
+		return selectBy(Message.DataBase.PHONENUMBER, number);
 	}
 	
 	public boolean Insert(Message message) {
 		return true;
+	}
+
+	@Override
+	public String getTableName() {
+		return Message.DataBase.TABLE_NAME;
+	}
+
+	@Override
+	public String getTableDefinitionSQL() {
+		return null;
+	}
+
+	@Override
+	public ContentValues createRecord(Message message) {
+		ContentValues values = new ContentValues();
+		
+		int timeInSecond = (int)(message.getDateCreated().getTime() / 1000L);
+		values.put(Message.DataBase.CONTENT, message.getContent());
+		values.put(Message.DataBase.DATE_CREATED, timeInSecond);
+		values.put(Message.DataBase.PHONENUMBER, message.getPhoneNumber());
+		values.put(Message.DataBase.STATUS, message.getStatus());
+		
+		return values;
+	}
+	
+	@Override
+	public Message createObject(Cursor cursor) {
+		final int indexPhoneNumber = cursor.getColumnIndex(Message.DataBase.PHONENUMBER);
+		final int indexContent = cursor.getColumnIndex(Message.DataBase.CONTENT);
+		final int indexStatus = cursor.getColumnIndex(Message.DataBase.STATUS);
+		final int indexDateCreated = cursor.getColumnIndex(Message.DataBase.DATE_CREATED);
+		return new Message(
+				cursor.getString(indexPhoneNumber), 
+				new Date(cursor.getInt(indexDateCreated) * 1000L),
+				cursor.getString(indexContent),
+				cursor.getInt(indexStatus));
 	}
 
 }
