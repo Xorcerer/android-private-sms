@@ -9,7 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public abstract class ManagerBase<T> {
+public abstract class ManagerBase<T extends ModelBase> {
 
 	protected SQLiteDatabase sqliteDatabase;
 
@@ -40,9 +40,25 @@ public abstract class ManagerBase<T> {
 		return result;
 	}
 	
+	public boolean save(T obj) {
+		if (obj.getId() >= 0) {
+			return update(obj);
+		}
+		return insert(obj);
+	}
+	
+	public boolean update(T obj) {
+		final String where = TABLE_ID + "=?";
+		String[] whereArgs = new String[] { String.valueOf(obj.getId()) };
+
+		ContentValues record = createRecord(obj);
+		return sqliteDatabase.update(getTableName(), record, where, whereArgs) == 1;
+	}
+	
 	public boolean insert(T obj) {
 		ContentValues record = createRecord(obj);
-		sqliteDatabase.insert(getTableName(), null, record);
+		long id = sqliteDatabase.insert(getTableName(), null, record);
+		obj.setId(id);
 		return true;
 	}
 	
