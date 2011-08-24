@@ -10,21 +10,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.anibug.smsmanager.database.DatabaseAdapter;
 import com.anibug.smsmanager.model.Message;
 
 public class SmsManagerActivity extends  ListActivity {
 	ArrayList<Message> messages = new ArrayList<Message>();
 
-	DatabaseAdapter mDatabaseAdapter;
-	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		mDatabaseAdapter = new DatabaseAdapter(getApplicationContext());
-
 		addTestData(10);
 
 		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {

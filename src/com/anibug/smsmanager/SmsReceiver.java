@@ -7,15 +7,11 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-import com.anibug.smsmanager.database.DatabaseAdapter;
-
 public class SmsReceiver extends BroadcastReceiver {
 	
 	private String _phoneNumber;
 	private String _content;
 
-	private DatabaseAdapter mDatabaseAdapter;
-	
 	public SmsReceiver() {
 		_phoneNumber = "";
 		_content = "";
@@ -48,14 +44,9 @@ public class SmsReceiver extends BroadcastReceiver {
         _phoneNumber = trimPhoneNumber("+86", phoneNumberBuilder.toString());
         _content = contentBuilder.toString();
 
-        mDatabaseAdapter = new DatabaseAdapter(context);
-        mDatabaseAdapter.open();
-        
         Log.d("Reciever", "receive message with phoneNumber: "+ _phoneNumber + "content: " + _content);
         
         // TODO: Save message here.
-        
-        mDatabaseAdapter.close();
     }
 
 	public final static String trimPhoneNumber(String prefix, String number) {

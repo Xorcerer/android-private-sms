@@ -1,6 +1,7 @@
 package com.anibug.smsmanager.model;
 
 import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -18,8 +19,26 @@ public class MessageManager extends ManagerBase<Message> {
 	}
 
 	@Override
-	public String getTableDefinitionSQL() {
-		return null;
+	public String[] getTableDefinitionSQLs() {
+		String[] result = new String[2];
+		String tableFormat = "Create Table %s (" +
+				"%s INTEGER Primary Key," +
+				"%s VARCHAR[20] Unique," + 
+				"%s TEXT," +
+				"%s NUMERIC" +
+				")";
+		String dateIndexFormat = "Create Index on %s (%s)"; 
+		
+		Formatter formatter = new Formatter();
+		formatter.format(tableFormat, Message.DataBase.TABLE_NAME, TABLE_ID,
+				Message.DataBase.PHONENUMBER, Message.DataBase.CONTENT,
+				Message.DataBase.DATE_CREATED);
+		result[0] = formatter.toString();
+		
+		formatter.flush();
+		formatter.format(dateIndexFormat, Message.DataBase.TABLE_NAME, Message.DataBase.DATE_CREATED);
+		result[1] = formatter.toString();
+		return result;
 	}
 
 	@Override
