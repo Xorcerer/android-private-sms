@@ -32,6 +32,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// Nothing here. 
+		// Nothing here in version 1.
 	}
 }

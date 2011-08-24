@@ -55,18 +55,17 @@ public class Message extends ModelBase {
 		this.status = status;
 	}
 
-	public class DataBase
-	{
+	private MessageManager manager = new MessageManager();
+	@Override
+	public MessageManager getManager() {
+		return manager;
+	}
+
+	public class DataBase {
 		public static final String TABLE_NAME = "messages";
 		public static final String PHONENUMBER = "phone_number";
 		public static final String DATE_CREATED = "date_created";
 		public static final String CONTENT = "content";
 		public static final String STATUS = "status";
-	}
-
-	private MessageManager manager = new MessageManager();
-	@Override
-	public MessageManager getManager() {
-		return manager;
 	}
 }

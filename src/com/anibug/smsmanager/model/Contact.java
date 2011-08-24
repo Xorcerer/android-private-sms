@@ -1,9 +1,22 @@
 package com.anibug.smsmanager.model;
 
-public class Contact {
+
+public class Contact extends ModelBase {
+	private String phoneNumber = "";
+	private int status = 0; // Reserved.
+
+	// Read from contact list.
 	private String firstName = "";
 	private String listName = "";
-	private String phoneNumber = "";
+
+	public Contact() {
+		
+	}
+
+	public Contact(String phoneNumber, int status) {
+		this.phoneNumber = phoneNumber;
+		this.status = status;
+	}
 
 	public final String getFirstName() {
 		return firstName;
@@ -28,5 +41,24 @@ public class Contact {
 	public final void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+	public final int getStatus() {
+		return status;
+	}
+
+	public final void setStatus(int status) {
+		this.status = status;
+	}
+
+	private static ContactManager manager = new ContactManager();
+	@Override
+	public ManagerBase<? extends ModelBase> getManager() {
+		return manager;
+	}
 	
+	public class DataBase {
+		public static final String TABLE_NAME = "phone_numbers";
+		public static final String PHONENUMBER = "phone_number";
+		public static final String STATUS = "status";
+	}
 }

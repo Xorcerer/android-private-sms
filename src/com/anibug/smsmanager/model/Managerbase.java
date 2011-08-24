@@ -26,13 +26,13 @@ public abstract class ManagerBase<T extends ModelBase> {
 		}
 	}
 	
-	public List<T> selectBy(String column, Object value) {
+	public List<T> fetchBy(String column, Object value) {
 		final String where = column + "=?";
-		String[] whereArgs = new String[] { String.valueOf(value)};
+		String[] whereArgs = new String[] { String.valueOf(value) };
 		
 		ArrayList<T> result = new ArrayList<T>();
 		
-		Cursor cursor = sqliteDatabase.query(getTableName(), ALL, where, whereArgs, null, null, null);
+		Cursor cursor = sqliteDatabase.query(getTableName(), ALL, where, whereArgs, null, null, TABLE_ID + "DESC");
 
 		if (cursor.moveToFirst()) {
 			do {
@@ -53,7 +53,7 @@ public abstract class ManagerBase<T extends ModelBase> {
 		return insert(obj);
 	}
 	
-	public boolean update(T obj) {
+	protected boolean update(T obj) {
 		final String where = TABLE_ID + "=?";
 		String[] whereArgs = new String[] { String.valueOf(obj.getId()) };
 
@@ -61,9 +61,11 @@ public abstract class ManagerBase<T extends ModelBase> {
 		return sqliteDatabase.update(getTableName(), record, where, whereArgs) == 1;
 	}
 	
-	public boolean insert(T obj) {
+	protected boolean insert(T obj) {
 		ContentValues record = createRecord(obj);
 		long id = sqliteDatabase.insert(getTableName(), null, record);
+		if (id < 0)
+			return false;
 		obj.setId(id);
 		return true;
 	}
