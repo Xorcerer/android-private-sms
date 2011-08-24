@@ -13,7 +13,6 @@ public abstract class ManagerBase<T extends ModelBase> {
 
 	protected SQLiteDatabase sqliteDatabase;
 	
-	protected static final String TABLE_ID = "id";
 	protected static final String[] ALL = null;
 	
 	abstract public String getTableName();
@@ -30,10 +29,14 @@ public abstract class ManagerBase<T extends ModelBase> {
 		final String where = column + "=?";
 		String[] whereArgs = new String[] { String.valueOf(value) };
 		
+		Cursor cursor = sqliteDatabase.query(getTableName(), ALL, where, whereArgs, null, null, "id DESC");
+
+		return fetchList(cursor);
+	}
+	
+	protected List<T> fetchList(Cursor cursor) {
 		ArrayList<T> result = new ArrayList<T>();
 		
-		Cursor cursor = sqliteDatabase.query(getTableName(), ALL, where, whereArgs, null, null, TABLE_ID + "DESC");
-
 		if (cursor.moveToFirst()) {
 			do {
 				result.add(createObject(cursor));
@@ -43,7 +46,7 @@ public abstract class ManagerBase<T extends ModelBase> {
 			cursor.close();
 		}
 
-		return result;
+		return result;		
 	}
 	
 	public boolean save(T obj) {
@@ -54,7 +57,7 @@ public abstract class ManagerBase<T extends ModelBase> {
 	}
 	
 	protected boolean update(T obj) {
-		final String where = TABLE_ID + "=?";
+		final String where = "id=?";
 		String[] whereArgs = new String[] { String.valueOf(obj.getId()) };
 
 		ContentValues record = createRecord(obj);
@@ -71,7 +74,7 @@ public abstract class ManagerBase<T extends ModelBase> {
 	}
 	
 	public boolean delete(long id) {
-		final String where = TABLE_ID + "=?";
+		final String where = "id=?";
 		String[] whereArgs = new String[] { String.valueOf(id) };
 		return sqliteDatabase.delete(getTableName(), where, whereArgs) > 0;
 	}

@@ -51,8 +51,8 @@ public class Contact extends ModelBase {
 	}
 
 	private static ContactManager manager = new ContactManager();
-	@Override
-	public ManagerBase<? extends ModelBase> getManager() {
+	
+	public static ContactManager getManager() {
 		return manager;
 	}
 	

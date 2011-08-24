@@ -57,12 +57,12 @@ public class ContactManager extends ManagerBase<Contact> implements Filter {
 	public String[] getTableDefinitionSQLs() {
 		String[] result = new String[1];
 		String tableFormat = "Create Table %s (" +
-				"%s INTEGER Primary Key," +
+				"id INTEGER Primary Key," +
 				"%s VARCHAR[20] Unique," + 
 				"%s INTEGER" +
 				")";
 		Formatter formatter = new Formatter();
-		formatter.format(tableFormat, getTableName(), TABLE_ID,
+		formatter.format(tableFormat, getTableName(),
 				DataBase.PHONENUMBER, DataBase.STATUS);
 		result[0] = formatter.toString();
 		return result;

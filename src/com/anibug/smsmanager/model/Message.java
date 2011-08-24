@@ -55,9 +55,9 @@ public class Message extends ModelBase {
 		this.status = status;
 	}
 
-	private MessageManager manager = new MessageManager();
-	@Override
-	public MessageManager getManager() {
+	private static MessageManager manager = new MessageManager();
+
+	public static MessageManager getManager() {
 		return manager;
 	}
 
