@@ -17,7 +17,7 @@ public class MessageManager extends ManagerBase<Message> {
 
 	public List<Message> getLastOneMessageForEachNumber() {
 		Formatter formatter = new Formatter();
-		formatter.format("Select * From %1s Where id In (Select Max(id) From %1s Group By %2s)",
+		formatter.format("Select * From %1$s Where id In (Select Max(id) From %1$s Group By %2$s)",
 				DataBase.TABLE_NAME, DataBase.PHONENUMBER);
 		Cursor cursor = sqliteDatabase.rawQuery(formatter.toString(), null);
 		
@@ -33,10 +33,10 @@ public class MessageManager extends ManagerBase<Message> {
 	public String[] getTableDefinitionSQLs() {
 		String[] result = new String[2];
 		String tableFormat = "Create Table %s (" +
-				"id INTEGER Primary Key," +
-				"%s VARCHAR[20] Unique," + 
-				"%s TEXT," +
-				"%s NUMERIC" +
+				"id INTEGER Primary Key, " +
+				"%s VARCHAR[20] Unique, " + 
+				"%s TEXT, " +
+				"%s NUMERIC, " +
 				"%s INGTEGER" +
 				")";
 		String dateIndexFormat = "Create Index on %s (%s)"; 

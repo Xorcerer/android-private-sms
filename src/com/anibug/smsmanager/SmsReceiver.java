@@ -1,5 +1,9 @@
 package com.anibug.smsmanager;
 
+import java.util.Date;
+
+import com.anibug.smsmanager.model.Message;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,52 +12,27 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 public class SmsReceiver extends BroadcastReceiver {
-	
-	private String _phoneNumber;
-	private String _content;
 
-	public SmsReceiver() {
-		_phoneNumber = "";
-		_content = "";
-	}
-	
 	@Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("Reciever", "SMSReceiver, isOrderedBroadcast()="
-                + isOrderedBroadcast());
-        
+		Log.d("Reciever", "SMSReceiver, isOrderedBroadcast()="
+				+ isOrderedBroadcast());
+
         Bundle bundle = intent.getExtras();
         Object messages[] = (Object[]) bundle.get("pdus");
-        
-        StringBuilder phoneNumberBuilder = new StringBuilder();
-        StringBuilder contentBuilder = new StringBuilder();
-        
-        SmsMessage smsMessage[] = new SmsMessage[messages.length];
+
         for (int n = 0; n < messages.length; n++) {
+        	SmsMessage sms = SmsMessage.createFromPdu((byte[]) messages[n]);
+
+        	Log.d("Reciever", "receive message with phoneNumber: "+ sms.getDisplayOriginatingAddress() +
+        			"content: " + sms.getDisplayOriginatingAddress());
         	
-            smsMessage[n] = SmsMessage.createFromPdu((byte[]) messages[n]);
-        }
-        
-        for (SmsMessage currentMessage : smsMessage){
+        	Message message = new Message(sms.getDisplayOriginatingAddress(), new Date(),
+        			sms.getDisplayMessageBody(), Message.STATUS_RECEIVED);
         	
-        	phoneNumberBuilder.append(currentMessage.getDisplayOriginatingAddress());
-        	contentBuilder.append(currentMessage.getDisplayMessageBody());
+        	Message.getManager().save(message);
         }
 
-        //ToDo, for other country support
-        _phoneNumber = trimPhoneNumber("+86", phoneNumberBuilder.toString());
-        _content = contentBuilder.toString();
-
-        Log.d("Reciever", "receive message with phoneNumber: "+ _phoneNumber + "content: " + _content);
-        
         // TODO: Save message here.
     }
-
-	public final static String trimPhoneNumber(String prefix, String number) {
-		String s = number;
-		if (prefix.length() > 0 && number.startsWith(prefix)) {
-			s = number.substring(prefix.length());
-		}
-		return s;
-	}
 }

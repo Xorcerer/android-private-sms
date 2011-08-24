@@ -21,7 +21,7 @@ public abstract class ManagerBase<T extends ModelBase> {
 	
 	public  ManagerBase() {
 		for (String sql : getTableDefinitionSQLs()) {
-			SQLiteHelper.addSQL(sql);			
+			SQLiteHelper.addSQL(sql);
 		}
 	}
 	
