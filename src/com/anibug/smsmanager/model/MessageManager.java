@@ -8,17 +8,10 @@ import android.database.Cursor;
 
 public class MessageManager extends ManagerBase<Message> {
 
-	private MessageManager() {
-	}
-	
 	public List<Message> getMessagesBy(String number) {
 		return selectBy(Message.DataBase.PHONENUMBER, number);
 	}
 	
-	public boolean Insert(Message message) {
-		return true;
-	}
-
 	@Override
 	public String getTableName() {
 		return Message.DataBase.TABLE_NAME;

@@ -7,7 +7,6 @@ public class Message extends ModelBase {
 	public static final int STATUS_SENT = 2;
 	public static final int STATUS_DRAFT = 3;
 	
-	private long id; // In local database.
 	private String phoneNumber;
 	private Date dateCreated;
 	private String content;
@@ -22,16 +21,6 @@ public class Message extends ModelBase {
 		this.dateCreated = dateCreated;
 		this.content = content;
 		this.status = status;
-	}
-
-
-	
-	public final long getId() {
-		return id;
-	}
-
-	public final void setId(long id) {
-		this.id = id;
 	}
 
 	public final String getPhoneNumber() {
@@ -73,5 +62,11 @@ public class Message extends ModelBase {
 		public static final String DATE_CREATED = "date_created";
 		public static final String CONTENT = "content";
 		public static final String STATUS = "status";
+	}
+
+	private MessageManager manager = new MessageManager();
+	@Override
+	public MessageManager getManager() {
+		return manager;
 	}
 }
