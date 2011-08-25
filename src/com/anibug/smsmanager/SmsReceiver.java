@@ -2,7 +2,9 @@ package com.anibug.smsmanager;
 
 import java.util.Date;
 
+import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
+import com.anibug.smsmanager.model.MessageManager;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,9 +14,14 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 public class SmsReceiver extends BroadcastReceiver {
+	MessageManager messageManager;
+	ContactManager contactManager;
 
 	@Override
     public void onReceive(Context context, Intent intent) {
+		messageManager = new MessageManager(context);
+		contactManager = new ContactManager(context);
+
 		Log.d("Reciever", "SMSReceiver, isOrderedBroadcast()="
 				+ isOrderedBroadcast());
 
@@ -30,7 +37,7 @@ public class SmsReceiver extends BroadcastReceiver {
         	Message message = new Message(sms.getDisplayOriginatingAddress(), new Date(),
         			sms.getDisplayMessageBody(), Message.STATUS_RECEIVED);
         	
-        	Message.getManager().save(message);
+        	messageManager.save(message);
         }
 
         // TODO: Save message here.

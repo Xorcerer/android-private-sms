@@ -55,12 +55,6 @@ public class Message extends ModelBase {
 		this.status = status;
 	}
 
-	private static MessageManager manager = new MessageManager();
-
-	public static MessageManager getManager() {
-		return manager;
-	}
-
 	public class DataBase {
 		public static final String TABLE_NAME = "messages";
 		public static final String PHONENUMBER = "phone_number";

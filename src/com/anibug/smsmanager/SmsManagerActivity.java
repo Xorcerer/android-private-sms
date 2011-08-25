@@ -9,17 +9,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
+import com.anibug.smsmanager.model.MessageManager;
 
 public class SmsManagerActivity extends  ListActivity {
-	List<Message> messages = null;
+	List<Message> messages;
+	MessageManager messageManager;
+	ContactManager contactManager;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		messages = Message.getManager().getLastOneMessageForEachNumber();
+		messageManager = new MessageManager(getApplicationContext());
+		contactManager = new ContactManager(getApplicationContext());
+		messages = messageManager.getLastOneMessageForEachNumber();
 		
 		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

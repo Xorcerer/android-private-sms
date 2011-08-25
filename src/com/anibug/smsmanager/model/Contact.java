@@ -50,12 +50,6 @@ public class Contact extends ModelBase {
 		this.status = status;
 	}
 
-	private static ContactManager manager = new ContactManager();
-	
-	public static ContactManager getManager() {
-		return manager;
-	}
-	
 	public class DataBase {
 		public static final String TABLE_NAME = "phone_numbers";
 		public static final String PHONENUMBER = "phone_number";

@@ -5,11 +5,16 @@ import java.util.Formatter;
 import java.util.List;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import com.anibug.smsmanager.model.Message.DataBase;
 
 
 public class MessageManager extends ManagerBase<Message> {
+
+	public MessageManager(Context context) {
+		super(context);
+	}
 
 	public List<Message> getMessagesBy(String number) {
 		return fetchBy(DataBase.PHONENUMBER, number);
@@ -19,7 +24,7 @@ public class MessageManager extends ManagerBase<Message> {
 		Formatter formatter = new Formatter();
 		formatter.format("Select * From %1$s Where id In (Select Max(id) From %1$s Group By %2$s)",
 				DataBase.TABLE_NAME, DataBase.PHONENUMBER);
-		Cursor cursor = sqliteDatabase.rawQuery(formatter.toString(), null);
+		Cursor cursor = getSqliteDatabase().rawQuery(formatter.toString(), null);
 		
 		return fetchList(cursor);
 	}
@@ -34,20 +39,19 @@ public class MessageManager extends ManagerBase<Message> {
 		String[] result = new String[2];
 		String tableFormat = "Create Table %s (" +
 				"id INTEGER Primary Key, " +
-				"%s VARCHAR[20] Unique, " + 
+				"%s VARCHAR(20) Unique, " + 
 				"%s TEXT, " +
 				"%s NUMERIC, " +
-				"%s INGTEGER" +
+				"%s INTEGER" +
 				")";
-		String dateIndexFormat = "Create Index on %s (%s)"; 
-		
 		Formatter formatter = new Formatter();
 		formatter.format(tableFormat, getTableName(),
 				DataBase.PHONENUMBER, DataBase.CONTENT,
 				DataBase.DATE_CREATED, DataBase.STATUS);
 		result[0] = formatter.toString();
 		
-		formatter.flush();
+		String dateIndexFormat = "Create Index %1$s_index_%2$s on %1$s (%2$s)"; 
+		formatter = new Formatter();
 		formatter.format(dateIndexFormat, getTableName(), DataBase.DATE_CREATED);
 		result[1] = formatter.toString();
 		return result;

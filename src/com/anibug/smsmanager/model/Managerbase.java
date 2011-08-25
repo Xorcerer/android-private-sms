@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.anibug.smsmanager.database.SQLiteHelper;
 
 public abstract class ManagerBase<T extends ModelBase> {
 
-	protected SQLiteDatabase sqliteDatabase;
+	private static SQLiteHelper sqliteHelper;
+	private static SQLiteDatabase sqliteDatabase;
 	
 	protected static final String[] ALL = null;
 	
@@ -19,17 +22,28 @@ public abstract class ManagerBase<T extends ModelBase> {
 	
 	abstract public String[] getTableDefinitionSQLs();
 	
-	public  ManagerBase() {
-		for (String sql : getTableDefinitionSQLs()) {
-			SQLiteHelper.addSQL(sql);
+	public ManagerBase(Context context) {
+		if (sqliteHelper == null)
+			sqliteHelper = new SQLiteHelper(context);
+
+		String[] sqls = getTableDefinitionSQLs();
+		for (String sql : sqls) {
+			if (sqliteHelper.addSQL(sql))
+				Log.d(getClass().getName(), "New definition added -- " + sql);
 		}
 	}
 	
+	protected synchronized SQLiteDatabase getSqliteDatabase() {
+		if (sqliteDatabase == null)
+			sqliteDatabase = sqliteHelper.getWritableDatabase();
+		return sqliteDatabase;
+	}
+
 	public List<T> fetchBy(String column, Object value) {
 		final String where = column + "=?";
 		String[] whereArgs = new String[] { String.valueOf(value) };
 		
-		Cursor cursor = sqliteDatabase.query(getTableName(), ALL, where, whereArgs, null, null, "id DESC");
+		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, "id DESC");
 
 		return fetchList(cursor);
 	}
@@ -61,12 +75,12 @@ public abstract class ManagerBase<T extends ModelBase> {
 		String[] whereArgs = new String[] { String.valueOf(obj.getId()) };
 
 		ContentValues record = createRecord(obj);
-		return sqliteDatabase.update(getTableName(), record, where, whereArgs) == 1;
+		return getSqliteDatabase().update(getTableName(), record, where, whereArgs) == 1;
 	}
 	
 	protected boolean insert(T obj) {
 		ContentValues record = createRecord(obj);
-		long id = sqliteDatabase.insert(getTableName(), null, record);
+		long id = getSqliteDatabase().insert(getTableName(), null, record);
 		if (id < 0)
 			return false;
 		obj.setId(id);
@@ -76,7 +90,7 @@ public abstract class ManagerBase<T extends ModelBase> {
 	public boolean delete(long id) {
 		final String where = "id=?";
 		String[] whereArgs = new String[] { String.valueOf(id) };
-		return sqliteDatabase.delete(getTableName(), where, whereArgs) > 0;
+		return getSqliteDatabase().delete(getTableName(), where, whereArgs) > 0;
 	}
 	
 	abstract public ContentValues createRecord(T obj);

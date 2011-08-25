@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 import com.anibug.smsmanager.model.Contact.DataBase;
@@ -12,6 +13,10 @@ import com.anibug.smsmanager.model.filter.Filter;
 
 
 public class ContactManager extends ManagerBase<Contact> implements Filter {
+	public ContactManager(Context context) {
+		super(context);
+	}
+
 	public static final int MIN_PHONENUMBER_LENGTH_IN_CHINA = 11;
 	
 	private Set<String> phoneNumbers = null;
@@ -32,7 +37,7 @@ public class ContactManager extends ManagerBase<Contact> implements Filter {
 
 	public Set<String> getAllPhoneNumbers() {
 		String[] columns = new String[] { DataBase.PHONENUMBER };
-		Cursor cursor = sqliteDatabase.query(getTableName(), columns, null, null, null, null, null);
+		Cursor cursor = getSqliteDatabase().query(getTableName(), columns, null, null, null, null, null);
 		
 		HashSet<String> numbers = new HashSet<String>();
 		if (cursor.moveToFirst()) {

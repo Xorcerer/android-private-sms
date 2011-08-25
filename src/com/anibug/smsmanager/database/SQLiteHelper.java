@@ -1,6 +1,8 @@
 package com.anibug.smsmanager.database;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,15 +13,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "db";
     private static final int DATABASE_VERSION = 1;
     
-    SQLiteHelper(Context context) {
+    public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     // FIXME: It is not guaranteed we have all the table definitions
     // before onCreate invoked;
-    private static HashSet<String> definitions = new HashSet<String>();
-    public static void addSQL(String sql) {
+    private List<String> definitions = new ArrayList<String>();
+    public boolean addSQL(String sql) {
+    	if (definitions.contains(sql))
+    		return false;
     	definitions.add(sql);
+    	return true;
 	}
     
     @Override
