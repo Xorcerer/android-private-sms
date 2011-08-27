@@ -4,19 +4,19 @@
     android:padding="6dip" android:layout_height="?android:attr/listPreferredItemHeight">
     <TextView  
         android:id="@+id/message_date_created"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="26dip"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"        
+        android:layout_alignParentRight="true"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:text="Date received" />
     <TextView  
         android:id="@+id/message_contact"
-        android:layout_width="50px"
+        android:layout_width="wrap_content"
         android:layout_height="26dip"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"        
+        android:layout_alignParentLeft="true"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:text="Contact" />
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"        
         android:layout_below="@id/message_date_created"
         android:layout_alignParentLeft="true"
-        android:layout_alignWithParentIfMissing="true"                
+        android:layout_alignWithParentIfMissing="true"
         android:gravity="center_vertical"
         android:text="Body" />
     <ImageView

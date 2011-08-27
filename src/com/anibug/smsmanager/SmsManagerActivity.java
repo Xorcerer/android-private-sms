@@ -14,7 +14,6 @@ import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 
 public class SmsManagerActivity extends  ListActivity {
-	List<Message> messages;
 	MessageManager messageManager;
 	ContactManager contactManager;
 
@@ -25,8 +24,7 @@ public class SmsManagerActivity extends  ListActivity {
 		
 		messageManager = new MessageManager(getApplicationContext());
 		contactManager = new ContactManager(getApplicationContext());
-		messages = messageManager.getLastOneMessageForEachNumber();
-		
+
 		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		    	Intent intent = new Intent(view.getContext(), ConversationActivity.class);
@@ -35,13 +33,13 @@ public class SmsManagerActivity extends  ListActivity {
 		    	// instead of using the text of view.
 		    	TextView contact = (TextView) view
 						.findViewById(R.id.message_contact);
-		    	intent.putExtra("contact", contact.getText().toString());
+		    	intent.putExtra(Message.DataBase.PHONENUMBER, contact.getText().toString());
 
 		    	startActivityForResult(intent, -1);
 		    }
 		});
 
+		List<Message> messages = messageManager.getLastOneMessageForEachNumber();
 		setListAdapter(new MessageArrayAdapter(getApplicationContext(), messages));
-
 	}
 }

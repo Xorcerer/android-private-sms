@@ -16,8 +16,8 @@ public class MessageManager extends ManagerBase<Message> {
 		super(context);
 	}
 
-	public List<Message> getMessagesBy(String number) {
-		return fetchBy(DataBase.PHONENUMBER, number);
+	public List<Message> getMessages(String number) {
+		return fetch(DataBase.PHONENUMBER, number);
 	}
 
 	public List<Message> getLastOneMessageForEachNumber() {

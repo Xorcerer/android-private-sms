@@ -39,7 +39,7 @@ public abstract class ManagerBase<T extends ModelBase> {
 		return sqliteDatabase;
 	}
 
-	public List<T> fetchBy(String column, Object value) {
+	public List<T> fetch(String column, Object value) {
 		final String where = column + "=?";
 		String[] whereArgs = new String[] { String.valueOf(value) };
 		
