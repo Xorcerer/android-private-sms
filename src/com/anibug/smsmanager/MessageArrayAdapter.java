@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MessageArrayAdapter extends ArrayAdapter<Message> {
-	private static final int VIEW_ID = R.layout.list_item_multimedia;
+	private static final int VIEW_ID = R.layout.message_list_item;
 	private LayoutInflater inflater;
 
 	public MessageArrayAdapter(Context context, List<Message> objects) {

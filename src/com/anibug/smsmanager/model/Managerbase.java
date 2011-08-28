@@ -26,6 +26,7 @@ public abstract class ManagerBase<T extends ModelBase> {
 		if (sqliteHelper == null)
 			sqliteHelper = new SQLiteHelper(context);
 
+		// FIXME: We need a better way to added SQLs just once.
 		String[] sqls = getTableDefinitionSQLs();
 		for (String sql : sqls) {
 			if (sqliteHelper.addSQL(sql))
@@ -39,6 +40,13 @@ public abstract class ManagerBase<T extends ModelBase> {
 		return sqliteDatabase;
 	}
 
+
+	public List<T> fetchAll() {
+		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, null, null, null, null, "id DESC");
+
+		return fetchList(cursor);
+	}
+	
 	public List<T> fetch(String column, Object value) {
 		final String where = column + "=?";
 		String[] whereArgs = new String[] { String.valueOf(value) };

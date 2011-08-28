@@ -6,8 +6,7 @@ public class Contact extends ModelBase {
 	private int status = 0; // Reserved.
 
 	// Read from contact list.
-	private String firstName = "";
-	private String listName = "";
+	private String name = "";
 
 	public Contact() {
 		
@@ -17,21 +16,13 @@ public class Contact extends ModelBase {
 		this.phoneNumber = phoneNumber;
 		this.status = status;
 	}
-
-	public final String getFirstName() {
-		return firstName;
-	}
-
-	public final void setFirstName(String firstName) {
-		this.firstName = firstName;
+	
+	public final String getName() {
+		return name;
 	}
 	
-	public final String getListName() {
-		return listName;
-	}
-	
-	public final void setListName(String listName) {
-		this.listName = listName;
+	public final void setName(String name) {
+		this.name = name;
 	}
 	
 	public final String getPhoneNumber() {

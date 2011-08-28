@@ -1,7 +1,6 @@
 package com.anibug.smsmanager.database;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import android.content.Context;

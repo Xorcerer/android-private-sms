@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:padding="6dip" android:layout_height="?android:attr/listPreferredItemHeight">
+    <TextView  
+        android:id="@+id/contact_name"
+        android:layout_width="wrap_content"
+        android:layout_height="26dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:text="Name" />
+    <TextView  
+        android:id="@+id/contact_number"
+        android:layout_width="wrap_content"
+        android:layout_height="26dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:text="Number" />
+</RelativeLayout>
