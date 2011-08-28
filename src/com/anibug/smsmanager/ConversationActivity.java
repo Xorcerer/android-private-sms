@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.ListActivity;
 import android.os.Bundle;
 
+import com.anibug.smsmanager.adapter.MessageArrayAdapter;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 

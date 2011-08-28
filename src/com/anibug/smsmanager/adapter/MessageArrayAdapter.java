@@ -1,8 +1,6 @@
-package com.anibug.smsmanager;
+package com.anibug.smsmanager.adapter;
 
 import java.util.List;
-
-import com.anibug.smsmanager.model.Message;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.anibug.smsmanager.R;
+import com.anibug.smsmanager.model.Message;
 
 public class MessageArrayAdapter extends ArrayAdapter<Message> {
 	private static final int VIEW_ID = R.layout.message_list_item;

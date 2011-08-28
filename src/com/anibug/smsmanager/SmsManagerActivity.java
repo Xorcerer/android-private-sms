@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.anibug.smsmanager.adapter.MessageArrayAdapter;
 import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;

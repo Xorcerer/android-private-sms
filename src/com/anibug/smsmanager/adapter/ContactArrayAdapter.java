@@ -1,4 +1,4 @@
-package com.anibug.smsmanager;
+package com.anibug.smsmanager.adapter;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.model.Contact;
 
 public class ContactArrayAdapter extends ArrayAdapter<Contact> {
