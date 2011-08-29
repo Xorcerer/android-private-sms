@@ -20,6 +20,7 @@
 			</intent-filter>
 		</receiver>
 		<activity android:launchMode="standard" android:name=".ConversationActivity"></activity>
+		<activity android:name=".ContactActivity" android:launchMode="standard"></activity>
 
 	</application>
 

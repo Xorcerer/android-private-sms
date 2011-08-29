@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.anibug.smsmanager.database.SQLiteHelper;
 
-public abstract class ManagerBase<T extends ModelBase> implements AbstractManager<T> {
+public abstract class ManagerBase<T extends ModelBase> {
 
 	private static SQLiteHelper sqliteHelper;
 	private static SQLiteDatabase sqliteDatabase;

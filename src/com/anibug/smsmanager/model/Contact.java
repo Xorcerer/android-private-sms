@@ -9,7 +9,7 @@ public class Contact extends ModelBase {
 	private String name = "";
 
 	public Contact() {
-		
+
 	}
 
 	public Contact(String phoneNumber, int status) {

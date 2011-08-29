@@ -5,6 +5,8 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -36,11 +38,29 @@ public class SmsManagerActivity extends  ListActivity {
 						.findViewById(R.id.message_contact);
 		    	intent.putExtra(Message.DataBase.PHONENUMBER, contact.getText().toString());
 
-		    	startActivityForResult(intent, -1);
+		    	startActivity(intent);
 		    }
 		});
 
 		List<Message> messages = messageManager.getLastOneMessageForEachNumber();
 		setListAdapter(new MessageArrayAdapter(getApplicationContext(), messages));
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main_options, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.item_contact_list:
+			Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }
