@@ -1,0 +1,29 @@
+<h1>Listing messages</h1>
+
+<table>
+  <tr>
+    <th>Phone number</th>
+    <th>Content</th>
+    <th>Created at</th>
+    <th>Hash</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @messages.each do |message| %>
+  <tr>
+    <td><%= message.phone_number %></td>
+    <td><%= message.content %></td>
+    <td><%= message.created_at %></td>
+    <td><%= message.hash %></td>
+    <td><%= link_to 'Show', message %></td>
+    <td><%= link_to 'Edit', edit_message_path(message) %></td>
+    <td><%= link_to 'Destroy', message, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Message', new_message_path %>
