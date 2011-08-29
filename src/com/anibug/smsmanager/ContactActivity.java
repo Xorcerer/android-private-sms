@@ -7,11 +7,8 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.anibug.smsmanager.adapter.ContactArrayAdapter;
@@ -41,24 +38,21 @@ public class ContactActivity extends ListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		CreateEditingDialog().show();
+		ShowEditingDialog();
 		return true;
 	}
 	
-	private Dialog CreateEditingDialog() {
-		LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-
-		// FIXME: The following line broken.
-		View view = layoutInflater.inflate(R.layout.edit_contact_dialog,
-				(ViewGroup) findViewById(R.id.edit_contact_layout));
+	private void ShowEditingDialog() {
+		final EditText edit = new EditText(this);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-		builder.setView(view)
+		builder.setView(edit)
 			   .setPositiveButton("Add", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						Dialog d = (Dialog)dialog;
-						EditText edit = (EditText)d.findViewById(R.id.edit_phone_number);
-						// TODO: Get the phone number and add a contact.
+						String number = edit.getText().toString();
+						Contact contact = new Contact();
+						contact.setPhoneNumber(number);
+						contactManager.save(contact);
 					}
 			   })
 			   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -66,7 +60,6 @@ public class ContactActivity extends ListActivity {
 						dialog.cancel();
 					}
 			   });
-
-		return builder.create();
+		builder.show();
 	}
 }
