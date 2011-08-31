@@ -3,13 +3,13 @@ package com.anibug.smsmanager.model;
 
 abstract public class Model {
 
-	protected long id = -1;
+	protected long localId = -1;
 	
-	public final long getId() {
-		return id;
+	public final long getLocalId() {
+		return localId;
 	}
 	
-	public final void setId(long id) {
-		this.id = id;
+	public final void setLocalId(long id) {
+		this.localId = id;
 	}
 }

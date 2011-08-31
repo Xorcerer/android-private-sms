@@ -17,6 +17,7 @@ public abstract class Manager<T extends Model> {
 	private static SQLiteDatabase sqliteDatabase;
 	
 	protected static final String[] ALL = null;
+	protected static final String ID_DESC = "id DESC";
 	
 	abstract public String getTableName();
 	
@@ -42,7 +43,7 @@ public abstract class Manager<T extends Model> {
 
 
 	public List<T> fetchAll() {
-		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, null, null, null, null, "id DESC");
+		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, null, null, null, null, ID_DESC);
 
 		return fetchList(cursor);
 	}
@@ -51,7 +52,7 @@ public abstract class Manager<T extends Model> {
 		final String where = column + "=?";
 		String[] whereArgs = new String[] { String.valueOf(value) };
 		
-		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, "id DESC");
+		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, ID_DESC);
 
 		return fetchList(cursor);
 	}
@@ -72,7 +73,7 @@ public abstract class Manager<T extends Model> {
 	}
 	
 	public boolean save(T obj) {
-		if (obj.getId() >= 0) {
+		if (obj.getLocalId() >= 0) {
 			return update(obj);
 		}
 		return insert(obj);
@@ -80,7 +81,7 @@ public abstract class Manager<T extends Model> {
 	
 	protected boolean update(T obj) {
 		final String where = "id=?";
-		String[] whereArgs = new String[] { String.valueOf(obj.getId()) };
+		String[] whereArgs = new String[] { String.valueOf(obj.getLocalId()) };
 
 		ContentValues record = createRecord(obj);
 		return getSqliteDatabase().update(getTableName(), record, where, whereArgs) == 1;
@@ -91,7 +92,7 @@ public abstract class Manager<T extends Model> {
 		long id = getSqliteDatabase().insert(getTableName(), null, record);
 		if (id < 0)
 			return false;
-		obj.setId(id);
+		obj.setLocalId(id);
 		return true;
 	}
 	
