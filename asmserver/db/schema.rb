@@ -10,14 +10,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110829092557) do
+ActiveRecord::Schema.define(:version => 20110831171141) do
 
   create_table "messages", :force => true do |t|
     t.string   "phone_number"
     t.string   "content"
     t.time     "created_at"
-    t.string   "hash"
     t.datetime "updated_at"
+    t.integer  "status"
   end
 
 end

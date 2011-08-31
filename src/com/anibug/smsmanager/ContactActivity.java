@@ -3,7 +3,6 @@ package com.anibug.smsmanager;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;

@@ -11,7 +11,7 @@ import com.anibug.smsmanager.model.Message.DataBase;
 
 
 public class MessageManager extends Manager<Message> {
-	WebClient client = new WebClient("10.0.2.2", 3000);
+	WebClient client = new WebClient("10.0.2.2", 3000, this);
 
 	public MessageManager(Context context) {
 		super(context);

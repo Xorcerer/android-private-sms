@@ -1,6 +1,5 @@
 package com.anibug.smsmanager;
 
-import java.util.Date;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -16,7 +15,6 @@ import com.anibug.smsmanager.adapter.MessageArrayAdapter;
 import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
-import com.anibug.smsmanager.model.WebClient;
 
 public class SmsManagerActivity extends  ListActivity {
 	MessageManager messageManager;
