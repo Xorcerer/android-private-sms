@@ -1,3 +1,6 @@
+# VIM
+*.swp
+
 # Eclipse
 .project
 .classpath
