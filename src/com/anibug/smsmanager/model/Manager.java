@@ -73,7 +73,7 @@ public abstract class Manager<T extends Model> {
 	}
 	
 	public boolean save(T obj) {
-		if (obj.getLocalId() >= 0) {
+		if (obj.getId() >= 0) {
 			return update(obj);
 		}
 		return insert(obj);
@@ -81,7 +81,7 @@ public abstract class Manager<T extends Model> {
 	
 	protected boolean update(T obj) {
 		final String where = "id=?";
-		String[] whereArgs = new String[] { String.valueOf(obj.getLocalId()) };
+		String[] whereArgs = new String[] { String.valueOf(obj.getId()) };
 
 		ContentValues record = createRecord(obj);
 		return getSqliteDatabase().update(getTableName(), record, where, whereArgs) == 1;
@@ -92,7 +92,7 @@ public abstract class Manager<T extends Model> {
 		long id = getSqliteDatabase().insert(getTableName(), null, record);
 		if (id < 0)
 			return false;
-		obj.setLocalId(id);
+		obj.setId(id);
 		return true;
 	}
 	

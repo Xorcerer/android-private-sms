@@ -30,11 +30,19 @@ public class WebClient {
 	private final String url_save;
 	private final String url_list;
 	
-	public WebClient(String host, int port) throws MalformedURLException {
-		URL url = new URL(protocol, host, port, "/messages");
+	public WebClient(String host, int port) {
+		URL url = null;
+		try {
+			url = new URL(protocol, host, port, "/messages");
+		} catch (MalformedURLException e) {
+			// FIXME: Add to report.
+		}
 		this.host = host;
 		this.port = port;
-		url_list = url.toString();
+		if (url == null)
+			url_list = "";
+		else
+			url_list = url.toString();
 		url_save = url_list;
 	}
 
@@ -49,15 +57,15 @@ public class WebClient {
 		HttpPost post = new HttpPost(url_save);
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("content", message.getContent()));
-		params.add(new BasicNameValuePair("phone_number", message.getContent()));
-		params.add(new BasicNameValuePair("create_at", message.getContent()));
-		params.add(new BasicNameValuePair("hash", ""));
+		params.add(new BasicNameValuePair("message[content]", message.getContent()));
+		params.add(new BasicNameValuePair("message[phone_number]", message.getPhoneNumber()));
+		params.add(new BasicNameValuePair("message[created_at]", message.getDateCreated().toGMTString()));
+		params.add(new BasicNameValuePair("message[hash]", ""));
 
 		try {
 			post.setEntity(new UrlEncodedFormEntity(params));
 		} catch (UnsupportedEncodingException e) {
-			// TODO: Create a report to us.
+			// TODO: Add to report.
 			return false;
 		}
 

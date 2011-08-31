@@ -2,6 +2,7 @@ package com.anibug.smsmanager.model;
 
 import java.util.Date;
 
+
 public class Message extends Model {
 	public static final int STATUS_RECEIVED = 1;
 	public static final int STATUS_SENT = 2;
@@ -11,6 +12,7 @@ public class Message extends Model {
 	private Date dateCreated;
 	private String content;
 	private int status;
+	private int onlineId = -1;
 
 	public Message() {
 		
@@ -21,6 +23,14 @@ public class Message extends Model {
 		this.dateCreated = dateCreated;
 		this.content = content;
 		this.status = status;
+	}
+
+	public Message(String phoneNumber, Date dateCreated, String content, int status, int onlineId) {
+		this.phoneNumber = phoneNumber;
+		this.dateCreated = dateCreated;
+		this.content = content;
+		this.status = status;
+		this.onlineId = onlineId;
 	}
 
 	public final String getPhoneNumber() {
@@ -55,11 +65,24 @@ public class Message extends Model {
 		this.status = status;
 	}
 
+	public final int getOnlineId() {
+		return onlineId;
+	}
+
+	public final void setOnlineId(int onlineId) {
+		this.onlineId = onlineId;
+	}
+
+	public final boolean isUploaded() {
+		return onlineId >= 0;
+	}
+
 	public class DataBase {
 		public static final String TABLE_NAME = "messages";
 		public static final String PHONENUMBER = "phone_number";
 		public static final String DATE_CREATED = "date_created";
 		public static final String CONTENT = "content";
 		public static final String STATUS = "status";
+		public static final String ONLINE_ID = "online_id";
 	}
 }
