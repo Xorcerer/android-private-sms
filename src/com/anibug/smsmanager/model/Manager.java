@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.anibug.smsmanager.database.SQLiteHelper;
 
-public abstract class ManagerBase<T extends ModelBase> {
+public abstract class Manager<T extends Model> {
 
 	private static SQLiteHelper sqliteHelper;
 	private static SQLiteDatabase sqliteDatabase;
@@ -22,7 +22,7 @@ public abstract class ManagerBase<T extends ModelBase> {
 	
 	abstract public String[] getTableDefinitionSQLs();
 	
-	public ManagerBase(Context context) {
+	public Manager(Context context) {
 		if (sqliteHelper == null)
 			sqliteHelper = new SQLiteHelper(context);
 

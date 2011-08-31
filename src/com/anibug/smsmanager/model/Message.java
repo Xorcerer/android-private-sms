@@ -2,7 +2,7 @@ package com.anibug.smsmanager.model;
 
 import java.util.Date;
 
-public class Message extends ModelBase {
+public class Message extends Model {
 	public static final int STATUS_RECEIVED = 1;
 	public static final int STATUS_SENT = 2;
 	public static final int STATUS_DRAFT = 3;

@@ -1,7 +1,7 @@
 package com.anibug.smsmanager.model;
 
 
-abstract public class ModelBase {
+abstract public class Model {
 
 	protected long id = -1;
 	

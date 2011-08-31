@@ -1,7 +1,7 @@
 package com.anibug.smsmanager.model;
 
 
-public class Contact extends ModelBase {
+public class Contact extends Model {
 	private String phoneNumber = "";
 	private int status = 0; // Reserved.
 

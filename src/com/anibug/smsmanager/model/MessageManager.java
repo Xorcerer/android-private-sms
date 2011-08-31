@@ -10,7 +10,7 @@ import android.database.Cursor;
 import com.anibug.smsmanager.model.Message.DataBase;
 
 
-public class MessageManager extends ManagerBase<Message> {
+public class MessageManager extends Manager<Message> {
 
 	public MessageManager(Context context) {
 		super(context);

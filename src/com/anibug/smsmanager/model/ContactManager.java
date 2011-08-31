@@ -12,7 +12,7 @@ import com.anibug.smsmanager.model.Contact.DataBase;
 import com.anibug.smsmanager.model.filter.Filter;
 
 
-public class ContactManager extends ManagerBase<Contact> implements Filter {
+public class ContactManager extends Manager<Contact> implements Filter {
 	public ContactManager(Context context) {
 		super(context);
 	}
