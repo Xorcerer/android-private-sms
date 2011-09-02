@@ -24,10 +24,10 @@ public class ContactActivity extends ListActivity {
 
 		contactManager = new ContactManager(
 				getApplicationContext());
-		//List<Contact> contacts = ;
+		List<Contact> contacts = contactManager.fetchAll();
 
 		setListAdapter(new ContactArrayAdapter(getApplicationContext(),
-				contactManager.fetchAll()));
+				contacts));
 	}
 
 	@Override
