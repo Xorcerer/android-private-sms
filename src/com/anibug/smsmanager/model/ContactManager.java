@@ -10,7 +10,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.util.Log;
 
 import com.anibug.smsmanager.model.Contact.DataBase;
 import com.anibug.smsmanager.model.filter.Filter;
@@ -137,10 +136,8 @@ public class ContactManager extends Manager<Contact> implements Filter {
 			
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			Log.e("IllegalArgumentException :: ", e.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e("Error :: ", e.toString());
 		}
 		
 		return null;
