@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.style.LineHeightSpan.WithDensity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.BaseAdapter;
@@ -63,9 +64,12 @@ public class ContactActivity extends ListActivity {
 
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == PICK_CONTACT_RESULT && resultCode == Activity.RESULT_OK) {
+		if (requestCode == PICK_CONTACT_RESULT) {
+			if (resultCode == Activity.RESULT_OK) {
+
 				Contact picked = contactManager.getContactFromPickResult(data.getData());
 				Toast.makeText(this, "Select "+ picked.getName() + " with number: " + picked.getPhoneNumber(), Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 

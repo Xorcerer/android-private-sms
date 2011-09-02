@@ -12,19 +12,12 @@ public class Contact extends Model {
 
 	}
 
-	public Contact(String name, String phoneNumber) {
-		this(phoneNumber);
-
-		this.name = name;
-	}
-
-	public Contact(String phoneNumber) {
+	public Contact(String phoneNumber, int status) {
 		this.phoneNumber = phoneNumber;
-
+		this.status = status;
 	}
 	
 	public final String getName() {
-		// TODO: Get name from phone contact list if `name` is null. 
 		return name;
 	}
 	
