@@ -118,7 +118,6 @@ public class ContactManager extends Manager<Contact> implements Filter {
                         ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[] { id }, null);
                 
                 if (phoneCur.moveToFirst()) {
-                    name = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                     number = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 }
 
