@@ -6,3 +6,4 @@
 .classpath
 bin/
 gen/
+.DS_Store
