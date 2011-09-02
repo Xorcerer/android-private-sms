@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 
 import com.anibug.smsmanager.adapter.ContactArrayAdapter;
@@ -23,10 +24,10 @@ public class ContactActivity extends ListActivity {
 
 		contactManager = new ContactManager(
 				getApplicationContext());
-		List<Contact> contacts = contactManager.fetchAll();
+		//List<Contact> contacts = ;
 
 		setListAdapter(new ContactArrayAdapter(getApplicationContext(),
-				contacts));
+				contactManager.fetchAll()));
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class ContactActivity extends ListActivity {
 	private void ShowEditingDialog() {
 		final EditText edit = new EditText(this);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setView(edit)
 			   .setPositiveButton("Add", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
@@ -52,6 +53,8 @@ public class ContactActivity extends ListActivity {
 						Contact contact = new Contact();
 						contact.setPhoneNumber(number);
 						contactManager.save(contact);
+						
+						((BaseAdapter)getListAdapter()).notifyDataSetChanged();
 					}
 			   })
 			   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
