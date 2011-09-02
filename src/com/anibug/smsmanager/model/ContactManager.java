@@ -20,10 +20,10 @@ public class ContactManager extends Manager<Contact> implements Filter {
 	public ContactManager(Context context) {
 		super(context);
 		
-		mContext = context;
+		this.context = context;
 	}
 	
-	Context mContext;
+	Context context;
 	public static final int MIN_PHONENUMBER_LENGTH_IN_CHINA = 11;
 	
 	private Set<String> phoneNumbers = null;
@@ -106,7 +106,7 @@ public class ContactManager extends Manager<Contact> implements Filter {
 	public Contact getContactFromPickResult(Uri data){
 		
 		try {
-            ContentResolver contect_resolver = mContext.getContentResolver();
+            ContentResolver contect_resolver = context.getContentResolver();
 			Cursor c = contect_resolver.query(data, null, null, null, null);
 
 			if (c.moveToFirst()) {
