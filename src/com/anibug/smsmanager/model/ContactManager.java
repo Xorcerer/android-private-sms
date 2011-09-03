@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.widget.Toast;
 
 import com.anibug.smsmanager.model.Contact.DataBase;
 import com.anibug.smsmanager.model.filter.Filter;
@@ -69,11 +70,12 @@ public class ContactManager extends Manager<Contact> implements Filter {
 		String[] result = new String[1];
 		String tableFormat = "Create Table %s (" +
 				"id INTEGER Primary Key," +
+				"%s VARCHAR[50] Unique," +
 				"%s VARCHAR[20] Unique," + 
 				"%s INTEGER" +
 				")";
 		Formatter formatter = new Formatter();
-		formatter.format(tableFormat, getTableName(),
+		formatter.format(tableFormat, getTableName(), DataBase.Name,
 				DataBase.PHONENUMBER, DataBase.STATUS);
 		result[0] = formatter.toString();
 		return result;
@@ -91,10 +93,12 @@ public class ContactManager extends Manager<Contact> implements Filter {
 
 	@Override
 	public Contact createObject(Cursor cursor) {
-		final int indexPhoneNumber = cursor.getColumnIndex(DataBase.PHONENUMBER);
-		final int indexStatus = cursor.getColumnIndex(DataBase.STATUS);
+		final int indexName = cursor.getColumnIndexOrThrow(DataBase.Name);
+		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONENUMBER);
+		final int indexStatus = cursor.getColumnIndexOrThrow(DataBase.STATUS);
 		return new Contact(
-				cursor.getString(indexPhoneNumber), 
+				cursor.getString(indexName),
+				cursor.getString(indexPhoneNumber),
 				cursor.getInt(indexStatus));
 	}
 
@@ -102,43 +106,40 @@ public class ContactManager extends Manager<Contact> implements Filter {
 		return hasPhoneNumber(message.getPhoneNumber());
 	}
 	
-	public Contact getContactFromPickResult(Uri data){
+	public Contact getContactFromPickResult(Uri uri){
 		
-		try {
-            ContentResolver contect_resolver = context.getContentResolver();
-			Cursor c = contect_resolver.query(data, null, null, null, null);
+        ContentResolver contentResolver = context.getContentResolver();
+        String[] cols = new String[] {ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME};
+		Cursor contactCur = contentResolver.query(uri, cols, null, null, null);
 
-			if (c.moveToFirst()) {
-				String name = null;
-				String number = null;
+		if (contactCur.moveToFirst())
+			return null;
 
-	            String id = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-	                
-                Cursor phoneCur = contect_resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[] { id }, null);
-                
-                if (phoneCur.moveToFirst()) {
-                    number = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                }
+		String number = "";
 
-				name = c.getString(c
-						.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-				
-				Contact selected = new Contact(number, -1);
-				selected.setName(name);
-				
-				if(!c.isClosed())
-					c.close();
-				
-				return selected;
-			}
-			
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+        String id = contactCur.getString(contactCur.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+		String name = contactCur.getString(contactCur.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+
+		if(!contactCur.isClosed())
+			contactCur.close();
+
+		// TODO: We may split this method from here.
+		cols = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER};
+        Cursor phoneCur = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, cols,
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[] { id }, null);
+
+        if (!phoneCur.moveToFirst()) {
+        	Toast.makeText(context, "Contact " + name + " does not have a phone number.", Toast.LENGTH_SHORT).show();
+        	return null;
+        }
+
+        number = phoneCur.getString(phoneCur.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+		Contact selected = new Contact(name, number);
+
+		if(!phoneCur.isClosed())
+			contactCur.close();
+
+		return selected;
 	}
 }

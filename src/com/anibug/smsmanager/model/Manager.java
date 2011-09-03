@@ -105,4 +105,5 @@ public abstract class Manager<T extends Model> {
 	abstract public ContentValues createRecord(T obj);
 	
 	abstract public T createObject(Cursor cursor);
+
 }

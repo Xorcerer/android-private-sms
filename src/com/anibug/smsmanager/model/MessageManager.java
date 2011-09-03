@@ -40,7 +40,7 @@ public class MessageManager extends Manager<Message> {
 		String[] result = new String[2];
 		String tableFormat = "Create Table %s (" +
 				"id INTEGER Primary Key, " +
-				"%s VARCHAR(20) Unique, " + 
+				"%s VARCHAR(20) Unique, " +
 				"%s TEXT, " +
 				"%s NUMERIC, " +
 				"%s INTEGER, " +
@@ -75,11 +75,11 @@ public class MessageManager extends Manager<Message> {
 	
 	@Override
 	public Message createObject(Cursor cursor) {
-		final int indexPhoneNumber = cursor.getColumnIndex(DataBase.PHONENUMBER);
-		final int indexContent = cursor.getColumnIndex(DataBase.CONTENT);
-		final int indexStatus = cursor.getColumnIndex(DataBase.STATUS);
-		final int indexDateCreated = cursor.getColumnIndex(DataBase.DATE_CREATED);
-		final int indexOnlineId = cursor.getColumnIndex(DataBase.ONLINE_ID);
+		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONENUMBER);
+		final int indexContent = cursor.getColumnIndexOrThrow(DataBase.CONTENT);
+		final int indexStatus = cursor.getColumnIndexOrThrow(DataBase.STATUS);
+		final int indexDateCreated = cursor.getColumnIndexOrThrow(DataBase.DATE_CREATED);
+		final int indexOnlineId = cursor.getColumnIndexOrThrow(DataBase.ONLINE_ID);
 		return new Message(
 				cursor.getString(indexPhoneNumber), 
 				new Date(cursor.getInt(indexDateCreated) * 1000L),
