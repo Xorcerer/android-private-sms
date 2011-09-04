@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/edit_contact"
     android:layout_width="fill_parent"
-    android:padding="6dip" android:layout_height="?android:attr/listPreferredItemHeight">
+    android:padding="6dip" android:layout_height="fill_parent">
     <!-- The width should be parent.width - paddings - button_select_contact.width. -->
     <EditText
         android:id="@+id/edit_contact_name"

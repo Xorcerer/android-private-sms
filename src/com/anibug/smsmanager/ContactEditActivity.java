@@ -46,10 +46,12 @@ public class ContactEditActivity extends Activity {
 		Contact contact = new Contact(nameEdit.getText().toString(), numberEdit.getText().toString());
 		contactManager.save(contact);
 		setResult(RESULT_OK);
+		finish();
 	}
 
 	public void cancel(View v) {
 		setResult(RESULT_CANCELED);
+		finish();
 	}
 	
 	@Override
