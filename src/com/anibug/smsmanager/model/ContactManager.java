@@ -9,8 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract;
-import android.widget.Toast;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 
 import com.anibug.smsmanager.model.Contact.DataBase;
 import com.anibug.smsmanager.model.filter.Filter;
@@ -108,41 +107,18 @@ public class ContactManager extends Manager<Contact> implements Filter {
 	
 	public Contact getContactFromPickResult(Uri uri){
         ContentResolver contentResolver = context.getContentResolver();
-        String[] cols = new String[] {ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME};
+        String[] cols = new String[] {Phone.DISPLAY_NAME, Phone.NUMBER};
 		Cursor contactCur = contentResolver.query(uri, cols, null, null, null);
 
-		if (contactCur.moveToFirst())
+		if (!contactCur.moveToFirst())
 			return null;
 
-        String id = contactCur.getString(contactCur.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-		String name = contactCur.getString(contactCur.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+        String name = contactCur.getString(contactCur.getColumnIndexOrThrow(Phone.DISPLAY_NAME));
+		String number = contactCur.getString(contactCur.getColumnIndexOrThrow(Phone.NUMBER));
 
 		if(!contactCur.isClosed())
 			contactCur.close();
 
-        String number = getPhoneNumberFromSystemDB(id);
-        if (number == null) {
-        	Toast.makeText(context, "Contact " + name + " does not have a phone number.", Toast.LENGTH_SHORT).show();
-        	return null;
-        }
-
 		return new Contact(name, number);
-	}
-
-	private String getPhoneNumberFromSystemDB(String contactId) {
-		ContentResolver contentResolver = context.getContentResolver();
-        String[] cols = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER};
-        Cursor phoneCur = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, cols,
-                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[] { contactId }, null);
-
-        if (!phoneCur.moveToFirst())
-        	return null;
-
-        String number = phoneCur.getString(phoneCur.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
-        if(!phoneCur.isClosed())
-        	phoneCur.close();
-
-        return number;
 	}
 }

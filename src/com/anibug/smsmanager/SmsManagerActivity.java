@@ -60,6 +60,7 @@ public class SmsManagerActivity extends  ListActivity {
 			startActivity(intent);
 			return true;
 		default:
+			assert false: "An unhandle item selecting triggered.";
 			return super.onOptionsItemSelected(item);
 		}
 	}

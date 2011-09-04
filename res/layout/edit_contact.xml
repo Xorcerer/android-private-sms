@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/edit_contact"
+    android:layout_width="fill_parent"
+    android:padding="6dip" android:layout_height="?android:attr/listPreferredItemHeight">
+    <!-- The width should be parent.width - paddings - button_select_contact.width. -->
+    <EditText
+        android:id="@+id/edit_contact_name"
+        android:layout_width="100dip"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:singleLine="true" />
+    <Button
+        android:id="@+id/contact_picker_button"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/edit_contact_name"
+        android:text="Select" />
+    <EditText
+        android:id="@+id/edit_contact_phonenumber"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/edit_contact_name"
+        android:singleLine="true" />
+    <Button
+        android:id="@+id/contact_edit_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:text="Ok"
+        android:onClick="ok" />
+    <Button
+        android:id="@+id/contact_edit_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:text="cancel" />
+        
+</RelativeLayout>
