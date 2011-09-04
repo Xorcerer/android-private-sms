@@ -25,8 +25,8 @@ public class SmsManagerActivity extends  ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		messageManager = new MessageManager(getApplicationContext());
-		contactManager = new ContactManager(getApplicationContext());
+		messageManager = new MessageManager(this);
+		contactManager = new ContactManager(this);
 
 		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -56,7 +56,7 @@ public class SmsManagerActivity extends  ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.item_contact_list:
-			Intent intent = new Intent(getApplicationContext(), ContactActivity.class);
+			Intent intent = new Intent(this, ContactActivity.class);
 			startActivity(intent);
 			return true;
 		default:

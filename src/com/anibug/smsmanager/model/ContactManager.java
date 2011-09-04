@@ -107,7 +107,6 @@ public class ContactManager extends Manager<Contact> implements Filter {
 	}
 	
 	public Contact getContactFromPickResult(Uri uri){
-		
         ContentResolver contentResolver = context.getContentResolver();
         String[] cols = new String[] {ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME};
 		Cursor contactCur = contentResolver.query(uri, cols, null, null, null);
@@ -115,31 +114,35 @@ public class ContactManager extends Manager<Contact> implements Filter {
 		if (contactCur.moveToFirst())
 			return null;
 
-		String number = "";
-
         String id = contactCur.getString(contactCur.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
 		String name = contactCur.getString(contactCur.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
 
 		if(!contactCur.isClosed())
 			contactCur.close();
 
-		// TODO: We may split this method from here.
-		cols = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER};
-        Cursor phoneCur = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, cols,
-                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[] { id }, null);
-
-        if (!phoneCur.moveToFirst()) {
+        String number = getPhoneNumberFromSystemDB(id);
+        if (number == null) {
         	Toast.makeText(context, "Contact " + name + " does not have a phone number.", Toast.LENGTH_SHORT).show();
         	return null;
         }
 
-        number = phoneCur.getString(phoneCur.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+		return new Contact(name, number);
+	}
 
-		Contact selected = new Contact(name, number);
+	private String getPhoneNumberFromSystemDB(String contactId) {
+		ContentResolver contentResolver = context.getContentResolver();
+        String[] cols = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER};
+        Cursor phoneCur = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, cols,
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[] { contactId }, null);
 
-		if(!phoneCur.isClosed())
-			contactCur.close();
+        if (!phoneCur.moveToFirst())
+        	return null;
 
-		return selected;
+        String number = phoneCur.getString(phoneCur.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+        if(!phoneCur.isClosed())
+        	phoneCur.close();
+
+        return number;
 	}
 }

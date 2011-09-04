@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,12 +30,10 @@ public class ContactActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		contactManager = new ContactManager(
-				getApplicationContext());
+		contactManager = new ContactManager(this);
 		List<Contact> contacts = contactManager.fetchAll();
 
-		setListAdapter(new ContactArrayAdapter(getApplicationContext(),
-				contacts));
+		setListAdapter(new ContactArrayAdapter(this, contacts));
 	}
 
 	@Override
@@ -59,12 +59,13 @@ public class ContactActivity extends ListActivity {
 	}
 	
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
-		super.onActivityResult(requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, intent);
 
 		if (requestCode == PICK_CONTACT_RESULT && resultCode == Activity.RESULT_OK) {
-				Contact picked = contactManager.getContactFromPickResult(data.getData());
+			Contact picked = contactManager.getContactFromPickResult(intent.getData());
+			if (picked != null)
 				Toast.makeText(this, "Select "+ picked.getName() + " with number: " + picked.getPhoneNumber(), Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -77,15 +78,19 @@ public class ContactActivity extends ListActivity {
 	}
 
 	private void ShowEditingDialog() {
-		final EditText edit = new EditText(this);
+		final View editView = getLayoutInflater().inflate(R.layout.edit_contact,
+				(ViewGroup) findViewById(R.id.edit_contact));
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setView(edit)
+		builder.setTitle("New Contact");
+		builder.setView(editView)
 			   .setPositiveButton("Add", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						String number = edit.getText().toString();
-						Contact contact = new Contact();
-						contact.setPhoneNumber(number);
+						EditText nameEdit = (EditText) editView.findViewById(R.id.edit_contact_name);
+						EditText numberEdit = (EditText) editView.findViewById(R.id.edit_contact_phonenumber);
+						String name = nameEdit.getText().toString();
+						String number = numberEdit.getText().toString();
+						Contact contact = new Contact(name, number);
 						contactManager.save(contact);
 						
 						((BaseAdapter)getListAdapter()).notifyDataSetChanged();
