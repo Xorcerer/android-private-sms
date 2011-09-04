@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/item_new_contact"
-          android:title="New" />
-    <item android:title="Select" android:id="@+id/item_pick_contact"></item>
+	<item android:id="@+id/item_new_contact" android:title="New" />
 </menu>
