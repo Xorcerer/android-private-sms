@@ -14,7 +14,7 @@ import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.model.Message;
 
 public class ConversationListArrayAdapter extends ArrayAdapter<Message> {
-	private static final int VIEW_ID = R.layout.message_list_item;
+	private static final int VIEW_ID = R.layout.conversation_list_item;
 	private LayoutInflater inflater;
 
 	public ConversationListArrayAdapter(Context context, List<Message> objects) {
