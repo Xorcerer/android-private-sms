@@ -13,11 +13,11 @@ import android.widget.TextView;
 import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.model.Message;
 
-public class MessageArrayAdapter extends ArrayAdapter<Message> {
+public class ConversationListArrayAdapter extends ArrayAdapter<Message> {
 	private static final int VIEW_ID = R.layout.message_list_item;
 	private LayoutInflater inflater;
 
-	public MessageArrayAdapter(Context context, List<Message> objects) {
+	public ConversationListArrayAdapter(Context context, List<Message> objects) {
 		super(context, VIEW_ID, objects);
 		inflater = LayoutInflater.from(context);
 	}

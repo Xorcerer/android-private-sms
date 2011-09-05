@@ -5,7 +5,7 @@ import java.util.List;
 import android.app.ListActivity;
 import android.os.Bundle;
 
-import com.anibug.smsmanager.adapter.MessageArrayAdapter;
+import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 
@@ -19,7 +19,7 @@ public class ConversationActivity extends ListActivity {
 		String number = getIntent().getStringExtra(Message.DataBase.PHONENUMBER);
 		List<Message> messages = messageManager.getMessages(number);
 		
-		setListAdapter(new MessageArrayAdapter(getApplicationContext(), messages));
+		setListAdapter(new ConversationListArrayAdapter(getApplicationContext(), messages));
 	}
 
 }

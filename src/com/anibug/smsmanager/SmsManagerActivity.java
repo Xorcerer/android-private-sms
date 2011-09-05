@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.anibug.smsmanager.adapter.MessageArrayAdapter;
+import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
 import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
@@ -43,7 +43,7 @@ public class SmsManagerActivity extends  ListActivity {
 		});
 
 		List<Message> messages = messageManager.getLastOneMessageForEachNumber();
-		setListAdapter(new MessageArrayAdapter(getApplicationContext(), messages));
+		setListAdapter(new ConversationListArrayAdapter(getApplicationContext(), messages));
 	}
 
 	@Override
