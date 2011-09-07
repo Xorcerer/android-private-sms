@@ -70,11 +70,11 @@ public class ContactManager extends Manager<Contact> implements Filter {
 		String tableFormat = "Create Table %s (" +
 				"id INTEGER Primary Key," +
 				"%s VARCHAR[50] Unique," +
-				"%s VARCHAR[20] Unique," + 
+				"%s VARCHAR[50] Unique," +
 				"%s INTEGER" +
 				")";
 		Formatter formatter = new Formatter();
-		formatter.format(tableFormat, getTableName(), DataBase.Name,
+		formatter.format(tableFormat, getTableName(), DataBase.NAME,
 				DataBase.PHONENUMBER, DataBase.STATUS);
 		result[0] = formatter.toString();
 		return result;
@@ -83,7 +83,7 @@ public class ContactManager extends Manager<Contact> implements Filter {
 	@Override
 	public ContentValues createRecord(Contact message) {
 		ContentValues values = new ContentValues();
-		
+		values.put(DataBase.NAME, message.getName());
 		values.put(DataBase.PHONENUMBER, message.getPhoneNumber());
 		values.put(DataBase.STATUS, message.getStatus());
 		
@@ -92,7 +92,7 @@ public class ContactManager extends Manager<Contact> implements Filter {
 
 	@Override
 	public Contact createObject(Cursor cursor) {
-		final int indexName = cursor.getColumnIndexOrThrow(DataBase.Name);
+		final int indexName = cursor.getColumnIndexOrThrow(DataBase.NAME);
 		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONENUMBER);
 		final int indexStatus = cursor.getColumnIndexOrThrow(DataBase.STATUS);
 		return new Contact(

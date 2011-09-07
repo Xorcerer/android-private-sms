@@ -5,19 +5,17 @@
     <TextView  
         android:id="@+id/contact_name"
         android:layout_width="wrap_content"
-        android:layout_height="26dip"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:singleLine="true"
-        android:ellipsize="marquee"
-        android:text="Name" />
+        android:ellipsize="marquee" />
     <TextView  
         android:id="@+id/contact_number"
         android:layout_width="wrap_content"
-        android:layout_height="26dip"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:singleLine="true"
-        android:ellipsize="marquee"
-        android:text="Number" />
+        android:ellipsize="marquee" />
 </RelativeLayout>

@@ -53,7 +53,7 @@ public class Contact extends Model {
 
 	public class DataBase {
 		public static final String TABLE_NAME = "phone_numbers";
-		public static final String Name = "name";
+		public static final String NAME = "name";
 		public static final String PHONENUMBER = "phone_number";
 		public static final String STATUS = "status";
 	}
