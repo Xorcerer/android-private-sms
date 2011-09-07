@@ -53,7 +53,17 @@ public class ContactActivity extends ListActivity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		List<Contact> contacts = contactManager.fetchAll();
-		setListAdapter(new ContactArrayAdapter(this, contacts));
+		if (resultCode != RESULT_OK)
+			return;
+
+		switch (requestCode) {
+		case ContactEditActivity.NEW_CONTACT:
+			List<Contact> contacts = contactManager.fetchAll();
+			setListAdapter(new ContactArrayAdapter(this, contacts));
+			break;
+		default:
+			assert false;
+			break;
+		}
 	}
 }
