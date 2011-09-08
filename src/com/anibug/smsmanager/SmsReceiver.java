@@ -30,7 +30,7 @@ public class SmsReceiver extends BroadcastReceiver {
         	SmsMessage sms = SmsMessage.createFromPdu((byte[]) messages[n]);
 
         	Log.d(getClass().getName(), "receive message with phoneNumber: "+ sms.getDisplayOriginatingAddress() +
-        			"content: " + sms.getDisplayOriginatingAddress());
+        			"content: " + sms.getDisplayMessageBody());
 
         	Message message = new Message(sms.getDisplayOriginatingAddress(), new Date(),
         			sms.getDisplayMessageBody(), Message.STATUS_RECEIVED);

@@ -29,6 +29,8 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
 		RelativeLayout view = (RelativeLayout) inflater.inflate(VIEW_ID, null,
 				false);
 
+		view.setId(position);
+
 		TextView dateCreated = (TextView) view.findViewById(R.id.contact_name);
 		dateCreated.setText(message.getName());
 

@@ -5,8 +5,13 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.anibug.smsmanager.adapter.ContactArrayAdapter;
 import com.anibug.smsmanager.model.Contact;
@@ -22,8 +27,13 @@ public class ContactActivity extends ListActivity {
 
 		contactManager = new ContactManager(this);
 
+		updateList();
+	}
+
+	private void updateList() {
 		List<Contact> contacts = contactManager.fetchAll();
 		setListAdapter(new ContactArrayAdapter(this, contacts));
+		getListView().setOnCreateContextMenuListener(this);
 	}
 
 	@Override
@@ -36,17 +46,17 @@ public class ContactActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.item_new_contact:
-			ShowEditingDialog();
+			showEditingDialog();
 			break;
 		default:
 			assert false;
 			break;
 		}
-		
+
 		return true;
 	}
-	
-	private void ShowEditingDialog() {
+
+	private void showEditingDialog() {
 		  Intent intent = new Intent(this, ContactEditActivity.class);
 		  startActivityForResult(intent, ContactEditActivity.NEW_CONTACT);
 	}
@@ -58,12 +68,52 @@ public class ContactActivity extends ListActivity {
 
 		switch (requestCode) {
 		case ContactEditActivity.NEW_CONTACT:
-			List<Contact> contacts = contactManager.fetchAll();
-			setListAdapter(new ContactArrayAdapter(this, contacts));
+			updateList();
 			break;
 		default:
 			assert false;
 			break;
 		}
 	}
+
+	
+	private int positionClicked = -1;
+
+	private final int MENU_ITEM_REMVOE = 1;
+	// TODO: make contact editable. 
+	// private final int MENU_ITEM_EDIT = 2;
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		// TODO: Put the name in title.
+		menu.setHeaderTitle("Contact");  
+
+		try {
+			// Save the position and recall it when item clicked.
+			AdapterView.AdapterContextMenuInfo info;
+		    info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		    positionClicked = info.position;
+		} catch (ClassCastException e) {
+		    Log.e(getClass().getName(), "bad menuInfo", e);
+		    return;
+		}
+
+		menu.add(Menu.NONE, MENU_ITEM_REMVOE, Menu.NONE, "Remove");
+	}
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+		case MENU_ITEM_REMVOE:
+			Contact selected = (Contact) getListAdapter().getItem(positionClicked);
+			contactManager.delete(selected);
+			updateList();
+			return false;
+		default:
+			assert false;
+			return true;
+		}
+    }
 }

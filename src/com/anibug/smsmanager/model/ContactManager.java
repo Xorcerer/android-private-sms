@@ -95,10 +95,11 @@ public class ContactManager extends Manager<Contact> implements Filter {
 		final int indexName = cursor.getColumnIndexOrThrow(DataBase.NAME);
 		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONENUMBER);
 		final int indexStatus = cursor.getColumnIndexOrThrow(DataBase.STATUS);
-		return new Contact(
+		Contact contact = new Contact(
 				cursor.getString(indexName),
 				cursor.getString(indexPhoneNumber),
 				cursor.getInt(indexStatus));
+		return contact;
 	}
 
 	public boolean match(Message message) {
@@ -119,6 +120,6 @@ public class ContactManager extends Manager<Contact> implements Filter {
 		if(!contactCur.isClosed())
 			contactCur.close();
 
-		return new Contact(name, number);
+		return new Contact(name, number.replace("-", ""));
 	}
 }

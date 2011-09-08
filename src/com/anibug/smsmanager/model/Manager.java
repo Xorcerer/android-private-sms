@@ -62,7 +62,7 @@ public abstract class Manager<T extends Model> {
 		
 		if (cursor.moveToFirst()) {
 			do {
-				result.add(createObject(cursor));
+				result.add(getObject(cursor));
 			} while (cursor.moveToNext());
 		}
 		if (!cursor.isClosed()) {
@@ -96,14 +96,20 @@ public abstract class Manager<T extends Model> {
 		return true;
 	}
 	
-	public boolean delete(long id) {
+	public boolean delete(T obj) {
 		final String where = "id=?";
-		String[] whereArgs = new String[] { String.valueOf(id) };
+		String[] whereArgs = new String[] { String.valueOf(obj.getId()) };
 		return getSqliteDatabase().delete(getTableName(), where, whereArgs) > 0;
 	}
-	
+
 	abstract public ContentValues createRecord(T obj);
-	
+
+	public T getObject(Cursor cursor) {
+		T obj = createObject(cursor);
+		obj.setId(cursor.getLong(cursor.getColumnIndexOrThrow("id")));
+		return obj;
+	}
+
 	abstract public T createObject(Cursor cursor);
 
 }
