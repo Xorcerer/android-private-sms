@@ -79,7 +79,7 @@ public class ContactActivity extends ListActivity {
 	
 	private int positionClicked = -1;
 
-	private final int MENU_ITEM_REMVOE = 1;
+	private final int MENU_ITEM_REMOVE = 1;
 	// TODO: make contact editable. 
 	// private final int MENU_ITEM_EDIT = 2;
 
@@ -100,13 +100,13 @@ public class ContactActivity extends ListActivity {
 		    return;
 		}
 
-		menu.add(Menu.NONE, MENU_ITEM_REMVOE, Menu.NONE, "Remove");
+		menu.add(Menu.NONE, MENU_ITEM_REMOVE, Menu.NONE, "Remove");
 	}
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
-		case MENU_ITEM_REMVOE:
+		case MENU_ITEM_REMOVE:
 			Contact selected = (Contact) getListAdapter().getItem(positionClicked);
 			contactManager.delete(selected);
 			updateList();
