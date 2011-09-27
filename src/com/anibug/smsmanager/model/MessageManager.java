@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+
 import com.anibug.smsmanager.model.Message.DataBase;
 
 
@@ -26,10 +27,10 @@ public class MessageManager extends Manager<Message> {
 		formatter.format("Select * From %1$s Where id In (Select Max(id) From %1$s Group By %2$s)",
 				DataBase.TABLE_NAME, DataBase.PHONENUMBER);
 		Cursor cursor = getSqliteDatabase().rawQuery(formatter.toString(), null);
-		
+
 		return fetchList(cursor);
 	}
-	
+
 	@Override
 	public String getTableName() {
 		return DataBase.TABLE_NAME;
@@ -40,7 +41,7 @@ public class MessageManager extends Manager<Message> {
 		String[] result = new String[2];
 		String tableFormat = "Create Table %s (" +
 				"id INTEGER Primary Key, " +
-				"%s VARCHAR(20) Unique, " +
+				"%s VARCHAR(20), " +
 				"%s TEXT, " +
 				"%s NUMERIC, " +
 				"%s INTEGER, " +
@@ -51,8 +52,8 @@ public class MessageManager extends Manager<Message> {
 				DataBase.PHONENUMBER, DataBase.CONTENT,
 				DataBase.DATE_CREATED, DataBase.STATUS, DataBase.ONLINE_ID);
 		result[0] = formatter.toString();
-		
-		String dateIndexFormat = "Create Index %1$s_index_%2$s on %1$s (%2$s)"; 
+
+		String dateIndexFormat = "Create Index %1$s_index_%2$s on %1$s (%2$s)";
 		formatter = new Formatter();
 		formatter.format(dateIndexFormat, getTableName(), DataBase.DATE_CREATED);
 		result[1] = formatter.toString();
@@ -62,17 +63,17 @@ public class MessageManager extends Manager<Message> {
 	@Override
 	public ContentValues createRecord(Message message) {
 		ContentValues values = new ContentValues();
-		
+
 		int timeInSecond = (int)(message.getDateCreated().getTime() / 1000L);
 		values.put(DataBase.CONTENT, message.getContent());
 		values.put(DataBase.DATE_CREATED, timeInSecond);
 		values.put(DataBase.PHONENUMBER, message.getPhoneNumber());
 		values.put(DataBase.STATUS, message.getStatus());
 		values.put(DataBase.ONLINE_ID, message.getOnlineId());
-		
+
 		return values;
 	}
-	
+
 	@Override
 	public Message createObject(Cursor cursor) {
 		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONENUMBER);
@@ -81,7 +82,7 @@ public class MessageManager extends Manager<Message> {
 		final int indexDateCreated = cursor.getColumnIndexOrThrow(DataBase.DATE_CREATED);
 		final int indexOnlineId = cursor.getColumnIndexOrThrow(DataBase.ONLINE_ID);
 		return new Message(
-				cursor.getString(indexPhoneNumber), 
+				cursor.getString(indexPhoneNumber),
 				new Date(cursor.getInt(indexDateCreated) * 1000L),
 				cursor.getString(indexContent),
 				cursor.getInt(indexStatus),
