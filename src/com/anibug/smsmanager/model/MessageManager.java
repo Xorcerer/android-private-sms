@@ -45,7 +45,7 @@ public class MessageManager extends Manager<Message> {
 				"%s TEXT, " +
 				"%s NUMERIC, " +
 				"%s INTEGER, " +
-				"%s INTEGER Unique" +
+				"%s INTEGER" + // TODO: Should be unique.
 				")";
 		Formatter formatter = new Formatter();
 		formatter.format(tableFormat, getTableName(),
