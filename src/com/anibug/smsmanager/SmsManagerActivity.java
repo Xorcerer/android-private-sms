@@ -49,8 +49,12 @@ public class SmsManagerActivity extends  ListActivity {
 		    }
 		});
 
+		update();
+	}
+
+	private void update() {
 		List<Message> messages = messageManager.getLastOneMessageForEachNumber();
-		setListAdapter(new ConversationListArrayAdapter(getApplicationContext(), messages));
+		setListAdapter(new ConversationListArrayAdapter(this, messages));
 	}
 
 	@Override
@@ -82,6 +86,9 @@ public class SmsManagerActivity extends  ListActivity {
 			SharedPreferences.Editor editor = settings.edit();
 			editor.putBoolean(MessageManager.PREF_BLOCKING, !blocking);
 			editor.commit();
+			return true;
+		case R.id.item_refresh:
+			update();
 			return true;
 		default:
 			assert false: "An unhandle item selecting triggered.";
