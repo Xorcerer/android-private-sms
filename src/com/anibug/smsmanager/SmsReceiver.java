@@ -5,6 +5,7 @@ import java.util.Date;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
@@ -25,6 +26,9 @@ public class SmsReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         Object messages[] = (Object[]) bundle.get("pdus");
 
+		SharedPreferences settings = context.getSharedPreferences(SmsManagerActivity.PREFS_NAME, Context.MODE_PRIVATE);
+		boolean blocking = settings.getBoolean(MessageManager.PREF_BLOCKING, true);
+
         for (int n = 0; n < messages.length; n++) {
         	SmsMessage sms = SmsMessage.createFromPdu((byte[]) messages[n]);
 
@@ -36,7 +40,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
         	if (contactManager.match(message)) {
         		messageManager.save(message);
-        		abortBroadcast();
+        		if (blocking)
+        			abortBroadcast();
         	}
         }
     }

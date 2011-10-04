@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,14 +18,20 @@ import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 
 public class SmsManagerActivity extends  ListActivity {
-	MessageManager messageManager;
-	ContactManager contactManager;
+	public static final String PREFS_NAME = "default";
+
+	private SharedPreferences settings;
+
+	private MessageManager messageManager;
+	private ContactManager contactManager;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
+		settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
 		messageManager = new MessageManager(this);
 		contactManager = new ContactManager(this);
 
@@ -32,7 +39,7 @@ public class SmsManagerActivity extends  ListActivity {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		    	Intent intent = new Intent(view.getContext(), ConversationActivity.class);
 
-		    	// FIXME: We should assign the contact id somewhere else, 
+		    	// FIXME: We should assign the contact id somewhere else,
 		    	// instead of using the text of view.
 		    	TextView contact = (TextView) view
 						.findViewById(R.id.message_contact);
@@ -53,11 +60,28 @@ public class SmsManagerActivity extends  ListActivity {
 	}
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		boolean blocking = settings.getBoolean(MessageManager.PREF_BLOCKING, true);
+
+		if (blocking)
+			menu.findItem(R.id.item_blocking).setTitle(getString(R.string.blocking));
+		else
+			menu.findItem(R.id.item_blocking).setTitle(getString(R.string.not_blocking));
+		return true;
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.item_contact_list:
 			Intent intent = new Intent(this, ContactActivity.class);
 			startActivity(intent);
+			return true;
+		case R.id.item_blocking:
+			boolean blocking = settings.getBoolean(MessageManager.PREF_BLOCKING, true);
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putBoolean(MessageManager.PREF_BLOCKING, !blocking);
+			editor.commit();
 			return true;
 		default:
 			assert false: "An unhandle item selecting triggered.";
