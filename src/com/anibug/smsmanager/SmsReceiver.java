@@ -40,9 +40,15 @@ public class SmsReceiver extends BroadcastReceiver {
 
         	if (contactManager.match(message)) {
         		messageManager.save(message);
-        		if (blocking)
+        		if (blocking) {
+					sendNotification(context, message);
         			abortBroadcast();
+        		}
         	}
         }
     }
+
+	private void sendNotification(Context context, Message message) {
+		// TODO: Send out an SAFE notification, which pretend to be something else.
+	}
 }
