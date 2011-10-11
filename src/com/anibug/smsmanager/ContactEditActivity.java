@@ -1,8 +1,5 @@
 package com.anibug.smsmanager;
 
-import com.anibug.smsmanager.model.Contact;
-import com.anibug.smsmanager.model.ContactManager;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,28 +8,40 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.anibug.smsmanager.model.Contact;
+import com.anibug.smsmanager.model.ContactManager;
+
 public class ContactEditActivity extends Activity {
 	private static final int PICK_CONTACT_RESULT = 1001;
-	
+
 	public static final int NEW_CONTACT = 1;
-	
-	//TODO: Use the activity for editing contacts.
 	public static final int EDIT_CONTACT = 2;
 
-	ContactManager contactManager;
-	EditText nameEdit;
-	EditText numberEdit;
+	private ContactManager contactManager;
+	private EditText nameEdit;
+	private EditText numberEdit;
+
+	private Contact contact;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_contact);
-		setTitle("New Contact");
 
 		contactManager = new ContactManager(this);
 		nameEdit = (EditText) findViewById(R.id.edit_contact_name);
 		numberEdit = (EditText) findViewById(R.id.edit_contact_phonenumber);
 
+		long contactId = getIntent().getLongExtra("contactId", -1);
+		if (contactId == -1) {
+			setTitle("New Contact");
+			contact = new Contact();
+		} else {
+			setTitle("Edit Contact");
+			contact = contactManager.get(contactId);
+			nameEdit.setText(contact.getName());
+			numberEdit.setText(contact.getPhoneNumber());
+		}
 
 		final Button pickerButton = (Button) findViewById(R.id.contact_picker_button);
 		pickerButton.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +52,8 @@ public class ContactEditActivity extends Activity {
 	}
 
 	public void ok(View v) {
-		Contact contact = new Contact(nameEdit.getText().toString(), numberEdit.getText().toString());
+		contact.setName(nameEdit.getText().toString());
+		contact.setPhoneNumber(numberEdit.getText().toString());
 		contactManager.save(contact);
 		setResult(RESULT_OK);
 		finish();
@@ -53,7 +63,7 @@ public class ContactEditActivity extends Activity {
 		setResult(RESULT_CANCELED);
 		finish();
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);

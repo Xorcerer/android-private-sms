@@ -19,7 +19,7 @@ import com.anibug.smsmanager.model.ContactManager;
 
 public class ContactActivity extends ListActivity {
 	ContactManager contactManager;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +46,7 @@ public class ContactActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.item_new_contact:
-			showEditingDialog();
+			showEditingDialog(null);
 			break;
 		default:
 			assert false;
@@ -56,11 +56,16 @@ public class ContactActivity extends ListActivity {
 		return true;
 	}
 
-	private void showEditingDialog() {
-		  Intent intent = new Intent(this, ContactEditActivity.class);
-		  startActivityForResult(intent, ContactEditActivity.NEW_CONTACT);
+	private void showEditingDialog(Contact contact) {
+		Intent intent = new Intent(this, ContactEditActivity.class);
+		if (contact == null) {
+			startActivityForResult(intent, ContactEditActivity.NEW_CONTACT);
+		} else {
+			intent.putExtra("contactId", contact.getId());
+			startActivityForResult(intent, ContactEditActivity.EDIT_CONTACT);
+		}
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (resultCode != RESULT_OK)
@@ -68,6 +73,7 @@ public class ContactActivity extends ListActivity {
 
 		switch (requestCode) {
 		case ContactEditActivity.NEW_CONTACT:
+		case ContactEditActivity.EDIT_CONTACT:
 			updateList();
 			break;
 		default:
@@ -76,19 +82,18 @@ public class ContactActivity extends ListActivity {
 		}
 	}
 
-	
+
 	private int positionClicked = -1;
 
 	private final int MENU_ITEM_REMOVE = 1;
-	// TODO: make contact editable. 
-	// private final int MENU_ITEM_EDIT = 2;
+	private final int MENU_ITEM_EDIT = 2;
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
 		// TODO: Put the name in title.
-		menu.setHeaderTitle("Contact");  
+		menu.setHeaderTitle("Contact");
 
 		try {
 			// Save the position and recall it when item clicked.
@@ -101,16 +106,20 @@ public class ContactActivity extends ListActivity {
 		}
 
 		menu.add(Menu.NONE, MENU_ITEM_REMOVE, Menu.NONE, "Remove");
+		menu.add(Menu.NONE, MENU_ITEM_EDIT, Menu.NONE, "Edit");
 	}
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
+    	Contact selected = (Contact) getListAdapter().getItem(positionClicked);
+		switch (item.getItemId()) {
 		case MENU_ITEM_REMOVE:
-			Contact selected = (Contact) getListAdapter().getItem(positionClicked);
 			contactManager.delete(selected);
 			updateList();
-			return false;
+			return true;
+		case MENU_ITEM_EDIT:
+			showEditingDialog(selected);
+			return true;
 		default:
 			assert false;
 			return true;

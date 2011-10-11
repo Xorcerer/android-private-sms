@@ -15,14 +15,14 @@ public abstract class Manager<T extends Model> {
 
 	private static SQLiteHelper sqliteHelper;
 	private static SQLiteDatabase sqliteDatabase;
-	
+
 	protected static final String[] ALL = null;
 	protected static final String ID_DESC = "id DESC";
-	
+
 	abstract public String getTableName();
-	
+
 	abstract public String[] getTableDefinitionSQLs();
-	
+
 	public Manager(Context context) {
 		if (sqliteHelper == null)
 			sqliteHelper = new SQLiteHelper(context);
@@ -34,32 +34,40 @@ public abstract class Manager<T extends Model> {
 				Log.d(getClass().getName(), "New definition added -- " + sql);
 		}
 	}
-	
+
 	protected synchronized SQLiteDatabase getSqliteDatabase() {
 		if (sqliteDatabase == null)
 			sqliteDatabase = sqliteHelper.getWritableDatabase();
 		return sqliteDatabase;
 	}
 
+	public T get(long id) {
+		final String where = "id=?";
+		String[] whereArgs = new String[] { String.valueOf(id) };
+		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, null);
+		if (cursor.moveToFirst())
+			return createObject(cursor);
+		return null;
+	}
 
 	public List<T> fetchAll() {
 		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, null, null, null, null, ID_DESC);
 
 		return fetchList(cursor);
 	}
-	
+
 	public List<T> fetch(String column, Object value) {
 		final String where = column + "=?";
 		String[] whereArgs = new String[] { String.valueOf(value) };
-		
+
 		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, ID_DESC);
 
 		return fetchList(cursor);
 	}
-	
+
 	protected List<T> fetchList(Cursor cursor) {
 		ArrayList<T> result = new ArrayList<T>();
-		
+
 		if (cursor.moveToFirst()) {
 			do {
 				result.add(getObject(cursor));
@@ -69,16 +77,16 @@ public abstract class Manager<T extends Model> {
 			cursor.close();
 		}
 
-		return result;		
+		return result;
 	}
-	
+
 	public boolean save(T obj) {
 		if (obj.getId() >= 0) {
 			return update(obj);
 		}
 		return insert(obj);
 	}
-	
+
 	protected boolean update(T obj) {
 		final String where = "id=?";
 		String[] whereArgs = new String[] { String.valueOf(obj.getId()) };
@@ -86,7 +94,7 @@ public abstract class Manager<T extends Model> {
 		ContentValues record = createRecord(obj);
 		return getSqliteDatabase().update(getTableName(), record, where, whereArgs) == 1;
 	}
-	
+
 	protected boolean insert(T obj) {
 		ContentValues record = createRecord(obj);
 		long id = getSqliteDatabase().insert(getTableName(), null, record);
@@ -95,7 +103,7 @@ public abstract class Manager<T extends Model> {
 		obj.setId(id);
 		return true;
 	}
-	
+
 	public boolean delete(T obj) {
 		final String where = "id=?";
 		String[] whereArgs = new String[] { String.valueOf(obj.getId()) };
