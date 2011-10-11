@@ -15,6 +15,9 @@ import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 
 public class SmsReceiver extends BroadcastReceiver {
+	
+	public static final String SMS_RECEIVED_ACTION = "com.anibug.smsmanager.SMS_RECEIVED_ACTION";
+
 	@Override
     public void onReceive(Context context, Intent intent) {
 		MessageManager messageManager = new MessageManager(context);
@@ -40,6 +43,12 @@ public class SmsReceiver extends BroadcastReceiver {
 
         	if (contactManager.match(message)) {
         		messageManager.save(message);
+        		
+        		//send out broadcast to refresh ui
+        		Intent mIntent = new Intent();
+        		mIntent.setAction(SMS_RECEIVED_ACTION);
+        		context.sendBroadcast(mIntent);
+        		
         		if (blocking) {
 					sendNotification(context, message);
         			abortBroadcast();
