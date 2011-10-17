@@ -18,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
+import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 
@@ -27,6 +28,7 @@ public class SmsManagerActivity extends ListActivity {
 	private SharedPreferences settings;
 
 	private MessageManager messageManager;
+	private ContactManager contactManager;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -36,6 +38,7 @@ public class SmsManagerActivity extends ListActivity {
 		settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
 		messageManager = new MessageManager(this);
+		contactManager = new ContactManager(this);
 
 		getListView().setOnItemClickListener(
 				new OnItemClickListener() {
