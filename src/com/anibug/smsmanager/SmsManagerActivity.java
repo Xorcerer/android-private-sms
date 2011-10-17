@@ -99,9 +99,6 @@ public class SmsManagerActivity extends ListActivity {
 			editor.putBoolean(MessageManager.PREF_BLOCKING, !blocking);
 			editor.commit();
 			return true;
-		case R.id.item_refresh:
-			update();
-			return true;
 		default:
 			assert false : "An unhandle item selecting triggered.";
 			return super.onOptionsItemSelected(item);

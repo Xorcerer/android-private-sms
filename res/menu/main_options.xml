@@ -4,8 +4,4 @@
           android:title="@+string/contact_list" />
     <item android:id="@+id/item_blocking"
           android:title="@+string/blocking" />
-    <!-- FIXME: Auto update required. -->
-    <item android:id="@+id/item_refresh"
-          android:title="Refresh" />
-          
 </menu>
