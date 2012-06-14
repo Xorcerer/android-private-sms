@@ -18,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
+import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 
@@ -36,6 +37,9 @@ public class SmsManagerActivity extends ListActivity {
 		settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
 		messageManager = new MessageManager(this);
+		// FIXME: For loading SQL definitions of ContactManager.
+		// Bad design.
+		new ContactManager(this);
 
 		getListView().setOnItemClickListener(
 				new OnItemClickListener() {
@@ -45,8 +49,7 @@ public class SmsManagerActivity extends ListActivity {
 								ConversationActivity.class);
 
 						// FIXME: We should assign the contact id somewhere
-						// else,
-						// instead of using the text of view.
+						// else, instead of using the text of view.
 						TextView contact = (TextView) view
 								.findViewById(R.id.message_contact);
 						intent.putExtra(Message.DataBase.PHONENUMBER, contact
@@ -56,10 +59,10 @@ public class SmsManagerActivity extends ListActivity {
 					}
 				});
 
-		update();
+		updateMessageList();
 	}
 
-	private void update() {
+	private void updateMessageList() {
 		List<Message> messages = messageManager
 				.getLastOneMessageForEachNumber();
 		setListAdapter(new ConversationListArrayAdapter(this, messages));
@@ -133,7 +136,7 @@ public class SmsManagerActivity extends ListActivity {
 		public void onReceive(Context context, Intent intent) {
 
 			if (intent.getAction().equals(SmsReceiver.SMS_RECEIVED_ACTION)) {
-				update();
+				updateMessageList();
 			}
 		}
 
