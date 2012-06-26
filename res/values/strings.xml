@@ -7,4 +7,6 @@
     <string name="contact_list">Contact List</string>
     <string name="not_blocking">Not blocking</string>
     <string name="blocking">Blocking</string>
+    <string name="save">Save</string>
+    <string name="select_from_contacts">Select from contacts</string>
 </resources>

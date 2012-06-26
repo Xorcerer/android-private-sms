@@ -32,7 +32,7 @@ public class ContactEditActivity extends Activity {
 		nameEdit = (EditText) findViewById(R.id.edit_contact_name);
 		numberEdit = (EditText) findViewById(R.id.edit_contact_phonenumber);
 
-		long contactId = getIntent().getLongExtra("contactId", -1);
+		final long contactId = getIntent().getLongExtra("contactId", -1);
 		if (contactId == -1) {
 			setTitle("New Contact");
 			contact = new Contact();
@@ -51,7 +51,7 @@ public class ContactEditActivity extends Activity {
 		});
 	}
 
-	public void ok(View v) {
+	public void save(View v) {
 		contact.setName(nameEdit.getText().toString());
 		contact.setPhoneNumber(numberEdit.getText().toString());
 		contactManager.save(contact);
@@ -69,7 +69,7 @@ public class ContactEditActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, intent);
 
 		if (requestCode == PICK_CONTACT_RESULT && resultCode == RESULT_OK) {
-			Contact picked = contactManager.getContactFromPickResult(intent.getData());
+			final Contact picked = contactManager.getContactFromPickResult(intent.getData());
 			if (picked != null) {
 				nameEdit.setText(picked.getName());
 				numberEdit.setText(picked.getPhoneNumber());
@@ -78,7 +78,7 @@ public class ContactEditActivity extends Activity {
 	}
 
 	private void ShowPickContactDialog() {
-		  Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		  final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 		  intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
 		  startActivityForResult(intent, PICK_CONTACT_RESULT);
 	}
