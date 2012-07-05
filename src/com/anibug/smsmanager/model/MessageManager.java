@@ -23,10 +23,11 @@ public class MessageManager extends Manager<Message> {
 	}
 
 	public List<Message> getLastOneMessageForEachNumber() {
-		Formatter formatter = new Formatter();
+		final Formatter formatter = new Formatter();
 		formatter.format("Select * From %1$s Where id In (Select Max(id) From %1$s Group By %2$s)",
 				DataBase.TABLE_NAME, DataBase.PHONENUMBER);
-		Cursor cursor = getSqliteDatabase().rawQuery(formatter.toString(), null);
+		final Cursor cursor = getSqliteDatabase().rawQuery(formatter.toString(), null);
+		formatter.close();
 
 		return fetchList(cursor);
 	}
@@ -38,8 +39,8 @@ public class MessageManager extends Manager<Message> {
 
 	@Override
 	public String[] getTableDefinitionSQLs() {
-		String[] result = new String[2];
-		String tableFormat = "Create Table %s (" +
+		final String[] result = new String[2];
+		final String tableFormat = "Create Table %s (" +
 				"id INTEGER Primary Key, " +
 				"%s VARCHAR(20), " +
 				"%s TEXT, " +
@@ -52,19 +53,22 @@ public class MessageManager extends Manager<Message> {
 				DataBase.PHONENUMBER, DataBase.CONTENT,
 				DataBase.DATE_CREATED, DataBase.STATUS, DataBase.ONLINE_ID);
 		result[0] = formatter.toString();
+		formatter.close();
 
-		String dateIndexFormat = "Create Index %1$s_index_%2$s on %1$s (%2$s)";
+		final String dateIndexFormat = "Create Index %1$s_index_%2$s on %1$s (%2$s)";
 		formatter = new Formatter();
 		formatter.format(dateIndexFormat, getTableName(), DataBase.DATE_CREATED);
 		result[1] = formatter.toString();
+		formatter.close();
+
 		return result;
 	}
 
 	@Override
 	public ContentValues createRecord(Message message) {
-		ContentValues values = new ContentValues();
+		final ContentValues values = new ContentValues();
 
-		int timeInSecond = (int)(message.getDateCreated().getTime() / 1000L);
+		final int timeInSecond = (int)(message.getDateCreated().getTime() / 1000L);
 		values.put(DataBase.CONTENT, message.getContent());
 		values.put(DataBase.DATE_CREATED, timeInSecond);
 		values.put(DataBase.PHONENUMBER, message.getPhoneNumber());

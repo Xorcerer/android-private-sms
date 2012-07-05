@@ -9,4 +9,5 @@
     <string name="blocking">Blocking</string>
     <string name="save">Save</string>
     <string name="select_from_contacts">Select from contacts</string>
+    <string name="fake_notification">1 Rom update(s) found.</string>
 </resources>
