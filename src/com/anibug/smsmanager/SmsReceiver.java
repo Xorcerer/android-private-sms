@@ -19,7 +19,7 @@ import com.anibug.smsmanager.model.MessageManager;
 public class SmsReceiver extends BroadcastReceiver {
 
 	public static final String SMS_RECEIVED_ACTION = "com.anibug.smsmanager.SMS_RECEIVED_ACTION";
-	private static final int MSG_RECEIVED_NTF = 0;
+	public static final int MSG_RECEIVED_NTF = 1;
 
 	@Override
     public void onReceive(Context context, Intent intent) {

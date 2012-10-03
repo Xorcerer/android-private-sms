@@ -2,6 +2,7 @@ package com.anibug.smsmanager;
 
 import java.util.List;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -64,6 +65,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 		final List<Message> messages = messageManager
 				.getLastOneMessageForEachNumber();
 		setListAdapter(new ConversationListArrayAdapter(this, messages));
+		cancelNotification();
 	}
 
 	@Override
@@ -111,14 +113,20 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 
 	@Override
 	protected void onResume() {
-
 		super.onResume();
+
 		intentFilter = new IntentFilter();
 		intentFilter.addAction(SmsReceiver.SMS_RECEIVED_ACTION);
 		receivedAction = new ReceivedAction();
 		this.registerReceiver(receivedAction, intentFilter);
 
 		updateListThenResetListener();
+	}
+
+	private void cancelNotification() {
+		final NotificationManager manager =
+				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		manager.cancel(SmsReceiver.MSG_RECEIVED_NTF);
 	}
 
 	@Override
