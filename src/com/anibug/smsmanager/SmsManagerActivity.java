@@ -2,16 +2,12 @@ package com.anibug.smsmanager;
 
 import java.util.List;
 
-import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,14 +20,13 @@ import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 
-public class SmsManagerActivity extends ListActivity {
+public class SmsManagerActivity extends ListActivityBase<Message> {
 	public static final String PREFS_NAME = "default";
 
 	private SharedPreferences settings;
 
 	private MessageManager messageManager;
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,14 +56,14 @@ public class SmsManagerActivity extends ListActivity {
 					}
 				});
 
-		updateMessageList();
+		updateListThenResetListener();
 	}
 
-	private void updateMessageList() {
+	@Override
+	protected void updateList() {
 		final List<Message> messages = messageManager
 				.getLastOneMessageForEachNumber();
 		setListAdapter(new ConversationListArrayAdapter(this, messages));
-		getListView().setOnCreateContextMenuListener(this);
 	}
 
 	@Override
@@ -123,7 +118,7 @@ public class SmsManagerActivity extends ListActivity {
 		receivedAction = new ReceivedAction();
 		this.registerReceiver(receivedAction, intentFilter);
 
-		updateMessageList();
+		updateListThenResetListener();
 	}
 
 	@Override
@@ -138,46 +133,24 @@ public class SmsManagerActivity extends ListActivity {
 		public void onReceive(Context context, Intent intent) {
 
 			if (intent.getAction().equals(SmsReceiver.SMS_RECEIVED_ACTION)) {
-				updateMessageList();
+				updateListThenResetListener();
 			}
 		}
 	}
 
-	private int positionClicked = -1;
-
-	private final int MENU_ITEM_REMOVE = 1;
-
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-
-		// TODO: Put the name in title.
-		menu.setHeaderTitle("Conversation");
-
-		try {
-			// Save the position and recall it when item clicked.
-			AdapterView.AdapterContextMenuInfo info;
-		    info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		    positionClicked = info.position;
-		} catch (final ClassCastException e) {
-		    Log.e(getClass().getName(), "bad menuInfo", e);
-		    return;
-		}
-
-		menu.add(Menu.NONE, MENU_ITEM_REMOVE, Menu.NONE, "Remove");
+	public void onItemRemoved(Message selected) {
+		messageManager.deleteAllByPhoneNumber(selected.getPhoneNumber());
 	}
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-    	final Message selected = (Message) getListAdapter().getItem(positionClicked);
-		switch (item.getItemId()) {
-		case MENU_ITEM_REMOVE:
-			messageManager.deleteAllByPhoneNumber(selected.getPhoneNumber());
-			updateMessageList();
-			return true;
-		default:
-			assert false;
-			return true;
-		}
-    }
+	@Override
+	protected int getContextMenuOptions() {
+		return MENU_ITEM_REMOVE;
+	}
+
+	@Override
+	protected String getContextMenuTitle(Message selected) {
+		// TODO: Show contact name instead of phone number.
+		return "All messages of \"" + selected.getPhoneNumber() + "\"";
+	}
 }
