@@ -10,19 +10,21 @@ import com.anibug.smsmanager.model.MessageManager;
 
 public class ConversationActivity extends ListActivityBase<Message> {
 	private MessageManager messageManager;
+	private String number;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.conversation);
+
 		messageManager = new MessageManager(this);
+		number = getIntent().getStringExtra(Message.DataBase.PHONENUMBER);
 
 		updateListThenResetListener();
 	}
 
 	@Override
 	protected void updateList() {
-		final String number = getIntent().getStringExtra(Message.DataBase.PHONENUMBER);
 		final List<Message> messages = messageManager.getMessages(number);
 
 		setListAdapter(new ConversationListArrayAdapter(getApplicationContext(), messages));

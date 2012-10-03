@@ -1,5 +1,6 @@
 package com.anibug.smsmanager.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
@@ -19,6 +20,8 @@ public class MessageManager extends Manager<Message> {
 	}
 
 	public List<Message> getMessages(String number) {
+		if (number == null)
+			return new ArrayList<Message>();
 		return fetch(DataBase.PHONENUMBER, number);
 	}
 
