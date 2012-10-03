@@ -17,7 +17,7 @@ import com.anibug.smsmanager.adapter.ContactArrayAdapter;
 import com.anibug.smsmanager.model.Contact;
 import com.anibug.smsmanager.model.ContactManager;
 
-public class ContactActivity extends ListActivity {
+public class ContactListActivity extends ListActivity {
 	ContactManager contactManager;
 
 	@Override
@@ -31,7 +31,7 @@ public class ContactActivity extends ListActivity {
 	}
 
 	private void updateList() {
-		List<Contact> contacts = contactManager.fetchAll();
+		final List<Contact> contacts = contactManager.fetchAll();
 		setListAdapter(new ContactArrayAdapter(this, contacts));
 		getListView().setOnCreateContextMenuListener(this);
 	}
@@ -57,7 +57,7 @@ public class ContactActivity extends ListActivity {
 	}
 
 	private void showEditingDialog(Contact contact) {
-		Intent intent = new Intent(this, ContactEditActivity.class);
+		final Intent intent = new Intent(this, ContactEditActivity.class);
 		if (contact == null) {
 			startActivityForResult(intent, ContactEditActivity.NEW_CONTACT);
 		} else {
@@ -100,7 +100,7 @@ public class ContactActivity extends ListActivity {
 			AdapterView.AdapterContextMenuInfo info;
 		    info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 		    positionClicked = info.position;
-		} catch (ClassCastException e) {
+		} catch (final ClassCastException e) {
 		    Log.e(getClass().getName(), "bad menuInfo", e);
 		    return;
 		}
@@ -111,7 +111,7 @@ public class ContactActivity extends ListActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-    	Contact selected = (Contact) getListAdapter().getItem(positionClicked);
+    	final Contact selected = (Contact) getListAdapter().getItem(positionClicked);
 		switch (item.getItemId()) {
 		case MENU_ITEM_REMOVE:
 			contactManager.delete(selected);

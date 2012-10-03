@@ -24,7 +24,7 @@
 			</intent-filter>
 		</receiver>
 		<activity android:launchMode="standard" android:name=".ConversationActivity"></activity>
-		<activity android:name=".ContactActivity" android:launchMode="standard"></activity>
+		<activity android:name=".ContactListActivity" android:launchMode="standard"></activity>
 		<activity android:name=".ContactEditActivity" android:launchMode="standard"></activity>
 
 	</application>

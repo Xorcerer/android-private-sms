@@ -10,6 +10,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,12 +47,12 @@ public class SmsManagerActivity extends ListActivity {
 				new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						Intent intent = new Intent(view.getContext(),
+						final Intent intent = new Intent(view.getContext(),
 								ConversationActivity.class);
 
 						// FIXME: We should assign the contact id somewhere
 						// else, instead of using the text of view.
-						TextView contact = (TextView) view
+						final TextView contact = (TextView) view
 								.findViewById(R.id.message_contact);
 						intent.putExtra(Message.DataBase.PHONENUMBER, contact
 								.getText().toString());
@@ -63,9 +65,10 @@ public class SmsManagerActivity extends ListActivity {
 	}
 
 	private void updateMessageList() {
-		List<Message> messages = messageManager
+		final List<Message> messages = messageManager
 				.getLastOneMessageForEachNumber();
 		setListAdapter(new ConversationListArrayAdapter(this, messages));
+		getListView().setOnCreateContextMenuListener(this);
 	}
 
 	@Override
@@ -76,7 +79,7 @@ public class SmsManagerActivity extends ListActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		boolean blocking = settings.getBoolean(MessageManager.PREF_BLOCKING,
+		final boolean blocking = settings.getBoolean(MessageManager.PREF_BLOCKING,
 				true);
 
 		if (blocking)
@@ -92,13 +95,13 @@ public class SmsManagerActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.item_contact_list:
-			Intent intent = new Intent(this, ContactActivity.class);
+			final Intent intent = new Intent(this, ContactListActivity.class);
 			startActivity(intent);
 			return true;
 		case R.id.item_blocking:
-			boolean blocking = settings.getBoolean(
+			final boolean blocking = settings.getBoolean(
 					MessageManager.PREF_BLOCKING, true);
-			SharedPreferences.Editor editor = settings.edit();
+			final SharedPreferences.Editor editor = settings.edit();
 			editor.putBoolean(MessageManager.PREF_BLOCKING, !blocking);
 			editor.commit();
 			return true;
@@ -119,15 +122,14 @@ public class SmsManagerActivity extends ListActivity {
 		intentFilter.addAction(SmsReceiver.SMS_RECEIVED_ACTION);
 		receivedAction = new ReceivedAction();
 		this.registerReceiver(receivedAction, intentFilter);
-		Log.d("Reciever", "registerReceiver");
 
+		updateMessageList();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		this.unregisterReceiver(receivedAction);
-		Log.d("Reciever", "unregisterReceiver");
 	}
 
 	class ReceivedAction extends BroadcastReceiver {
@@ -139,6 +141,43 @@ public class SmsManagerActivity extends ListActivity {
 				updateMessageList();
 			}
 		}
-
 	}
+
+	private int positionClicked = -1;
+
+	private final int MENU_ITEM_REMOVE = 1;
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		// TODO: Put the name in title.
+		menu.setHeaderTitle("Conversation");
+
+		try {
+			// Save the position and recall it when item clicked.
+			AdapterView.AdapterContextMenuInfo info;
+		    info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		    positionClicked = info.position;
+		} catch (final ClassCastException e) {
+		    Log.e(getClass().getName(), "bad menuInfo", e);
+		    return;
+		}
+
+		menu.add(Menu.NONE, MENU_ITEM_REMOVE, Menu.NONE, "Remove");
+	}
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+    	final Message selected = (Message) getListAdapter().getItem(positionClicked);
+		switch (item.getItemId()) {
+		case MENU_ITEM_REMOVE:
+			messageManager.deleteAllByPhoneNumber(selected.getPhoneNumber());
+			updateMessageList();
+			return true;
+		default:
+			assert false;
+			return true;
+		}
+    }
 }

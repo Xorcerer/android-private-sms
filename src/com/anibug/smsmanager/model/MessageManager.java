@@ -93,4 +93,8 @@ public class MessageManager extends Manager<Message> {
 				cursor.getInt(indexOnlineId));
 	}
 
+	public int deleteAllByPhoneNumber(String number) {
+		final String[] whereArgs = new String[] {number};
+		return getSqliteDatabase().delete(getTableName(), DataBase.PHONENUMBER + "= ?", whereArgs);
+	}
 }
