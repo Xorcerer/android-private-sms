@@ -7,7 +7,7 @@ public class Message extends Model {
 	public static final int STATUS_RECEIVED = 1;
 	public static final int STATUS_SENT = 2;
 	public static final int STATUS_DRAFT = 3;
-	
+
 	private String phoneNumber;
 	private Date dateCreated;
 	private String content;
@@ -15,9 +15,9 @@ public class Message extends Model {
 	private int onlineId = -1;
 
 	public Message() {
-		
+
 	}
-	
+
 	public Message(String phoneNumber, Date dateCreated, String content, int status) {
 		this.phoneNumber = phoneNumber;
 		this.dateCreated = dateCreated;
@@ -51,6 +51,16 @@ public class Message extends Model {
 
 	public final String getContent() {
 		return content;
+	}
+
+	private static final int MAX_SHORT_CONTENT_LENGTH = 3;
+	private static final String SUFFIX_AFTER_TRUNCUT = "...";
+	public final String getShortContent() {
+		if (content.length() < MAX_SHORT_CONTENT_LENGTH)
+			return content;
+
+		final int lengthToKeep = MAX_SHORT_CONTENT_LENGTH - SUFFIX_AFTER_TRUNCUT.length();
+		return content.substring(0, lengthToKeep) + SUFFIX_AFTER_TRUNCUT;
 	}
 
 	public final void setContent(String content) {
