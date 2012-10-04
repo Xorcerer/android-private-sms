@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:paddingLeft="8dp"
-	android:paddingRight="8dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical" android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:paddingLeft="8dp"
+                android:paddingRight="8dp">
 
-	<ListView android:id="@android:id/list" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:background="#000000"
-		android:layout_weight="1" android:drawSelectorOnTop="false" />
+    <ListView android:id="@android:id/list" android:layout_width="fill_parent"
+              android:layout_height="wrap_content" android:background="#000000"
+              android:layout_weight="1" android:drawSelectorOnTop="false"/>
 
-	<TextView android:id="@android:id/empty" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:background="#000000"
-		android:text="No data" />
-</LinearLayout>
+    <TextView android:id="@android:id/empty" android:layout_width="fill_parent"
+              android:layout_height="wrap_content" android:background="#000000"
+              android:text="No data"/>
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="2dp"
+            android:orientation="horizontal">
+        <EditText android:id="@+id/outgoing_message_content"
+                  android:inputType="text"
+                  android:layout_height="24dp"
+                  android:background="@color/white"
+                  android:layout_width="wrap_content"
+                  android:layout_weight="1"/>
+        <Button android:layout_height="32dp"
+                android:layout_width="50dp"
+                android:paddingBottom="10dp"
+                android:textSize="11dp"
+                android:text="Send"
+                android:onClick="sendMessage" />
+    </LinearLayout>
+</RelativeLayout>
  

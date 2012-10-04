@@ -14,9 +14,6 @@ public class Message extends Model {
 	private int status;
 	private int onlineId = -1;
 
-	public Message() {
-
-	}
 
 	public Message(String phoneNumber, Date dateCreated, String content, int status) {
 		this.phoneNumber = phoneNumber;

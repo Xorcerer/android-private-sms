@@ -26,7 +26,7 @@ public class ContactEditActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.edit_contact);
+		setContentView(R.layout.contact_edit);
 
 		contactManager = new ContactManager(this);
 		nameEdit = (EditText) findViewById(R.id.edit_contact_name);
