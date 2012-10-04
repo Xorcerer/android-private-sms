@@ -1,5 +1,9 @@
 package com.anibug.smsmanager.model;
 
+import android.content.res.Resources;
+import com.anibug.smsmanager.R;
+import com.anibug.smsmanager.Utils;
+
 import java.util.Date;
 
 
@@ -7,6 +11,8 @@ public class Message extends Model {
 	public static final int STATUS_RECEIVED = 1;
 	public static final int STATUS_SENT = 2;
 	public static final int STATUS_DRAFT = 3;
+
+    public static final Message FAKE_MESSAGE = new Message("1234567890", new Date(), "Hello world", STATUS_RECEIVED);
 
 	private String phoneNumber;
 	private Date dateCreated;
@@ -84,9 +90,16 @@ public class Message extends Model {
 		return onlineId >= 0;
 	}
 
-	public class DataBase {
+    public String getSender() {
+        if (status == STATUS_SENT)
+            return Utils.getContext().getString(R.string.me);
+
+        return phoneNumber;
+    }
+
+    public class DataBase {
 		public static final String TABLE_NAME = "messages";
-		public static final String PHONENUMBER = "phone_number";
+		public static final String PHONE_NUMBER = "phone_number";
 		public static final String DATE_CREATED = "date_created";
 		public static final String CONTENT = "content";
 		public static final String STATUS = "status";

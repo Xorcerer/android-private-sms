@@ -22,13 +22,19 @@ public class MessageManager extends Manager<Message> {
 	public List<Message> getMessages(String number) {
 		if (number == null)
 			return new ArrayList<Message>();
-		return fetch(DataBase.PHONENUMBER, number);
+		return fetch(DataBase.PHONE_NUMBER, number);
 	}
 
-	public List<Message> getLastOneMessageForEachNumber() {
+    public List<Message> getFakeMessages() {
+        ArrayList<Message> list = new ArrayList<Message>();
+        list.add(Message.FAKE_MESSAGE);
+        return list;
+    }
+
+    public List<Message> getLastOneMessageForEachNumber() {
 		final Formatter formatter = new Formatter();
 		formatter.format("Select * From %1$s Where id In (Select Max(id) From %1$s Group By %2$s)",
-				DataBase.TABLE_NAME, DataBase.PHONENUMBER);
+				DataBase.TABLE_NAME, DataBase.PHONE_NUMBER);
 		final Cursor cursor = getSqliteDatabase().rawQuery(formatter.toString(), null);
 		formatter.close();
 
@@ -53,7 +59,7 @@ public class MessageManager extends Manager<Message> {
 				")";
 		Formatter formatter = new Formatter();
 		formatter.format(tableFormat, getTableName(),
-				DataBase.PHONENUMBER, DataBase.CONTENT,
+				DataBase.PHONE_NUMBER, DataBase.CONTENT,
 				DataBase.DATE_CREATED, DataBase.STATUS, DataBase.ONLINE_ID);
 		result[0] = formatter.toString();
 		formatter.close();
@@ -74,7 +80,7 @@ public class MessageManager extends Manager<Message> {
 		final int timeInSecond = (int)(message.getDateCreated().getTime() / 1000L);
 		values.put(DataBase.CONTENT, message.getContent());
 		values.put(DataBase.DATE_CREATED, timeInSecond);
-		values.put(DataBase.PHONENUMBER, message.getPhoneNumber());
+		values.put(DataBase.PHONE_NUMBER, message.getPhoneNumber());
 		values.put(DataBase.STATUS, message.getStatus());
 		values.put(DataBase.ONLINE_ID, message.getOnlineId());
 
@@ -83,7 +89,7 @@ public class MessageManager extends Manager<Message> {
 
 	@Override
 	public Message createObject(Cursor cursor) {
-		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONENUMBER);
+		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONE_NUMBER);
 		final int indexContent = cursor.getColumnIndexOrThrow(DataBase.CONTENT);
 		final int indexStatus = cursor.getColumnIndexOrThrow(DataBase.STATUS);
 		final int indexDateCreated = cursor.getColumnIndexOrThrow(DataBase.DATE_CREATED);
@@ -98,6 +104,6 @@ public class MessageManager extends Manager<Message> {
 
 	public int deleteAllByPhoneNumber(String number) {
 		final String[] whereArgs = new String[] {number};
-		return getSqliteDatabase().delete(getTableName(), DataBase.PHONENUMBER + "= ?", whereArgs);
+		return getSqliteDatabase().delete(getTableName(), DataBase.PHONE_NUMBER + "= ?", whereArgs);
 	}
 }

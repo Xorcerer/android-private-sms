@@ -29,7 +29,7 @@
                 android:layout_width="50dp"
                 android:paddingBottom="10dp"
                 android:textSize="11dp"
-                android:text="Send"
+                android:text="@string/send"
                 android:onClick="sendMessage" />
     </LinearLayout>
 </RelativeLayout>

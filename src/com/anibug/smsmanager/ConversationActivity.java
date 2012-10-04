@@ -22,7 +22,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
 		setContentView(R.layout.conversation);
 
 		messageManager = new MessageManager(this);
-		number = getIntent().getStringExtra(Message.DataBase.PHONENUMBER);
+		number = getIntent().getStringExtra(Message.DataBase.PHONE_NUMBER);
 
 		updateListThenResetListener();
 	}
@@ -51,9 +51,19 @@ public class ConversationActivity extends ListActivityBase<Message> {
 	}
 
     public void sendMessage(View v) {
-        SmsManager sm = SmsManager.getDefault();
         EditText messageEdit = (EditText) findViewById(R.id.outgoing_message_content);
         String content = messageEdit.getText().toString();
+
+        if (Utils.Locked)
+        {
+            if (!content.equals("password"))
+                return;
+
+            Utils.Locked = false;
+            finish();
+            return;
+        }
+        SmsManager sm = SmsManager.getDefault();
 
         sm.sendTextMessage(number, null, content, null, null);
 

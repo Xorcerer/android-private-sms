@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.TextView;
 
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
 import com.anibug.smsmanager.model.ContactManager;
@@ -27,11 +26,12 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 
 	private MessageManager messageManager;
 
-	@Override
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        Utils.setContext(this);
 
-		settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
 		messageManager = new MessageManager(this);
 		// FIXME: For loading SQL definitions of ContactManager.
@@ -45,12 +45,8 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 						final Intent intent = new Intent(view.getContext(),
 								ConversationActivity.class);
 
-						// FIXME: We should assign the contact id somewhere
-						// else, instead of using the text of view.
-						final TextView contact = (TextView) view
-								.findViewById(R.id.message_contact);
-						intent.putExtra(Message.DataBase.PHONENUMBER, contact
-								.getText().toString());
+                        Message message = (Message) view.getTag();
+                        intent.putExtra(Message.DataBase.PHONE_NUMBER, message.getPhoneNumber());
 
 						startActivity(intent);
 					}
@@ -61,8 +57,11 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 
 	@Override
 	protected void updateList() {
-		final List<Message> messages = messageManager
-				.getLastOneMessageForEachNumber();
+		List<Message> messages;
+        if (Utils.Locked)
+            messages = messageManager.getFakeMessages();
+        else
+            messages = messageManager.getLastOneMessageForEachNumber();
 		setListAdapter(new ConversationListArrayAdapter(this, messages));
 		Utils.cancelNotification(this);
 	}
@@ -102,19 +101,18 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 			editor.commit();
 			return true;
 		default:
-			assert false : "An unhandle item selecting triggered.";
+			assert false : "An unhandled item selecting triggered.";
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
 	private ReceivedAction receivedAction;
-	private IntentFilter intentFilter;
 
-	@Override
+    @Override
 	protected void onResume() {
 		super.onResume();
 
-		intentFilter = new IntentFilter();
+        IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(SmsReceiver.SMS_RECEIVED_ACTION);
 		receivedAction = new ReceivedAction();
 		this.registerReceiver(receivedAction, intentFilter);
@@ -125,7 +123,9 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		this.unregisterReceiver(receivedAction);
+        Utils.Locked = true;
+
+        this.unregisterReceiver(receivedAction);
 	}
 
 	class ReceivedAction extends BroadcastReceiver {

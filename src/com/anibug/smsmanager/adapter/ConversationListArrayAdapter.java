@@ -37,11 +37,12 @@ public class ConversationListArrayAdapter extends ArrayAdapter<Message> {
 
 		TextView contact = (TextView) view
 				.findViewById(R.id.message_contact);
-		contact.setText(message.getPhoneNumber());
+		contact.setText(message.getSender());
 
 		TextView body = (TextView) view.findViewById(R.id.message_body);
 		body.setText(message.getContent());
 
+        view.setTag(message);
 		return view;
 	}
 
