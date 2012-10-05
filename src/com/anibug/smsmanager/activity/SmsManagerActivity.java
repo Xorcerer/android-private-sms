@@ -55,7 +55,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 					}
 				});
 
-		updateListThenResetListener();
+		updateList();
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 		receivedAction = new ReceivedAction();
 		this.registerReceiver(receivedAction, intentFilter);
 
-		updateListThenResetListener();
+		updateList();
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 		public void onReceive(Context context, Intent intent) {
 
 			if (intent.getAction().equals(SmsReceiver.SMS_RECEIVED_ACTION)) {
-				updateListThenResetListener();
+				updateList();
 			}
 		}
 	}

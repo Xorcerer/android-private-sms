@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.View;
+import android.widget.AdapterView;
 import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.adapter.ContactArrayAdapter;
 import com.anibug.smsmanager.model.Contact;
 import com.anibug.smsmanager.model.ContactManager;
+import com.anibug.smsmanager.model.Message;
 
 public class ContactListActivity extends ListActivityBase<Contact> {
 	ContactManager contactManager;
@@ -23,7 +26,21 @@ public class ContactListActivity extends ListActivityBase<Contact> {
 
 		contactManager = new ContactManager(this);
 
-		updateListThenResetListener();
+        getListView().setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        final Intent intent = new Intent(view.getContext(),
+                                ConversationActivity.class);
+
+                        Contact contact = (Contact) view.getTag();
+                        intent.putExtra(Message.DataBase.PHONE_NUMBER, contact.getPhoneNumber());
+
+                        startActivity(intent);
+                    }
+                });
+
+        updateList();
 	}
 
 	@Override
@@ -80,7 +97,7 @@ public class ContactListActivity extends ListActivityBase<Contact> {
 		switch (requestCode) {
 		case ContactEditActivity.NEW_CONTACT:
 		case ContactEditActivity.EDIT_CONTACT:
-			updateListThenResetListener();
+			updateList();
 			break;
 		default:
 			assert false;

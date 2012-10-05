@@ -120,4 +120,9 @@ public abstract class Manager<T extends Model> {
 
 	abstract public T createObject(Cursor cursor);
 
+    public long getObjectId(Cursor cursor) {
+        final int indexId = cursor.getColumnIndexOrThrow("id");
+        return cursor.getLong(indexId);
+    }
+
 }

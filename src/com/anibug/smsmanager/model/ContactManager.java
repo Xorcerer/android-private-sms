@@ -23,7 +23,7 @@ public class ContactManager extends Manager<Contact> implements Filter {
 	}
 
 	Context context;
-	public static final int MIN_PHONENUMBER_LENGTH_IN_CHINA = 11;
+	public static final int MIN_PHONE_NUMBER_LENGTH_IN_CHINA = 11;
 
 	private Set<String> phoneNumbers = null;
 
@@ -36,9 +36,9 @@ public class ContactManager extends Manager<Contact> implements Filter {
 
 	// Whether it is good to truncate phone numbers?
 	public String normalizePhoneNumber(String number) {
-		if (number.length() <= MIN_PHONENUMBER_LENGTH_IN_CHINA)
+		if (number.length() <= MIN_PHONE_NUMBER_LENGTH_IN_CHINA)
 			return number;
-		return number.substring(number.length() - MIN_PHONENUMBER_LENGTH_IN_CHINA);
+		return number.substring(number.length() - MIN_PHONE_NUMBER_LENGTH_IN_CHINA);
 	}
 
 	public Set<String> getAllPhoneNumbers() {
@@ -92,13 +92,14 @@ public class ContactManager extends Manager<Contact> implements Filter {
 
 	@Override
 	public Contact createObject(Cursor cursor) {
-		final int indexName = cursor.getColumnIndexOrThrow(DataBase.NAME);
+        final int indexName = cursor.getColumnIndexOrThrow(DataBase.NAME);
 		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONENUMBER);
 		final int indexStatus = cursor.getColumnIndexOrThrow(DataBase.STATUS);
 		final Contact contact = new Contact(
 				cursor.getString(indexName),
 				cursor.getString(indexPhoneNumber),
 				cursor.getInt(indexStatus));
+        contact.setId(getObjectId(cursor));
 		return contact;
 	}
 

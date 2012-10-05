@@ -28,7 +28,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
 		number = getIntent().getStringExtra(Message.DataBase.PHONE_NUMBER);
         setTitle(number);
 
-        updateListThenResetListener();
+        updateList();
 	}
 
 	@Override
@@ -74,6 +74,6 @@ public class ConversationActivity extends ListActivityBase<Message> {
         Message sentMessage = new Message(number, new Date(), content, Message.STATUS_SENT);
         messageManager.save(sentMessage);
 
-        updateListThenResetListener();
+        updateList();
     }
 }

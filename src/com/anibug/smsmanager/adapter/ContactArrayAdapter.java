@@ -24,7 +24,7 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Contact message = getItem(position);
+		Contact contact = getItem(position);
 
 		RelativeLayout view = (RelativeLayout) inflater.inflate(VIEW_ID, null,
 				false);
@@ -32,11 +32,12 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
 		view.setId(position);
 
 		TextView dateCreated = (TextView) view.findViewById(R.id.contact_name);
-		dateCreated.setText(message.getName());
+		dateCreated.setText(contact.getName());
 
-		TextView contact = (TextView) view.findViewById(R.id.contact_number);
-		contact.setText(message.getPhoneNumber());
+		TextView contactNumber = (TextView) view.findViewById(R.id.contact_number);
+		contactNumber.setText(contact.getPhoneNumber());
 
+        view.setTag(contact);
 		return view;
 	}
 

@@ -98,12 +98,14 @@ public class MessageManager extends Manager<Message> {
 		final int indexStatus = cursor.getColumnIndexOrThrow(DataBase.STATUS);
 		final int indexDateCreated = cursor.getColumnIndexOrThrow(DataBase.DATE_CREATED);
 		final int indexOnlineId = cursor.getColumnIndexOrThrow(DataBase.ONLINE_ID);
-		return new Message(
+		Message message = new Message(
 				cursor.getString(indexPhoneNumber),
 				new Date(cursor.getInt(indexDateCreated) * 1000L),
 				cursor.getString(indexContent),
 				cursor.getInt(indexStatus),
 				cursor.getInt(indexOnlineId));
+        message.setId(getObjectId(cursor));
+        return message;
 	}
 
 	public int deleteAllByPhoneNumber(String number) {

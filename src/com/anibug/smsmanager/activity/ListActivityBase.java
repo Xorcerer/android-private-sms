@@ -24,11 +24,6 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 	protected abstract void updateList();
 	protected abstract int getContextMenuOptions();
 
-	protected void updateListThenResetListener() {
-		updateList();
-		getListView().setOnCreateContextMenuListener(this);
-	}
-
 	protected String getContextMenuTitle(T selected) {
 		return selected.toString();
 	}
@@ -38,6 +33,7 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
         super.onCreate(savedInstanceState);
 
         Session.updateSessionFrom(this);
+        getListView().setOnCreateContextMenuListener(this);
     }
 
     @Override
@@ -78,11 +74,11 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 		switch (item.getItemId()) {
 		case MENU_ITEM_REMOVE:
 			onItemRemoved(selected);
-			updateListThenResetListener();
+			updateList();
 			return true;
 		case MENU_ITEM_EDIT:
 			onItemUpdated(selected);
-			updateListThenResetListener();
+			updateList();
 			return true;
 		default:
 			assert false;
