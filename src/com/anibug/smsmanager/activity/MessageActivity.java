@@ -1,7 +1,8 @@
-package com.anibug.smsmanager;
+package com.anibug.smsmanager.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import com.anibug.smsmanager.R;
 
 public class MessageActivity extends Activity {
 

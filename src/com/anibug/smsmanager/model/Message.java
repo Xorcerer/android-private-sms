@@ -1,8 +1,7 @@
 package com.anibug.smsmanager.model;
 
-import android.content.res.Resources;
 import com.anibug.smsmanager.R;
-import com.anibug.smsmanager.Utils;
+import com.anibug.smsmanager.Session;
 
 import java.util.Date;
 
@@ -92,7 +91,7 @@ public class Message extends Model {
 
     public String getSender() {
         if (status == STATUS_SENT)
-            return Utils.getContext().getString(R.string.me);
+            return Session.getContext().getString(R.string.me);
 
         return phoneNumber;
     }

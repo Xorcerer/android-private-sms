@@ -1,4 +1,4 @@
-package com.anibug.smsmanager;
+package com.anibug.smsmanager.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.model.Contact;
 import com.anibug.smsmanager.model.ContactManager;
 

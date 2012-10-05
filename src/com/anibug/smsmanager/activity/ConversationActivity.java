@@ -1,4 +1,4 @@
-package com.anibug.smsmanager;
+package com.anibug.smsmanager.activity;
 
 import java.util.Date;
 import java.util.List;
@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.EditText;
+import com.anibug.smsmanager.R;
+import com.anibug.smsmanager.Session;
+import com.anibug.smsmanager.Utils;
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
@@ -19,8 +22,6 @@ public class ConversationActivity extends ListActivityBase<Message> {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        Utils.setActivityContext(this);
-
         setContentView(R.layout.conversation);
 
 		messageManager = new MessageManager(this);
@@ -56,12 +57,12 @@ public class ConversationActivity extends ListActivityBase<Message> {
         EditText messageEdit = (EditText) findViewById(R.id.outgoing_message_content);
         String content = messageEdit.getText().toString();
 
-        if (Utils.isLocked())
+        if (Session.isLocked())
         {
             if (!content.equals("password"))
                 return;
 
-            Utils.unlock();
+            Session.unlock();
             finish();
             return;
         }

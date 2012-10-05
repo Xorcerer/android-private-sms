@@ -1,6 +1,8 @@
-package com.anibug.smsmanager;
+package com.anibug.smsmanager.activity;
 
 import android.app.ListActivity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -9,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.anibug.smsmanager.Session;
 import com.anibug.smsmanager.model.Model;
 
 public abstract class ListActivityBase<T extends Model> extends ListActivity {
@@ -30,7 +33,21 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 		return selected.toString();
 	}
 
-	@Override
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Session.updateSessionFrom(this);
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        Session.packSessionTo(intent);
+
+        super.startActivity(intent);
+    }
+
+    @Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 

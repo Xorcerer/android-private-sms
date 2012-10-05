@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name=".SmsManagerActivity" android:label="@string/app_name">
+		<activity android:name=".activity.SmsManagerActivity" android:label="@string/app_name">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -23,9 +23,9 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</receiver>
-		<activity android:launchMode="standard" android:name=".ConversationActivity"></activity>
-		<activity android:name=".ContactListActivity" android:launchMode="standard"></activity>
-		<activity android:name=".ContactEditActivity" android:launchMode="standard"></activity>
+		<activity android:launchMode="standard" android:name=".activity.ConversationActivity"></activity>
+		<activity android:name=".activity.ContactListActivity" android:launchMode="standard"></activity>
+		<activity android:name=".activity.ContactEditActivity" android:launchMode="standard"></activity>
 
 	</application>
 

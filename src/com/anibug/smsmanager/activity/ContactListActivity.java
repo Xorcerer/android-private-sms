@@ -1,4 +1,4 @@
-package com.anibug.smsmanager;
+package com.anibug.smsmanager.activity;
 
 
 import java.util.List;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.adapter.ContactArrayAdapter;
 import com.anibug.smsmanager.model.Contact;
 import com.anibug.smsmanager.model.ContactManager;

@@ -1,4 +1,4 @@
-package com.anibug.smsmanager;
+package com.anibug.smsmanager.activity;
 
 import java.util.List;
 
@@ -14,6 +14,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.anibug.smsmanager.R;
+import com.anibug.smsmanager.Session;
+import com.anibug.smsmanager.SmsReceiver;
+import com.anibug.smsmanager.Utils;
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
 import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
@@ -29,7 +33,6 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        Utils.setActivityContext(this);
 
         settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
@@ -48,7 +51,6 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
                         Message message = (Message) view.getTag();
                         intent.putExtra(Message.DataBase.PHONE_NUMBER, message.getPhoneNumber());
 
-                        Utils.packActivityContext(intent);
 						startActivity(intent);
 					}
 				});
@@ -59,7 +61,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 	@Override
 	protected void updateList() {
 		List<Message> messages;
-        if (Utils.isLocked())
+        if (Session.isLocked())
             messages = messageManager.getFakeMessages();
         else
             messages = messageManager.getLastOneMessageForEachNumber();
@@ -124,7 +126,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 	@Override
 	protected void onPause() {
 		super.onPause();
-        Utils.lock();
+        Session.lock();
 
         this.unregisterReceiver(receivedAction);
 	}
