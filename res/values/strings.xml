@@ -12,4 +12,6 @@
     <string name="send">Send</string>
     <string name="me">Me</string>
     <string name="no_message">No message yet.</string>
+    <string name="landing_input_name">Please enter your name:</string>
+    <string name="ok">OK</string>
 </resources>

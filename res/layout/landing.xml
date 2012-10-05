@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="fill_parent"
+              android:layout_height="wrap_content" android:paddingLeft="8dp"
+              android:paddingRight="8dp">
+
+    <TextView android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:background="#000000"
+              android:text="@string/landing_input_name"/>
+
+    <EditText android:id="@+id/landing_input_name"
+              android:inputType="text"
+              android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:singleLine="true"/>
+
+    <Button android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/ok"
+            android:onClick="ok"/>
+
+    <TextView android:id="@+id/landing_greeting"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:background="#000000"
+              android:text=""/>
+
+</LinearLayout>
