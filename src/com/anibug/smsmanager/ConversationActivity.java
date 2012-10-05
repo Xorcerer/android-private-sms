@@ -19,7 +19,9 @@ public class ConversationActivity extends ListActivityBase<Message> {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.conversation);
+        Utils.setActivityContext(this);
+
+        setContentView(R.layout.conversation);
 
 		messageManager = new MessageManager(this);
 		number = getIntent().getStringExtra(Message.DataBase.PHONE_NUMBER);
@@ -54,12 +56,12 @@ public class ConversationActivity extends ListActivityBase<Message> {
         EditText messageEdit = (EditText) findViewById(R.id.outgoing_message_content);
         String content = messageEdit.getText().toString();
 
-        if (Utils.Locked)
+        if (Utils.isLocked())
         {
             if (!content.equals("password"))
                 return;
 
-            Utils.Locked = false;
+            Utils.unlock();
             finish();
             return;
         }

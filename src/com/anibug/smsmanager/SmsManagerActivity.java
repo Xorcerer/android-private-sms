@@ -29,7 +29,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        Utils.setContext(this);
+        Utils.setActivityContext(this);
 
         settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
@@ -48,6 +48,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
                         Message message = (Message) view.getTag();
                         intent.putExtra(Message.DataBase.PHONE_NUMBER, message.getPhoneNumber());
 
+                        Utils.packActivityContext(intent);
 						startActivity(intent);
 					}
 				});
@@ -58,7 +59,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 	@Override
 	protected void updateList() {
 		List<Message> messages;
-        if (Utils.Locked)
+        if (Utils.isLocked())
             messages = messageManager.getFakeMessages();
         else
             messages = messageManager.getLastOneMessageForEachNumber();
@@ -123,7 +124,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 	@Override
 	protected void onPause() {
 		super.onPause();
-        Utils.Locked = true;
+        Utils.lock();
 
         this.unregisterReceiver(receivedAction);
 	}
