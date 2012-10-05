@@ -1,8 +1,6 @@
 package com.anibug.smsmanager.model;
 
-import java.util.Formatter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -42,7 +40,7 @@ public class ContactManager extends Manager<Contact> implements Filter {
 	}
 
 	public Set<String> getAllPhoneNumbers() {
-		final String[] columns = new String[] { DataBase.PHONENUMBER };
+		final String[] columns = new String[] {DataBase.PHONE_NUMBER};
 		final Cursor cursor = getSqliteDatabase().query(getTableName(), columns, null, null, null, null, null);
 
 		final HashSet<String> numbers = new HashSet<String>();
@@ -73,7 +71,7 @@ public class ContactManager extends Manager<Contact> implements Filter {
 				")";
 		final Formatter formatter = new Formatter();
 		formatter.format(tableFormat, getTableName(), DataBase.NAME,
-				DataBase.PHONENUMBER, DataBase.STATUS);
+				DataBase.PHONE_NUMBER, DataBase.STATUS);
 		result[0] = formatter.toString();
 		formatter.close();
 
@@ -84,7 +82,7 @@ public class ContactManager extends Manager<Contact> implements Filter {
 	public ContentValues createRecord(Contact message) {
 		final ContentValues values = new ContentValues();
 		values.put(DataBase.NAME, message.getName());
-		values.put(DataBase.PHONENUMBER, message.getPhoneNumber());
+		values.put(DataBase.PHONE_NUMBER, message.getPhoneNumber());
 		values.put(DataBase.STATUS, message.getStatus());
 
 		return values;
@@ -93,7 +91,7 @@ public class ContactManager extends Manager<Contact> implements Filter {
 	@Override
 	public Contact createObject(Cursor cursor) {
         final int indexName = cursor.getColumnIndexOrThrow(DataBase.NAME);
-		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONENUMBER);
+		final int indexPhoneNumber = cursor.getColumnIndexOrThrow(DataBase.PHONE_NUMBER);
 		final int indexStatus = cursor.getColumnIndexOrThrow(DataBase.STATUS);
 		final Contact contact = new Contact(
 				cursor.getString(indexName),
@@ -107,7 +105,7 @@ public class ContactManager extends Manager<Contact> implements Filter {
 		return hasPhoneNumber(message.getPhoneNumber());
 	}
 
-	public Contact getContactFromPickResult(Uri uri){
+	public Contact getFromPickResult(Uri uri){
         final ContentResolver contentResolver = context.getContentResolver();
         final String[] cols = new String[] {Phone.DISPLAY_NAME, Phone.NUMBER};
 		final Cursor contactCur = contentResolver.query(uri, cols, null, null, null);
@@ -123,4 +121,38 @@ public class ContactManager extends Manager<Contact> implements Filter {
 
 		return new Contact(name, number.replace("-", ""));
 	}
+
+    private static Hashtable<String, Contact> cache = new Hashtable<String, Contact>();
+    public Contact getByPhoneNumber(final String number) {
+        if (number == null)
+            return null;
+
+        Contact contact = cache.get(number);
+        if (contact != null)
+            return contact;
+
+        final String where = DataBase.PHONE_NUMBER + " LIKE '%' || ?";
+        String[] whereArgs = new String[] {normalizePhoneNumber(number)};
+
+        Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, ID_DESC, "1");
+        List<Contact> dbResult = fetchList(cursor);
+
+        contact = dbResult.size() != 0 ? dbResult.get(0) : getNullContactOfPhoneNumber(number);
+        cache.put(number, contact);
+        return contact;
+    }
+
+    private static Contact getNullContactOfPhoneNumber(String number) {
+        return new Contact(number, number);
+    }
+
+    public void clearCache() {
+        cache.clear();
+    }
+
+    @Override
+    public boolean save(Contact obj) {
+        clearCache();
+        return super.save(obj);
+    }
 }

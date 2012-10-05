@@ -58,18 +58,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
         EditText messageEdit = (EditText) findViewById(R.id.outgoing_message_content);
         String content = messageEdit.getText().toString();
 
-        if (Session.isLocked())
-        {
-            if (!content.equals("password"))
-                return;
-
-            Session.unlock();
-            finish();
-            return;
-        }
-        SmsManager sm = SmsManager.getDefault();
-
-        sm.sendTextMessage(number, null, content, null, null);
+        SmsManager.getDefault().sendTextMessage(number, null, content, null, null);
 
         Message sentMessage = new Message(number, new Date(), content, Message.STATUS_SENT);
         messageManager.save(sentMessage);

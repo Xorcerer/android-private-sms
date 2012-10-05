@@ -18,14 +18,10 @@ public class Contact extends Model {
 	}
 
 	public Contact(String name, String phoneNumber) {
-		this(phoneNumber);
+        this.phoneNumber = phoneNumber;
 		this.name = name;
 	}
 
-	public Contact(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-	
 	public final String getName() {
 		// TODO: Get the name from system contact list, if null.
 		return name;
@@ -54,7 +50,7 @@ public class Contact extends Model {
 	public class DataBase {
 		public static final String TABLE_NAME = "phone_numbers";
 		public static final String NAME = "name";
-		public static final String PHONENUMBER = "phone_number";
+		public static final String PHONE_NUMBER = "phone_number";
 		public static final String STATUS = "status";
 	}
 }

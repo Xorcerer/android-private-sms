@@ -56,13 +56,13 @@ public class Message extends Model {
 	}
 
 	private static final int MAX_SHORT_CONTENT_LENGTH = 3;
-	private static final String SUFFIX_AFTER_TRUNCUT = "...";
+	private static final String SUFFIX_AFTER_TRUNCATED = "...";
 	public final String getShortContent() {
 		if (content.length() < MAX_SHORT_CONTENT_LENGTH)
 			return content;
 
-		final int lengthToKeep = MAX_SHORT_CONTENT_LENGTH - SUFFIX_AFTER_TRUNCUT.length();
-		return content.substring(0, lengthToKeep) + SUFFIX_AFTER_TRUNCUT;
+		final int lengthToKeep = MAX_SHORT_CONTENT_LENGTH - SUFFIX_AFTER_TRUNCATED.length();
+		return content.substring(0, lengthToKeep) + SUFFIX_AFTER_TRUNCATED;
 	}
 
 	public final void setContent(String content) {
@@ -88,13 +88,6 @@ public class Message extends Model {
 	public final boolean isUploaded() {
 		return onlineId >= 0;
 	}
-
-    public String getSender() {
-        if (status == STATUS_SENT)
-            return Session.getContext().getString(R.string.me);
-
-        return phoneNumber;
-    }
 
     public class DataBase {
 		public static final String TABLE_NAME = "messages";

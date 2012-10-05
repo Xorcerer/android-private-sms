@@ -56,7 +56,7 @@ public abstract class Manager<T extends Model> {
 		return fetchList(cursor);
 	}
 
-	public List<T> fetch(String column, Object value) {
+	public List<T> fetchAllBy(String column, Object value) {
 		final String where = column + "=?";
 		String[] whereArgs = new String[] { String.valueOf(value) };
 
@@ -65,7 +65,19 @@ public abstract class Manager<T extends Model> {
 		return fetchList(cursor);
 	}
 
-	protected List<T> fetchList(Cursor cursor) {
+    public T fetchOneBy(String column, Object value) {
+        final String where = column + "=?";
+        String[] whereArgs = new String[] { String.valueOf(value) };
+
+        Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, ID_DESC, "1");
+
+        List<T> result = fetchList(cursor);
+        if (result.size() == 0)
+            return null;
+        return result.get(0);
+    }
+
+    protected List<T> fetchList(Cursor cursor) {
 		ArrayList<T> result = new ArrayList<T>();
 
 		if (cursor.moveToFirst()) {

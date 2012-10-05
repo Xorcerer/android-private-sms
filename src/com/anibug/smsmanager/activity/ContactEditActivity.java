@@ -70,7 +70,7 @@ public class ContactEditActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, intent);
 
 		if (requestCode == PICK_CONTACT_RESULT && resultCode == RESULT_OK) {
-			final Contact picked = contactManager.getContactFromPickResult(intent.getData());
+			final Contact picked = contactManager.getFromPickResult(intent.getData());
 			if (picked != null) {
 				nameEdit.setText(picked.getName());
 				numberEdit.setText(picked.getPhoneNumber());

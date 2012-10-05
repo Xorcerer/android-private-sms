@@ -61,10 +61,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 	@Override
 	protected void updateList() {
 		List<Message> messages;
-        if (Session.isLocked())
-            messages = messageManager.getFakeMessages();
-        else
-            messages = messageManager.getLastOneMessageForEachNumber();
+        messages = messageManager.getLastOneMessageForEachNumber();
 		setListAdapter(new ConversationListArrayAdapter(this, messages));
 		Utils.cancelNotification(this);
 	}
@@ -77,9 +74,6 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-        if (Session.isLocked())
-            return false;
-
         int stringId = settings.getBoolean(MessageManager.PREF_BLOCKING, true) ?
                 R.string.blocking : R.string.not_blocking;
         menu.findItem(R.id.item_blocking).setTitle(getString(stringId));
@@ -115,7 +109,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
         IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(SmsReceiver.SMS_RECEIVED_ACTION);
 		receivedAction = new ReceivedAction();
-		this.registerReceiver(receivedAction, intentFilter);
+		registerReceiver(receivedAction, intentFilter);
 
 		updateList();
 	}
@@ -123,9 +117,8 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 	@Override
 	protected void onPause() {
 		super.onPause();
-        Session.lock();
 
-        this.unregisterReceiver(receivedAction);
+        unregisterReceiver(receivedAction);
 	}
 
 	class ReceivedAction extends BroadcastReceiver {

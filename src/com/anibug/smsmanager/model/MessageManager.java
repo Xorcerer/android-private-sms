@@ -22,7 +22,7 @@ public class MessageManager extends Manager<Message> {
 	public List<Message> getMessages(String number) {
 		if (number == null)
 			return new ArrayList<Message>();
-		return fetch(DataBase.PHONE_NUMBER, number);
+		return fetchAllBy(DataBase.PHONE_NUMBER, number);
 	}
 
     public List<Message> getFakeMessages() {
