@@ -41,6 +41,10 @@ public class MessageManager extends Manager<Message> {
 		return fetchList(cursor);
 	}
 
+    public String getContactNameForNumber() {
+        return "";
+    }
+
 	@Override
 	public String getTableName() {
 		return DataBase.TABLE_NAME;

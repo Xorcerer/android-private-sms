@@ -26,8 +26,9 @@ public class ConversationActivity extends ListActivityBase<Message> {
 
 		messageManager = new MessageManager(this);
 		number = getIntent().getStringExtra(Message.DataBase.PHONE_NUMBER);
+        setTitle(number);
 
-		updateListThenResetListener();
+        updateListThenResetListener();
 	}
 
 	@Override

@@ -77,15 +77,12 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		final boolean blocking = settings.getBoolean(MessageManager.PREF_BLOCKING,
-				true);
+        if (Session.isLocked())
+            return false;
 
-		if (blocking)
-			menu.findItem(R.id.item_blocking).setTitle(
-					getString(R.string.blocking));
-		else
-			menu.findItem(R.id.item_blocking).setTitle(
-					getString(R.string.not_blocking));
+        int stringId = settings.getBoolean(MessageManager.PREF_BLOCKING, true) ?
+                R.string.blocking : R.string.not_blocking;
+        menu.findItem(R.id.item_blocking).setTitle(getString(stringId));
 		return true;
 	}
 

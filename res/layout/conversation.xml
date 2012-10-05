@@ -17,22 +17,21 @@
     <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:layout_alignParentBottom="true"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
             android:orientation="horizontal">
+        <!-- TODO: Make the following two components align. -->
         <EditText android:id="@+id/outgoing_message_content"
                   android:inputType="text"
                   android:layout_height="24dp"
+                  android:layout_width="0dip"
                   android:background="@color/white"
-                  android:layout_width="wrap_content"
                   android:layout_weight="1"/>
         <Button android:layout_height="32dp"
                 android:layout_width="wrap_content"
-                android:paddingBottom="8dp"
-                android:textSize="11dp"
+                android:paddingBottom="6dp"
+                android:textSize="12dp"
                 android:text="@string/send"
-                android:onClick="sendMessage"/>
+                android:onClick="sendMessage"
+                android:gravity="center"/>
     </LinearLayout>
 </LinearLayout>
  
