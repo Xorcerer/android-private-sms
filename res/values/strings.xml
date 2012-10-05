@@ -12,4 +12,5 @@
     <string name="fake_notification">1 Rom update(s) found.</string>
     <string name="send">Send</string>
     <string name="me">Me</string>
+    <string name="no_message">No message yet.</string>
 </resources>
