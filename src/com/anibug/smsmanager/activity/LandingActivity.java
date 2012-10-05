@@ -17,16 +17,16 @@ public class LandingActivity extends Activity {
 
     public void ok(View v) {
         EditText inputName = (EditText) findViewById(R.id.landing_input_name);
+        String name = inputName.getText().toString();
+        inputName.getEditableText().clear();
 
         // FIXME: Make password configurable.
-        String name = inputName.getText().toString();
         if (!name.equals("password")) {
             TextView greeting = (TextView) findViewById(R.id.landing_greeting);
             greeting.setText("Hello " + name + " !");
             return;
         }
 
-        inputName.clearComposingText();
         Intent intent = new Intent(this, SmsManagerActivity.class);
         startActivity(intent);
     }
