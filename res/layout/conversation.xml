@@ -20,7 +20,6 @@
             android:layout_alignParentBottom="true"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
-            android:paddingBottom="2dp"
             android:orientation="horizontal">
         <EditText android:id="@+id/outgoing_message_content"
                   android:inputType="text"
@@ -30,7 +29,7 @@
                   android:layout_weight="1"/>
         <Button android:layout_height="32dp"
                 android:layout_width="wrap_content"
-                android:paddingBottom="10dp"
+                android:paddingBottom="8dp"
                 android:textSize="11dp"
                 android:text="@string/send"
                 android:onClick="sendMessage"/>
