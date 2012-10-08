@@ -57,6 +57,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
     public void sendMessage(View v) {
         EditText messageEdit = (EditText) findViewById(R.id.outgoing_message_content);
         String content = messageEdit.getText().toString();
+        messageEdit.getEditableText().clear();
 
         SmsManager.getDefault().sendTextMessage(number, null, content, null, null);
 
