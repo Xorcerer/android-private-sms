@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.Session;
 import com.anibug.smsmanager.Utils;
@@ -57,6 +58,10 @@ public class ConversationActivity extends ListActivityBase<Message> {
     public void sendMessage(View v) {
         EditText messageEdit = (EditText) findViewById(R.id.outgoing_message_content);
         String content = messageEdit.getText().toString();
+        if (content.length() == 0) {
+            Toast.makeText(this, R.string.cannot_send_empty_message, Toast.LENGTH_SHORT).show();
+            return;
+        }
         messageEdit.getEditableText().clear();
 
         SmsManager.getDefault().sendTextMessage(number, null, content, null, null);
