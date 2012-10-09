@@ -15,4 +15,5 @@
     <string name="landing_input_name">Please enter your name:</string>
     <string name="ok">OK</string>
     <string name="cannot_send_empty_message">Cannot send empty message.</string>
+    <string name="preferences">Preferences</string>
 </resources>

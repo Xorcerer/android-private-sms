@@ -17,17 +17,18 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.LandingActivity" android:label="@string/app_name">
+        <activity android:name=".activity.LandingActivity" android:label="@string/app_name" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.SmsManagerActivity" android:launchMode="standard"></activity>
-		<activity android:name=".activity.ConversationActivity" android:launchMode="standard"></activity>
-		<activity android:name=".activity.ContactListActivity" android:launchMode="standard"></activity>
-		<activity android:name=".activity.ContactEditActivity" android:launchMode="standard"></activity>
+        <activity android:name=".activity.ConversationListActivity" android:launchMode="standard"/>
+		<activity android:name=".activity.ConversationActivity" android:launchMode="standard"/>
+		<activity android:name=".activity.ContactListActivity" android:launchMode="standard"/>
+		<activity android:name=".activity.ContactEditActivity" android:launchMode="standard"/>
+        <activity android:name=".activity.PreferencesActivity" android:launchMode="standard"/>
     </application>
 
 </manifest>

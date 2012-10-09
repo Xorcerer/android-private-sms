@@ -2,32 +2,57 @@ package com.anibug.smsmanager.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.anibug.smsmanager.R;
+import com.anibug.smsmanager.Utils;
 
 public class LandingActivity extends Activity {
+
+    private SharedPreferences settings;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.landing);
+
+        settings = getSharedPreferences(Utils.PREF_NAME, MODE_PRIVATE);
+        boolean passwordRequired = settings.getBoolean(Utils.PREF_PASSWORD_REQUIRED, true);
+
+        if (!passwordRequired) {
+            showConversationList();
+            finish();
+        }
     }
 
     public void ok(View v) {
         EditText inputName = (EditText) findViewById(R.id.landing_input_name);
-        String name = inputName.getText().toString();
+        String password = inputName.getText().toString(); // Actually, it is password.
         inputName.getEditableText().clear();
 
         // FIXME: Make password configurable.
-        if (!name.equals("password")) {
+        if (!passwordMatched(password)) {
             TextView greeting = (TextView) findViewById(R.id.landing_greeting);
-            greeting.setText("Hello " + name + " !");
+            greeting.setText("Hello " + password + " !");
             return;
         }
 
-        Intent intent = new Intent(this, SmsManagerActivity.class);
+        showConversationList();
+    }
+
+    private void showConversationList() {
+        Intent intent = new Intent(this, ConversationListActivity.class);
         startActivity(intent);
+    }
+
+    private boolean passwordMatched(String name) {
+        settings = getSharedPreferences(Utils.PREF_NAME, MODE_PRIVATE);
+        String password = settings.getString(Utils.PREF_PASSWORD, Utils.DEFAULT_PASSWORD);
+
+        return name.equals(password);
     }
 }

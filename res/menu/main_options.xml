@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/item_contact_list"
-          android:title="@+string/contact_list" />
+          android:title="@string/contact_list" />
     <item android:id="@+id/item_blocking"
-          android:title="@+string/blocking" />
+          android:title="@string/blocking" />
+    <item android:id="@+id/item_preferences"
+          android:title="@string/preferences" />
 </menu>

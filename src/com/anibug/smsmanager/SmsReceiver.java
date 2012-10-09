@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
-import com.anibug.smsmanager.activity.SmsManagerActivity;
 import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
@@ -30,7 +29,7 @@ public class SmsReceiver extends BroadcastReceiver {
         final Bundle bundle = intent.getExtras();
         final Object messages[] = (Object[]) bundle.get("pdus");
 
-		final SharedPreferences settings = context.getSharedPreferences(SmsManagerActivity.PREFS_NAME, Context.MODE_PRIVATE);
+		final SharedPreferences settings = context.getSharedPreferences(Utils.PREF_NAME, Context.MODE_PRIVATE);
 		final boolean blocking = settings.getBoolean(MessageManager.PREF_BLOCKING, true);
 
         for (final Object m : messages) {

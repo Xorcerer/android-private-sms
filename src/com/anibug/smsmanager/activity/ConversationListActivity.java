@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.anibug.smsmanager.R;
-import com.anibug.smsmanager.Session;
 import com.anibug.smsmanager.SmsReceiver;
 import com.anibug.smsmanager.Utils;
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
@@ -23,10 +22,9 @@ import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 
-public class SmsManagerActivity extends ListActivityBase<Message> {
-	public static final String PREFS_NAME = "default";
+public class ConversationListActivity extends ListActivityBase<Message> {
 
-	private SharedPreferences settings;
+    private SharedPreferences settings;
 
 	private MessageManager messageManager;
 
@@ -34,7 +32,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        settings = getSharedPreferences(Utils.PREF_NAME, MODE_PRIVATE);
 
 		messageManager = new MessageManager(this);
 		// FIXME: For loading SQL definitions of ContactManager.
@@ -84,8 +82,7 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.item_contact_list:
-			final Intent intent = new Intent(this, ContactListActivity.class);
-			startActivity(intent);
+			startActivity(new Intent(this, ContactListActivity.class));
 			return true;
 		case R.id.item_blocking:
 			final boolean blocking = settings.getBoolean(
@@ -94,6 +91,9 @@ public class SmsManagerActivity extends ListActivityBase<Message> {
 			editor.putBoolean(MessageManager.PREF_BLOCKING, !blocking);
 			editor.commit();
 			return true;
+        case R.id.item_preferences:
+            startActivity(new Intent(this, PreferencesActivity.class));
+            return true;
 		default:
 			assert false : "An unhandled item selecting triggered.";
 			return super.onOptionsItemSelected(item);
