@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import com.anibug.smsmanager.Utils;
 public class LandingActivity extends Activity {
 
     private SharedPreferences settings;
+    private EditText inputName;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,11 +28,20 @@ public class LandingActivity extends Activity {
         if (!passwordRequired) {
             showConversationList();
             finish();
+            return;
         }
+
+        inputName = (EditText) findViewById(R.id.landing_input_name);
+        inputName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                ok(textView);
+                return true;
+            }
+        });
     }
 
     public void ok(View v) {
-        EditText inputName = (EditText) findViewById(R.id.landing_input_name);
         String password = inputName.getText().toString(); // Actually, it is password.
         inputName.getEditableText().clear();
 

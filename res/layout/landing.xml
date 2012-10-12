@@ -13,6 +13,7 @@
               android:inputType="text"
               android:layout_height="wrap_content"
               android:layout_width="fill_parent"
+              android:imeOptions="actionGo"
               android:singleLine="true"/>
 
     <Button android:layout_height="wrap_content"
