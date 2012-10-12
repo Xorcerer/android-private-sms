@@ -16,4 +16,5 @@
     <string name="ok">OK</string>
     <string name="cannot_send_empty_message">Cannot send empty message.</string>
     <string name="preferences">Preferences</string>
+    <string name="update">Update</string>
 </resources>

@@ -58,8 +58,8 @@ public class SmsReceiver extends BroadcastReceiver {
 		final NotificationManager manager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		final Notification notification = new Notification(R.drawable.icon,
-				"ticker",
-				System.currentTimeMillis());
+				context.getString(R.string.update), System.currentTimeMillis());
+        notification.flags = notification.flags | Notification.FLAG_SHOW_LIGHTS;
 
 		final Intent settings = new Intent(android.provider.Settings.ACTION_SETTINGS);
 		final PendingIntent contentIntent = PendingIntent.getActivity(context, 0, settings, 0);
