@@ -54,7 +54,7 @@ public class ContactListActivity extends ListActivityBase<Contact> {
 	}
 
 	@Override
-	protected void updateList() {
+    public void updateList() {
 		final List<Contact> contacts = contactManager.fetchAll();
 		setListAdapter(new ContactArrayAdapter(this, contacts));
 	}
