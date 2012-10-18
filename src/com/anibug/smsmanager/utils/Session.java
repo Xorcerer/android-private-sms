@@ -1,4 +1,4 @@
-package com.anibug.smsmanager;
+package com.anibug.smsmanager.utils;
 
 import android.app.Activity;
 import android.content.Context;

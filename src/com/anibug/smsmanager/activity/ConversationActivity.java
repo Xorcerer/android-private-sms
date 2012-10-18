@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.anibug.smsmanager.R;
-import com.anibug.smsmanager.Utils;
+import com.anibug.smsmanager.utils.ReceivedActionHelper;
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
 import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
@@ -36,7 +36,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
 		final List<Message> messages = messageManager.getMessages(number);
 
 		setListAdapter(new ConversationListArrayAdapter(getApplicationContext(), messages));
-		Utils.cancelNotification(this);
+		ReceivedActionHelper.cancelNotification(this);
 	}
 
 	@Override

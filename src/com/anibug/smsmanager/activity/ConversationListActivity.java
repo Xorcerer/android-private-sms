@@ -2,10 +2,7 @@ package com.anibug.smsmanager.activity;
 
 import java.util.List;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,8 +12,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.anibug.smsmanager.R;
-import com.anibug.smsmanager.SmsReceiver;
-import com.anibug.smsmanager.Utils;
+import com.anibug.smsmanager.utils.PreferenceConstants;
+import com.anibug.smsmanager.utils.ReceivedActionHelper;
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
 import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
@@ -32,7 +29,7 @@ public class ConversationListActivity extends ListActivityBase<Message> {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        settings = getSharedPreferences(Utils.PREF_NAME, MODE_PRIVATE);
+        settings = getSharedPreferences(PreferenceConstants.PREF_NAME, MODE_PRIVATE);
 
 		messageManager = new MessageManager(this);
 		// FIXME: For loading SQL definitions of ContactManager.
@@ -61,7 +58,7 @@ public class ConversationListActivity extends ListActivityBase<Message> {
 		List<Message> messages;
         messages = messageManager.getLastOneMessageForEachNumber();
 		setListAdapter(new ConversationListArrayAdapter(this, messages));
-		Utils.cancelNotification(this);
+		ReceivedActionHelper.cancelNotification(this);
 	}
 
 	@Override

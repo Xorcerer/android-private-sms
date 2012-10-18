@@ -1,17 +1,25 @@
-package com.anibug.smsmanager.activity;
+package com.anibug.smsmanager.utils;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import com.anibug.smsmanager.SmsReceiver;
+import com.anibug.smsmanager.activity.ListActivityBase;
 
 public class ReceivedActionHelper extends BroadcastReceiver {
     private final ListActivityBase<?> activity;
 
     public ReceivedActionHelper(ListActivityBase<?> activity) {
         this.activity = activity;
+    }
+
+    public static void cancelNotification(Context content) {
+        final NotificationManager manager =
+                (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(SmsReceiver.MSG_RECEIVED_NTF);
     }
 
     protected void onResume() {

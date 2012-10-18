@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.anibug.smsmanager.Session;
+import com.anibug.smsmanager.utils.Session;
 import com.anibug.smsmanager.model.Model;
 
 public abstract class ListActivityBase<T extends Model> extends ListActivity {
@@ -21,7 +21,7 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 	public final int MENU_ITEM_REMOVE = 1;
 	public final int MENU_ITEM_EDIT = 2;
 
-	protected abstract void updateList();
+	public abstract void updateList();
 	protected abstract int getContextMenuOptions();
 
 	protected String getContextMenuTitle(T selected) {

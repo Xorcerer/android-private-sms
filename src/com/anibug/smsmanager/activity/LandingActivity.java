@@ -6,11 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.anibug.smsmanager.R;
-import com.anibug.smsmanager.Utils;
+import com.anibug.smsmanager.utils.PreferenceConstants;
 
 public class LandingActivity extends Activity {
 
@@ -22,8 +21,8 @@ public class LandingActivity extends Activity {
 
         setContentView(R.layout.landing);
 
-        settings = getSharedPreferences(Utils.PREF_NAME, MODE_PRIVATE);
-        boolean passwordRequired = settings.getBoolean(Utils.PREF_PASSWORD_REQUIRED, true);
+        settings = getSharedPreferences(PreferenceConstants.PREF_NAME, MODE_PRIVATE);
+        boolean passwordRequired = settings.getBoolean(PreferenceConstants.PREF_PASSWORD_REQUIRED, true);
 
         if (!passwordRequired) {
             showConversationList();
@@ -61,8 +60,8 @@ public class LandingActivity extends Activity {
     }
 
     private boolean passwordMatched(String name) {
-        settings = getSharedPreferences(Utils.PREF_NAME, MODE_PRIVATE);
-        String password = settings.getString(Utils.PREF_PASSWORD, Utils.DEFAULT_PASSWORD);
+        settings = getSharedPreferences(PreferenceConstants.PREF_NAME, MODE_PRIVATE);
+        String password = settings.getString(PreferenceConstants.PREF_PASSWORD, PreferenceConstants.DEFAULT_PASSWORD);
 
         return name.equals(password);
     }

@@ -1,8 +1,5 @@
 package com.anibug.smsmanager.model;
 
-import com.anibug.smsmanager.R;
-import com.anibug.smsmanager.Session;
-
 import java.util.Date;
 
 

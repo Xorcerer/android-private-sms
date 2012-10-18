@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import com.anibug.smsmanager.R;
-import com.anibug.smsmanager.Utils;
+import com.anibug.smsmanager.utils.PreferenceConstants;
 
 public class PreferencesActivity extends Activity {
     private SharedPreferences settings;
@@ -21,13 +21,13 @@ public class PreferencesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.preferences);
 
-        settings = getSharedPreferences(Utils.PREF_NAME, MODE_PRIVATE);
+        settings = getSharedPreferences(PreferenceConstants.PREF_NAME, MODE_PRIVATE);
         editor = settings.edit();
         passwordRequiredCheckBox = (CheckBox) findViewById(R.id.password_required);
         passwordEdit = (EditText) findViewById(R.id.password_input);
 
-        boolean passwordRequired = settings.getBoolean(Utils.PREF_PASSWORD_REQUIRED, true);
-        String password = settings.getString(Utils.PREF_PASSWORD, Utils.DEFAULT_PASSWORD);
+        boolean passwordRequired = settings.getBoolean(PreferenceConstants.PREF_PASSWORD_REQUIRED, true);
+        String password = settings.getString(PreferenceConstants.PREF_PASSWORD, PreferenceConstants.DEFAULT_PASSWORD);
 
         passwordRequiredCheckBox.setChecked(passwordRequired);
         passwordEdit.setEnabled(passwordRequired);
@@ -35,7 +35,7 @@ public class PreferencesActivity extends Activity {
     }
 
     private void save() {
-        editor.putString(Utils.PREF_PASSWORD, passwordEdit.getText().toString());
+        editor.putString(PreferenceConstants.PREF_PASSWORD, passwordEdit.getText().toString());
         editor.commit();
     }
 
@@ -47,7 +47,7 @@ public class PreferencesActivity extends Activity {
 
     public void onPasswordRequiredClicked(View v) {
         boolean checked = passwordRequiredCheckBox.isChecked();
-        editor.putBoolean(Utils.PREF_PASSWORD_REQUIRED, checked);
+        editor.putBoolean(PreferenceConstants.PREF_PASSWORD_REQUIRED, checked);
         passwordEdit.setEnabled(checked);
     }
 
