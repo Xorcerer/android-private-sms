@@ -32,7 +32,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
 	}
 
 	@Override
-	protected void updateList() {
+    public void updateList() {
 		final List<Message> messages = messageManager.getMessages(number);
 
 		setListAdapter(new ConversationListArrayAdapter(getApplicationContext(), messages));

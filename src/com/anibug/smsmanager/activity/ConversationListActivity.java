@@ -54,7 +54,7 @@ public class ConversationListActivity extends ListActivityBase<Message> {
 	}
 
 	@Override
-	protected void updateList() {
+    public void updateList() {
 		List<Message> messages;
         messages = messageManager.getLastOneMessageForEachNumber();
 		setListAdapter(new ConversationListArrayAdapter(this, messages));

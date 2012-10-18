@@ -22,7 +22,7 @@ public class ReceivedActionHelper extends BroadcastReceiver {
         manager.cancel(SmsReceiver.MSG_RECEIVED_NTF);
     }
 
-    protected void onResume() {
+    public void onResume() {
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(SmsReceiver.SMS_RECEIVED_ACTION);
@@ -31,7 +31,7 @@ public class ReceivedActionHelper extends BroadcastReceiver {
         activity.updateList();
     }
 
-    protected void onPause() {
+    public void onPause() {
         activity.unregisterReceiver(this);
     }
 
