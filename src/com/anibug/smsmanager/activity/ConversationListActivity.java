@@ -98,13 +98,13 @@ public class ConversationListActivity extends ListActivityBase<Message> {
 
     @Override
     protected void onResume() {
-
+        super.onResume();
         receivedActionHelper.onResume();
     }
 
     @Override
     protected void onPause() {
-
+        super.onPause();
         receivedActionHelper.onPause();
     }
 

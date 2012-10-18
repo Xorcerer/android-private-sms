@@ -52,7 +52,7 @@ public class Message extends Model {
 		return content;
 	}
 
-	private static final int MAX_SHORT_CONTENT_LENGTH = 3;
+	private static final int MAX_SHORT_CONTENT_LENGTH = 10;
 	private static final String SUFFIX_AFTER_TRUNCATED = "...";
 	public final String getShortContent() {
 		if (content.length() < MAX_SHORT_CONTENT_LENGTH)

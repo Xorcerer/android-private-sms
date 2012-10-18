@@ -23,8 +23,8 @@ public class ConversationActivity extends ListActivityBase<Message> {
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
         setContentView(R.layout.conversation);
+        super.onCreate(savedInstanceState);
 
 		messageManager = new MessageManager(this);
 		number = getIntent().getStringExtra(Message.DataBase.PHONE_NUMBER);
@@ -37,7 +37,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
     public void updateList() {
 		final List<Message> messages = messageManager.getMessages(number);
 
-		setListAdapter(new ConversationListArrayAdapter(getApplicationContext(), messages));
+		setListAdapter(new ConversationListArrayAdapter(this, messages));
 		receivedActionHelper.cancelNotification();
 	}
 
@@ -75,13 +75,13 @@ public class ConversationActivity extends ListActivityBase<Message> {
 
     @Override
     protected void onResume() {
-
+        super.onResume();
         receivedActionHelper.onResume();
     }
 
     @Override
     protected void onPause() {
-
+        super.onPause();
         receivedActionHelper.onPause();
     }
 
