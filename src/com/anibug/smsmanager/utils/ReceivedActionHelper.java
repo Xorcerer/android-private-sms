@@ -16,9 +16,9 @@ public class ReceivedActionHelper extends BroadcastReceiver {
         this.activity = activity;
     }
 
-    public static void cancelNotification(Context content) {
+    public void cancelNotification() {
         final NotificationManager manager =
-                (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(SmsReceiver.MSG_RECEIVED_NTF);
     }
 

@@ -16,7 +16,9 @@ import com.anibug.smsmanager.model.Message;
 import com.anibug.smsmanager.model.MessageManager;
 
 public class ConversationActivity extends ListActivityBase<Message> {
-	private MessageManager messageManager;
+    private final ReceivedActionHelper receivedActionHelper = new ReceivedActionHelper(this);
+
+    private MessageManager messageManager;
 	private String number;
 
     @Override
@@ -36,7 +38,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
 		final List<Message> messages = messageManager.getMessages(number);
 
 		setListAdapter(new ConversationListArrayAdapter(getApplicationContext(), messages));
-		ReceivedActionHelper.cancelNotification(this);
+		receivedActionHelper.cancelNotification();
 	}
 
 	@Override
@@ -70,8 +72,6 @@ public class ConversationActivity extends ListActivityBase<Message> {
 
         updateList();
     }
-
-    private final ReceivedActionHelper receivedActionHelper = new ReceivedActionHelper(this);
 
     @Override
     protected void onResume() {
