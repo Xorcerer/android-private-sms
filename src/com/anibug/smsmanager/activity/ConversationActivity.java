@@ -23,8 +23,8 @@ public class ConversationActivity extends ListActivityBase<Message> {
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.conversation);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.conversation);
 
 		messageManager = new MessageManager(this);
 		number = getIntent().getStringExtra(Message.DataBase.PHONE_NUMBER);
