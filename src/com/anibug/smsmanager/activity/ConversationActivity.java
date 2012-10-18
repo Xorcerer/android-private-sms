@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.anibug.smsmanager.R;
-import com.anibug.smsmanager.Session;
 import com.anibug.smsmanager.Utils;
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
 import com.anibug.smsmanager.model.Message;
@@ -20,7 +19,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
 	private MessageManager messageManager;
 	private String number;
 
-	@Override
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.conversation);
@@ -71,4 +70,19 @@ public class ConversationActivity extends ListActivityBase<Message> {
 
         updateList();
     }
+
+    private final ReceivedActionHelper receivedActionHelper = new ReceivedActionHelper(this);
+
+    @Override
+    protected void onResume() {
+
+        receivedActionHelper.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+
+        receivedActionHelper.onPause();
+    }
+
 }

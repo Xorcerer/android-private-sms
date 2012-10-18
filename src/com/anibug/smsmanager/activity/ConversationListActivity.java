@@ -100,37 +100,19 @@ public class ConversationListActivity extends ListActivityBase<Message> {
 		}
 	}
 
-	private ReceivedAction receivedAction;
+    private final ReceivedActionHelper receivedActionHelper = new ReceivedActionHelper(this);
 
     @Override
-	protected void onResume() {
-		super.onResume();
+    protected void onResume() {
 
-        IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(SmsReceiver.SMS_RECEIVED_ACTION);
-		receivedAction = new ReceivedAction();
-		registerReceiver(receivedAction, intentFilter);
+        receivedActionHelper.onResume();
+    }
 
-		updateList();
-	}
+    @Override
+    protected void onPause() {
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-
-        unregisterReceiver(receivedAction);
-	}
-
-	class ReceivedAction extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-
-			if (intent.getAction().equals(SmsReceiver.SMS_RECEIVED_ACTION)) {
-				updateList();
-			}
-		}
-	}
+        receivedActionHelper.onPause();
+    }
 
 	@Override
 	public void onItemRemoved(Message selected) {
