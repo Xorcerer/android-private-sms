@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.telephony.SmsMessage;
 
 import com.anibug.smsmanager.model.ContactManager;
@@ -47,11 +48,12 @@ public class SmsReceiver extends BroadcastReceiver {
         		mIntent.setAction(SMS_RECEIVED_ACTION);
         		context.sendBroadcast(mIntent);
 
-        		if (blocking) {
-        			abortBroadcast();
-					sendNotification(context);
-        		}
-        	}
+                if (blocking) {
+                    abortBroadcast();
+                    sendNotification(context);
+                    vibrate(context);
+                }
+            }
         }
     }
 
@@ -68,4 +70,9 @@ public class SmsReceiver extends BroadcastReceiver {
 
 		manager.notify(MSG_RECEIVED_NTF, notification);
 	}
+
+    private void vibrate(Context context) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
+        vibrator.vibrate(200);
+    }
 }
