@@ -97,7 +97,7 @@ public class WebClient {
 				new Date(postJson.getString("created_at")),
 				postJson.getString("content"),
 				postJson.getInt("status"),
-				postJson.getInt("id"));
+				postJson.getInt("online_id"));
 		return message;
 	}
 
@@ -108,6 +108,7 @@ public class WebClient {
 
 		try {
 			post.setEntity(new UrlEncodedFormEntity(params));
+            post.setHeader("Accept", "application/json");
 		} catch (UnsupportedEncodingException e) {
 			// TODO: Add to report.
 			return false;
@@ -118,17 +119,18 @@ public class WebClient {
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					response.getEntity().getContent()));
 			
-			String line;
-			while ((line = in.readLine()) != null) {
-				JSONObject jo = new JSONObject(line.replace("\\r", ""));
-				JSONObject messageJson = jo.getJSONObject("message");
+			String line = in.readLine();
+            if (line == null)
+                return false;
 
-				// "id" in json is the server side id in database.
-				message.setOnlineId(messageJson.getInt("id"));
-				manager.save(message);
-			}
+            JSONObject jo = new JSONObject(line.replace("\\r", ""));
+            JSONObject messageJson = jo.getJSONObject("message");
 
-		} catch (ClientProtocolException e) {
+            // "online_id" in json is the server unique id for this message.
+            message.setOnlineId(messageJson.getInt("online_id"));
+            manager.save(message);
+
+        } catch (ClientProtocolException e) {
 			e.printStackTrace();
 			return false;
 		} catch (IOException e) {
@@ -144,10 +146,10 @@ public class WebClient {
 
 	private List<NameValuePair> toParameters(Message message) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("message[content]", message.getContent()));
-		params.add(new BasicNameValuePair("message[phone_number]", message.getPhoneNumber()));
-		params.add(new BasicNameValuePair("message[created_at]", message.getDateCreated().toGMTString()));
-		params.add(new BasicNameValuePair("message[hash]", ""));
-		return params;
+		params.add(new BasicNameValuePair("content", message.getContent()));
+		params.add(new BasicNameValuePair("phone_number", message.getPhoneNumber()));
+		params.add(new BasicNameValuePair("date_created", message.getDateCreated().toGMTString()));
+        params.add(new BasicNameValuePair("status", String.valueOf(message.getStatus())));
+        return params;
 	}
 }

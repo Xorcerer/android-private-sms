@@ -9,12 +9,13 @@ public class Message extends Model {
 	public static final int STATUS_DRAFT = 3;
 
     public static final Message FAKE_MESSAGE = new Message("1234567890", new Date(), "Hello world", STATUS_RECEIVED);
+    public static final int NOT_UPLOADED = 0;
 
-	private String phoneNumber;
+    private String phoneNumber;
 	private Date dateCreated;
 	private String content;
 	private int status;
-	private int onlineId = -1;
+	private int onlineId = NOT_UPLOADED;
 
 
 	public Message(String phoneNumber, Date dateCreated, String content, int status) {
@@ -83,7 +84,7 @@ public class Message extends Model {
 	}
 
 	public final boolean isUploaded() {
-		return onlineId >= 0;
+		return onlineId > 0;
 	}
 
     public class DataBase {
