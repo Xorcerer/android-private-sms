@@ -21,4 +21,15 @@
             android:text="password"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"/>
+    <TextView
+            android:text="Vibration duration:"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+    <EditText
+            android:id="@+id/vibration_duration_input"
+            android:inputType="number"
+            android:text="200"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"/>
 </LinearLayout>

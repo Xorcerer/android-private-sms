@@ -9,6 +9,7 @@ public class Message extends Model {
 	public static final int STATUS_DRAFT = 3;
 
     public static final Message FAKE_MESSAGE = new Message("1234567890", new Date(), "Hello world", STATUS_RECEIVED);
+
     public static final int NOT_UPLOADED = 0;
 
     private String phoneNumber;

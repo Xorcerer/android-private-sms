@@ -21,7 +21,7 @@ import com.anibug.smsmanager.utils.PreferenceConstants;
 public class SmsReceiver extends BroadcastReceiver {
 
 	public static final String SMS_RECEIVED_ACTION = "com.anibug.smsmanager.SMS_RECEIVED_ACTION";
-	public static final int MSG_RECEIVED_NTF = 1;
+    public static final int MSG_RECEIVED_NTF = 1;
 
 	@Override
     public void onReceive(Context context, Intent intent) {
@@ -33,6 +33,8 @@ public class SmsReceiver extends BroadcastReceiver {
 
 		final SharedPreferences settings = context.getSharedPreferences(PreferenceConstants.PREF_NAME, Context.MODE_PRIVATE);
 		final boolean blocking = settings.getBoolean(MessageManager.PREF_BLOCKING, true);
+        final int vibrationDuration = settings.getInt(PreferenceConstants.PREF_VIBRATION_DURATION,
+                PreferenceConstants.DEFAULT_VIBRATION_DURATION);
 
         for (final Object m : messages) {
         	final SmsMessage sms = SmsMessage.createFromPdu((byte[]) m);
@@ -43,7 +45,7 @@ public class SmsReceiver extends BroadcastReceiver {
         	if (contactManager.match(message)) {
         		messageManager.save(message);
 
-        		//send out broadcast to refresh ui
+        		//send out broadcast to refresh ui                   f
         		final Intent mIntent = new Intent();
         		mIntent.setAction(SMS_RECEIVED_ACTION);
         		context.sendBroadcast(mIntent);
@@ -51,7 +53,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 if (blocking) {
                     abortBroadcast();
                     sendNotification(context);
-                    vibrate(context);
+                    vibrate(context, vibrationDuration);
                 }
             }
         }
@@ -71,8 +73,8 @@ public class SmsReceiver extends BroadcastReceiver {
 		manager.notify(MSG_RECEIVED_NTF, notification);
 	}
 
-    private void vibrate(Context context) {
-        Vibrator vibrator = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
-        vibrator.vibrate(200);
+    private void vibrate(Context context, int duration) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(duration);
     }
 }
