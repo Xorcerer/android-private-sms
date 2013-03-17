@@ -20,10 +20,20 @@ public class MessageManager extends Manager<Message> {
 	}
 
 	public List<Message> getMessages(String number) {
-		if (number == null)
-			return new ArrayList<Message>();
-		return fetchAllBy(DataBase.PHONE_NUMBER, number);
+		return fetchAllBy(DataBase.PHONE_NUMBER, number, 0);
 	}
+
+    /**
+     *  Return recent messages sent to or received from specified number, with a limit count.
+     * @param number  Which number the messages sent to or received from.
+     * @param limit  Max count of the returning list, 0 to unlimit.
+     * @return  messages.
+     */
+    public List<Message> getMessages(String number, int limit) {
+        if (number == null)
+            return new ArrayList<Message>();
+        return fetchAllBy(DataBase.PHONE_NUMBER, number, limit);
+    }
 
     public List<Message> getFakeMessages() {
         ArrayList<Message> list = new ArrayList<Message>();

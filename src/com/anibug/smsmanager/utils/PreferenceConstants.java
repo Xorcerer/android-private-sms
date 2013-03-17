@@ -11,4 +11,7 @@ public final class PreferenceConstants {
     public static final String PREF_VIBRATION_DURATION = "vibration_duration";
     public static final int DEFAULT_VIBRATION_DURATION = 200;
 
+    public static final String PREF_MESSAGES_COUNT_LIMIT = "messages_count_limit";
+    public static final int DEFAULT_MESSAGES_COUNT_LIMIT = 200;
+
 }

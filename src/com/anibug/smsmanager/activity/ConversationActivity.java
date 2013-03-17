@@ -3,6 +3,8 @@ package com.anibug.smsmanager.activity;
 import java.util.Date;
 import java.util.List;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.telephony.SmsManager;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.anibug.smsmanager.R;
+import com.anibug.smsmanager.utils.PreferenceConstants;
 import com.anibug.smsmanager.utils.ReceivedActionHelper;
 import com.anibug.smsmanager.adapter.ConversationListArrayAdapter;
 import com.anibug.smsmanager.model.Message;
@@ -36,7 +39,11 @@ public class ConversationActivity extends ListActivityBase<Message> {
 
 	@Override
     public void updateList() {
-		final List<Message> messages = messageManager.getMessages(number);
+        final SharedPreferences settings = getSharedPreferences(PreferenceConstants.PREF_NAME, Context.MODE_PRIVATE);
+        final int limit = settings.getInt(PreferenceConstants.PREF_MESSAGES_COUNT_LIMIT,
+                PreferenceConstants.DEFAULT_MESSAGES_COUNT_LIMIT);
+
+        final List<Message> messages = messageManager.getMessages(number, limit);
 
 		setListAdapter(new ConversationListArrayAdapter(this, messages));
 		receivedActionHelper.cancelNotification();

@@ -56,9 +56,17 @@ public abstract class Manager<T extends Model> {
 		return fetchList(cursor);
 	}
 
-	public List<T> fetchAllBy(String column, Object value) {
+
+    public List<T> fetchAllBy(String column, Object value) {
+        return fetchAllBy(column, value, 0);
+    }
+
+	public List<T> fetchAllBy(String column, Object value, int limit) {
 		final String where = column + "=?";
 		String[] whereArgs = new String[] { String.valueOf(value) };
+        String limitStr = null;
+        if (limit > 0)
+            limitStr = "LIMIT " + Integer.toString(limit);
 
 		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, ID_DESC);
 

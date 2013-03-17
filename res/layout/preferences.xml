@@ -32,4 +32,15 @@
             android:text="200"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"/>
+    <TextView
+            android:text="Messages count limit:"
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+    <EditText
+            android:id="@+id/messages_count_limit"
+            android:inputType="number"
+            android:text="200"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"/>
 </LinearLayout>
