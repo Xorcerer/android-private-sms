@@ -17,6 +17,7 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 
 	public final int MENU_ITEM_REMOVE = 1;
 	public final int MENU_ITEM_EDIT = 2;
+    public final int MENU_ITEM_COPY_TEXT = 4;
 
 	public abstract void updateList();
 	protected abstract int getContextMenuOptions();
@@ -79,6 +80,8 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 			menu.add(Menu.NONE, MENU_ITEM_REMOVE, Menu.NONE, "Remove");
 		if ((options & MENU_ITEM_EDIT) > 0)
 			menu.add(Menu.NONE, MENU_ITEM_EDIT, Menu.NONE, "Edit");
+        if ((options & MENU_ITEM_COPY_TEXT) > 0)
+            menu.add(Menu.NONE, MENU_ITEM_COPY_TEXT, Menu.NONE, "Copy all");
 	}
 
 	@Override
@@ -105,4 +108,7 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 
 	protected void onItemRemoved(T selected) {
 	}
+
+    protected void onItemTextCopied(T selected) {
+    }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import android.os.Bundle;
 
 import android.telephony.SmsManager;
+import android.text.ClipboardManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -43,7 +44,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
 
 	@Override
 	protected int getContextMenuOptions() {
-		return MENU_ITEM_REMOVE;
+		return MENU_ITEM_REMOVE | MENU_ITEM_COPY_TEXT;
 	}
 
 	@Override
@@ -55,6 +56,12 @@ public class ConversationActivity extends ListActivityBase<Message> {
 	protected void onItemRemoved(Message selected) {
 		messageManager.delete(selected);
 	}
+
+    @Override
+    protected void onItemTextCopied(Message selected) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        clipboard.setText(selected.getContent());
+    }
 
     public void sendMessage(View v) {
         EditText messageEdit = (EditText) findViewById(R.id.outgoing_message_content);
