@@ -59,10 +59,10 @@ public class SmsReceiver extends BroadcastReceiver {
         }
     }
 
-	private void sendNotification(Context context) {
+	public static void sendNotification(Context context) {
 		final NotificationManager manager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		final Notification notification = new Notification(R.drawable.icon,
+		final Notification notification = new Notification(android.R.drawable.stat_sys_download_done,
 				context.getString(R.string.update), System.currentTimeMillis());
         notification.flags = notification.flags | Notification.FLAG_SHOW_LIGHTS;
 
