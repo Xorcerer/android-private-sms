@@ -66,9 +66,9 @@ public abstract class Manager<T extends Model> {
 		String[] whereArgs = new String[] { String.valueOf(value) };
         String limitStr = null;
         if (limit > 0)
-            limitStr = "LIMIT " + Integer.toString(limit);
+            limitStr = Integer.toString(limit);
 
-		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, ID_DESC);
+		Cursor cursor = getSqliteDatabase().query(getTableName(), ALL, where, whereArgs, null, null, ID_DESC, limitStr);
 
 		return fetchList(cursor);
 	}
