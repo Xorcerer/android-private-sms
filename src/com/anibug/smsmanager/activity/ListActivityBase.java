@@ -84,26 +84,29 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
             menu.add(Menu.NONE, MENU_ITEM_COPY_TEXT, Menu.NONE, "Copy all");
 	}
 
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		@SuppressWarnings("unchecked")
-		final T selected = (T) getListAdapter().getItem(positionClicked);
-		switch (item.getItemId()) {
-		case MENU_ITEM_REMOVE:
-			onItemRemoved(selected);
-			updateList();
-			return true;
-		case MENU_ITEM_EDIT:
-			onItemUpdated(selected);
-			updateList();
-			return true;
-		default:
-			assert false;
-			return true;
-		}
-	}
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        @SuppressWarnings("unchecked")
+        final T selected = (T) getListAdapter().getItem(positionClicked);
+        switch (item.getItemId()) {
+            case MENU_ITEM_REMOVE:
+                onItemRemoved(selected);
+                updateList();
+                return true;
+            case MENU_ITEM_EDIT:
+                onItemUpdated(selected);
+                updateList();
+                return true;
+            case MENU_ITEM_COPY_TEXT:
+                onItemTextCopied(selected);
+                return true;
+            default:
+                assert false;
+                return true;
+        }
+    }
 
-	protected void onItemUpdated(T selected) {
+    protected void onItemUpdated(T selected) {
 	}
 
 	protected void onItemRemoved(T selected) {
