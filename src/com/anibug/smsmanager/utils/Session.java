@@ -1,21 +1,46 @@
 package com.anibug.smsmanager.utils;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Session {
-    // Ugly? Ref: http://stackoverflow.com/questions/4391720/android-how-can-i-get-a-resources-object-from-a-static-context
-    private static Context context;
+public class Session implements Parcelable {
+    public static String INTENT_KEY = "session";
 
-    public static void updateSessionFrom(Activity activity) {
-        context = activity;
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public Session createFromParcel(Parcel in) {
+                    return new Session(in);
+                }
+
+                public Session[] newArray(int size) {
+                    return new Session[size];
+                }
+            };
+
+    private ContentDisplayMode displayMode = ContentDisplayMode.NORMAL;
+
+    public ContentDisplayMode getDisplayMode() {
+        return displayMode;
     }
 
-    public static void packSessionTo(Intent intent) {
+    public void setDisplayMode(ContentDisplayMode displayMode) {
+        this.displayMode = displayMode;
     }
 
-    public static Context getContext() {
-        return context;
+    public Session() {
+    }
+
+    public Session(Parcel in) {
+        displayMode = ContentDisplayMode.valueOf(in.readString());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(displayMode.toString());
     }
 }

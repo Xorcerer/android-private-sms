@@ -10,7 +10,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.anibug.smsmanager.R;
+import com.anibug.smsmanager.utils.ContentDisplayMode;
 import com.anibug.smsmanager.utils.PreferenceConstants;
+import com.anibug.smsmanager.utils.Session;
 
 public class LandingActivity extends Activity {
 
@@ -47,14 +49,27 @@ public class LandingActivity extends Activity {
         String password = inputName.getText().toString(); // Actually, it is password.
         inputName.getEditableText().clear();
 
-        // FIXME: Make password configurable.
-        if (!passwordMatched(password)) {
-            TextView greeting = (TextView) findViewById(R.id.landing_greeting);
-            greeting.setText("Hello " + password + " !");
+        if (password.equals("demo")) {
+            showDemo();
             return;
         }
 
-        showConversationList();
+        if (passwordMatched(password)) {
+            showConversationList();
+            return;
+        }
+
+        TextView greeting = (TextView) findViewById(R.id.landing_greeting);
+        greeting.setText("Hello " + password + " !");
+        return;
+    }
+
+    private void showDemo() {
+        Intent intent = new Intent(this, ConversationListActivity.class);
+        Session session = new Session();
+        session.setDisplayMode(ContentDisplayMode.DEMO);
+        intent.putExtra(Session.INTENT_KEY, session);
+        startActivity(intent);
     }
 
     private void showConversationList() {

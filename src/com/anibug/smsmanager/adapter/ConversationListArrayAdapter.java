@@ -14,15 +14,18 @@ import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.model.Contact;
 import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
+import com.anibug.smsmanager.utils.TextFilter;
 
 public class ConversationListArrayAdapter extends ArrayAdapter<Message> {
 	private static final int VIEW_ID = R.layout.conversation_list_item;
-	private LayoutInflater inflater;
-    private ContactManager contactManager;
+    private final TextFilter textFilter;
+    private final LayoutInflater inflater;
+    private final ContactManager contactManager;
 
-	public ConversationListArrayAdapter(Context context, List<Message> objects) {
+	public ConversationListArrayAdapter(Context context, List<Message> objects, TextFilter textFilter) {
 		super(context, VIEW_ID, objects);
-		inflater = LayoutInflater.from(context);
+        this.textFilter = textFilter;
+        inflater = LayoutInflater.from(context);
         contactManager = new ContactManager(context);
 	}
 
@@ -46,7 +49,7 @@ public class ConversationListArrayAdapter extends ArrayAdapter<Message> {
         }
 
 		TextView bodyView = (TextView) view.findViewById(R.id.message_body);
-		bodyView.setText(message.getContent());
+		bodyView.setText(textFilter.filterText(message.getContent()));
 
         view.setTag(message);
 		return view;

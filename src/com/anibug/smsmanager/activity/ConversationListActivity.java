@@ -56,7 +56,7 @@ public class ConversationListActivity extends ListActivityBase<Message> {
     public void updateList() {
 		List<Message> messages;
         messages = messageManager.getLastOneMessageForEachNumber();
-		setListAdapter(new ConversationListArrayAdapter(this, messages));
+		setListAdapter(new ConversationListArrayAdapter(this, messages, session.getDisplayMode()));
 		receivedActionHelper.cancelNotification();
 	}
 

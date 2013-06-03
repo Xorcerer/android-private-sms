@@ -45,7 +45,7 @@ public class ConversationActivity extends ListActivityBase<Message> {
 
         final List<Message> messages = messageManager.getMessages(number, limit);
 
-		setListAdapter(new ConversationListArrayAdapter(this, messages));
+		setListAdapter(new ConversationListArrayAdapter(this, messages, session.getDisplayMode()));
 		receivedActionHelper.cancelNotification();
 	}
 

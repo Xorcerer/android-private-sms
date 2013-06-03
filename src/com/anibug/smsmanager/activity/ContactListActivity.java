@@ -56,7 +56,7 @@ public class ContactListActivity extends ListActivityBase<Contact> {
 	@Override
     public void updateList() {
 		final List<Contact> contacts = contactManager.fetchAll();
-		setListAdapter(new ContactArrayAdapter(this, contacts));
+		setListAdapter(new ContactArrayAdapter(this, contacts, session.getDisplayMode()));
 	}
 
 	@Override

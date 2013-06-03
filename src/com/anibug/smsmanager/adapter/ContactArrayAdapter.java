@@ -12,14 +12,17 @@ import android.widget.TextView;
 
 import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.model.Contact;
+import com.anibug.smsmanager.utils.TextFilter;
 
 public class ContactArrayAdapter extends ArrayAdapter<Contact> {
 	private static final int VIEW_ID = R.layout.contact_list_item;
-	private LayoutInflater inflater;
+    private final TextFilter textFilter;
+    private final LayoutInflater inflater;
 
-	public ContactArrayAdapter(Context context, List<Contact> objects) {
+	public ContactArrayAdapter(Context context, List<Contact> objects, TextFilter textFilter) {
 		super(context, VIEW_ID, objects);
-		inflater = LayoutInflater.from(context);
+        this.textFilter = textFilter;
+        inflater = LayoutInflater.from(context);
 	}
 
 	@Override
@@ -32,10 +35,10 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
 		view.setId(position);
 
 		TextView dateCreated = (TextView) view.findViewById(R.id.contact_name);
-		dateCreated.setText(contact.getName());
+		dateCreated.setText(textFilter.filterText(contact.getName()));
 
 		TextView contactNumber = (TextView) view.findViewById(R.id.contact_number);
-		contactNumber.setText(contact.getPhoneNumber());
+		contactNumber.setText(textFilter.filterText(contact.getPhoneNumber()));
 
         view.setTag(contact);
 		return view;

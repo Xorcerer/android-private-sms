@@ -19,6 +19,8 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 	public final int MENU_ITEM_EDIT = 2;
     public final int MENU_ITEM_COPY_TEXT = 4;
 
+    protected Session session;
+
 	public abstract void updateList();
 	protected abstract int getContextMenuOptions();
 
@@ -48,12 +50,14 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Session.updateSessionFrom(this);
+        session = getIntent().getExtras().getParcelable(Session.INTENT_KEY);
+        if (session == null)
+            session = new Session();
     }
 
     @Override
     public void startActivity(Intent intent) {
-        Session.packSessionTo(intent);
+        intent.putExtra(Session.INTENT_KEY, session);
 
         super.startActivity(intent);
     }
