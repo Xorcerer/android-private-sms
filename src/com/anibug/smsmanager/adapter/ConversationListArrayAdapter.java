@@ -14,17 +14,17 @@ import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.model.Contact;
 import com.anibug.smsmanager.model.ContactManager;
 import com.anibug.smsmanager.model.Message;
-import com.anibug.smsmanager.utils.TextFilter;
+import com.anibug.smsmanager.utils.TextMasker;
 
 public class ConversationListArrayAdapter extends ArrayAdapter<Message> {
 	private static final int VIEW_ID = R.layout.conversation_list_item;
-    private final TextFilter textFilter;
+    private final TextMasker textMasker;
     private final LayoutInflater inflater;
     private final ContactManager contactManager;
 
-	public ConversationListArrayAdapter(Context context, List<Message> objects, TextFilter textFilter) {
+	public ConversationListArrayAdapter(Context context, List<Message> objects, TextMasker textMasker) {
 		super(context, VIEW_ID, objects);
-        this.textFilter = textFilter;
+        this.textMasker = textMasker;
         inflater = LayoutInflater.from(context);
         contactManager = new ContactManager(context);
 	}
@@ -33,9 +33,10 @@ public class ConversationListArrayAdapter extends ArrayAdapter<Message> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Message message = getItem(position);
 
-		RelativeLayout view = (RelativeLayout) inflater.inflate(VIEW_ID, null, false);
+		View view = convertView != null ?
+                convertView : (RelativeLayout) inflater.inflate(VIEW_ID, null, false);
 
-		// ImageView image = (ImageView) view.findViewById(R.id.post_image);
+        // ImageView image = (ImageView) view.findViewById(R.id.post_image);
 
 		TextView dateCreatedView = (TextView) view.findViewById(R.id.message_date_created);
 		dateCreatedView.setText(message.getDateCreated().toLocaleString());
@@ -43,13 +44,14 @@ public class ConversationListArrayAdapter extends ArrayAdapter<Message> {
 		TextView contactView = (TextView) view.findViewById(R.id.message_contact);
         if (message.getStatus() == Message.STATUS_RECEIVED) {
             Contact contact = contactManager.getByPhoneNumber(message.getPhoneNumber());
-		    contactView.setText(contact == null ? message.getPhoneNumber() : contact.getName());
+            String contactName = contact == null ? message.getPhoneNumber() : contact.getName();
+		    contactView.setText(textMasker.maskText(contactName));
         } else {
             contactView.setText(getContext().getString(R.string.me));
         }
 
 		TextView bodyView = (TextView) view.findViewById(R.id.message_body);
-		bodyView.setText(textFilter.filterText(message.getContent()));
+		bodyView.setText(textMasker.maskText(message.getContent()));
 
         view.setTag(message);
 		return view;
