@@ -50,7 +50,9 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        session = getIntent().getExtras().getParcelable(Session.INTENT_KEY);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null)
+            session = bundle.getParcelable(Session.INTENT_KEY);
         if (session == null)
             session = new Session();
     }

@@ -9,5 +9,7 @@ gen/
 .DS_Store
 
 # IntelliJ Idea
+.idea/
 out/
 *.eml
+*.iml
