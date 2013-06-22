@@ -68,12 +68,11 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
-		try {
 			// Save the position and recall it when item clicked.
 			final AdapterView.AdapterContextMenuInfo info =
 					(AdapterView.AdapterContextMenuInfo) menuInfo;
 		    positionClicked = info.position;
-			@SuppressWarnings("unchecked")
+        try {
 			final T selected = (T) getListAdapter().getItem(positionClicked);
 			menu.setHeaderTitle(getContextMenuTitle(selected));
 		} catch (final ClassCastException e) {
@@ -92,8 +91,13 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        @SuppressWarnings("unchecked")
-        final T selected = (T) getListAdapter().getItem(positionClicked);
+        T selected;
+        try {
+             selected = (T) getListAdapter().getItem(positionClicked);
+        } catch (final ClassCastException e) {
+            Log.e(getClass().getName(), "bad menuInfo", e);
+            return false;
+        }
         switch (item.getItemId()) {
             case MENU_ITEM_REMOVE:
                 onItemRemoved(selected);
@@ -108,7 +112,7 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
                 return true;
             default:
                 assert false;
-                return true;
+                return false;
         }
     }
 
