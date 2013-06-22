@@ -50,9 +50,7 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
-            session = bundle.getParcelable(Session.INTENT_KEY);
+        session = getIntent().getParcelableExtra(Session.INTENT_KEY);
         if (session == null)
             session = new Session();
     }
@@ -68,10 +66,10 @@ public abstract class ListActivityBase<T extends Model> extends ListActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 
-			// Save the position and recall it when item clicked.
-			final AdapterView.AdapterContextMenuInfo info =
-					(AdapterView.AdapterContextMenuInfo) menuInfo;
-		    positionClicked = info.position;
+        // Save the position and recall it when item clicked.
+        final AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+        positionClicked = info.position;
         try {
 			final T selected = (T) getListAdapter().getItem(positionClicked);
 			menu.setHeaderTitle(getContextMenuTitle(selected));

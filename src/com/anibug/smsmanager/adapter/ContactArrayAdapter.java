@@ -12,16 +12,16 @@ import android.widget.TextView;
 
 import com.anibug.smsmanager.R;
 import com.anibug.smsmanager.model.Contact;
-import com.anibug.smsmanager.utils.TextFilter;
+import com.anibug.smsmanager.utils.TextMasker;
 
 public class ContactArrayAdapter extends ArrayAdapter<Contact> {
 	private static final int VIEW_ID = R.layout.contact_list_item;
-    private final TextFilter textFilter;
+    private final TextMasker textMasker;
     private final LayoutInflater inflater;
 
-	public ContactArrayAdapter(Context context, List<Contact> objects, TextFilter textFilter) {
+	public ContactArrayAdapter(Context context, List<Contact> objects, TextMasker textMasker) {
 		super(context, VIEW_ID, objects);
-        this.textFilter = textFilter;
+        this.textMasker = textMasker;
         inflater = LayoutInflater.from(context);
 	}
 
@@ -29,16 +29,16 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Contact contact = getItem(position);
 
-		RelativeLayout view = (RelativeLayout) inflater.inflate(VIEW_ID, null,
-				false);
+        View view = convertView != null ?
+                convertView : (RelativeLayout) inflater.inflate(VIEW_ID, null, false);
 
 		view.setId(position);
 
 		TextView dateCreated = (TextView) view.findViewById(R.id.contact_name);
-		dateCreated.setText(textFilter.filterText(contact.getName()));
+		dateCreated.setText(textMasker.maskText(contact.getName()));
 
 		TextView contactNumber = (TextView) view.findViewById(R.id.contact_number);
-		contactNumber.setText(textFilter.filterText(contact.getPhoneNumber()));
+		contactNumber.setText(textMasker.maskNumber(contact.getPhoneNumber()));
 
         view.setTag(contact);
 		return view;
