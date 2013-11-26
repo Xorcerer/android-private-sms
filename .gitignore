@@ -1,5 +1,6 @@
 # VIM
 *.swp
+*.apk
 
 # Eclipse
 .project
@@ -9,10 +10,10 @@ gen/
 .DS_Store
 
 # IntelliJ Idea
+.idea/
 out/
 *.iml
 *.eml
-.idea/
 
 # ignore server before it works.
 psserver/

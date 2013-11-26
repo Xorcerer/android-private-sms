@@ -5,5 +5,4 @@ Language support:
 2) Chinese Version (Not yet) 
 
 Features:
-1) Intercept messages from specified phone numbers (working)
-2) Save messages online (working)
+* Intercept messages from specified phone numbers
